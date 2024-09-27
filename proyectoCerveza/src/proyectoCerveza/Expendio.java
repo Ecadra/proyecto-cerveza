@@ -1,9 +1,7 @@
 package proyectoCerveza;
 
+import estructuras.Direccion;
 import java.io.Serializable;
-import Inventario;
-import Venta;
-import Pedido;
 import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.*;
@@ -46,7 +44,7 @@ public class Expendio implements Serializable {
     private Inventario exp_inv = new Inventario();
     @OneToMany
     @JoinColumn(name = "ven_exp", nullable = false)
-    private Venta exp_ven = new Venta();
+    private List<Venta> exp_ven = new ArrayList<Venta>();
 
     /*
 // RELACIONES
@@ -73,8 +71,8 @@ public class Expendio implements Serializable {
         this.exp_inv = null;
     }
 
-    public void formExp_ven(Ventas ven) {
-        this.exp_ven = ven;
+    public void formExp_ven(Venta ven) {
+        this.exp_ven.add(ven);
     }
 
     public void dropExp_ven() {

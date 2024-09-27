@@ -1,4 +1,4 @@
-package cervezaodb;
+package proyectoCerveza;
 
 /**
  *
@@ -27,7 +27,7 @@ public class Cerveza implements Serializable {
     @ManyToOne
     @JoinColumn(name = "mar_cer", nullable = false)
     private Marca cer_mar;
-    @OneToMane
+    @OneToMany
     @JoinColumn(name = "rec_cer", nullable = false)
     private List<Receta> cer_rec = new ArrayList<Receta>();
 
