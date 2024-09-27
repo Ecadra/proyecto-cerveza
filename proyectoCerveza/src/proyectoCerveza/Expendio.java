@@ -1,4 +1,4 @@
-package cervezaodb;
+package proyectoCerveza;
 
 import java.io.Serializable;
 import Inventario;
@@ -6,7 +6,7 @@ import Venta;
 import Pedido;
 import java.util.ArrayList;
 import java.util.List;
-
+import javax.persistence.*;
 /**
  *
  * @author edwin-993

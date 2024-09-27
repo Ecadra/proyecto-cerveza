@@ -6,7 +6,7 @@ package cervezaodb;
  */
 import java.io.Serializable;
 import java.util.*;
-a
+import javax.persistence.*;
 
 @Entity
 public class Cerveza implements Serializable {
