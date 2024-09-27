@@ -2,6 +2,7 @@ package cervezaodb;
 
 import java.io.Serializable;
 import java.util.*;
+import javax.persistence.*;
 
 /**
  *
