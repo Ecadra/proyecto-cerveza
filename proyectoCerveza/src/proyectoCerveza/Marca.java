@@ -1,4 +1,4 @@
-package cervezaodb;
+package proyectoCerveza;
 
 import java.io.Serializable;
 import java.util.*;
