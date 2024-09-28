@@ -1,8 +1,8 @@
-
 package proyectoCerveza;
 
 import java.io.Serializable;
 import javax.persistence.*;
+
 
 public class Presentacion implements Serializable {
     private static final long serialVersionUID=1L;
@@ -15,9 +15,8 @@ public class Presentacion implements Serializable {
     @ManyToOne
     @JoinColumn(name="cer_pre", nullable=false)
     private Cerveza pre_cer;
-    @ManyToOne
-    @JoinColumn(name="env_pre", nullable=false)
-    private Envase pre_env;
+ 
+    
 
     public Presentacion(String pre_cod, String descripcion, String tipoenvase, String capacidad) {
         this.pre_cod = pre_cod;
@@ -48,14 +47,7 @@ public class Presentacion implements Serializable {
     {
          pre_cer=cer1;
     }
-    public void formPre_env(Envase env1)
-    {
-        pre_env=env1;
-    }
-     public void dropPre_env(Envase env1)
-    {
-        pre_env=env1;
-    }
+ 
 
     public void setPre_cod(String pre_cod) {
         this.pre_cod = pre_cod;
