@@ -37,7 +37,7 @@ public class Cerveza implements Serializable {
         this.cer_graduacion = 0.0f;
     }
 
-    public Cerveza(int id_cerveza, String cer_nombre, float cer_graduacion, Marca cer_mar) {
+    public Cerveza(int id_cerveza, String cer_nombre, float cer_graduacion) {
         this.id_cerveza = id_cerveza;
         this.cer_nombre = cer_nombre;
         this.cer_graduacion = cer_graduacion;
