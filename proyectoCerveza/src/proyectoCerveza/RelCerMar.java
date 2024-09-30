@@ -10,7 +10,7 @@ import javax.persistence.*;
  */
 public class RelCerMar {
     public static void main(String[] args){
-        EntityManagerFactory emf = Persistence.createEntityManagerFactory("$object/db/cerveaz.odb");
+        EntityManagerFactory emf = Persistence.createEntityManagerFactory("/home/edwin-993/cervezaodb/cervezadb.odb");
         EntityManager em = emf.createEntityManager();
         em.getTransaction().begin();
 

@@ -42,7 +42,7 @@ public class Expendio implements Serializable {
     private List<Pedido> exp_ped = new ArrayList<Pedido>();
     @OneToOne
     @JoinColumn(name = "inv_exp", nullable = false)
-    private Inventario exp_inv = new Inventario();
+    private Inventario exp_inv;
     @OneToMany
     @JoinColumn(name = "ven_exp", nullable = false)
     private List<Venta> exp_ven = new ArrayList<Venta>();
