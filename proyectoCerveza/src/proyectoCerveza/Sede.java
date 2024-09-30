@@ -43,12 +43,12 @@ public class Sede implements Serializable {
                 this.se_nombre, this.se_direccion);
     }
     
-    public void formSe_fab(Fabricante f1) {
-        this.se_fab = f1;
+    public void formSe_fab(Fabricante fab) {
+        this.se_fab = fab;
     }
 
     // Método para eliminar la relación con el fabricante
-    public void dropSe_fab() {
+    public void dropSe_fab(Fabricante fab) {
         this.se_fab = null; // Eliminar la relación
     }
     

@@ -51,14 +51,14 @@ import java.util.*;
     }
     }
     
-    public void formFab_se(Sede s1)
+    public void formFab_se(Sede se)
     {
-        getFab_se().add(s1);
+        getFab_se().add(se);
     }
     
-    public void dropFab_se(Sede s1)
+    public void dropFab_se(Sede se)
     {
-        getFab_se().remove(s1);
+        getFab_se().remove(se);
     }
  
     public String getFab_nombre() {
