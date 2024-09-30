@@ -11,7 +11,7 @@ public class Inventario implements Serializable {
     
     @Id
     private String inv_cod;
-    private String existencia;
+    private boolean existencia;
     @ManyToOne
     @JoinColumn(name="exp_inv", nullable=false)
     private Expendio inv_exp;
@@ -21,9 +21,9 @@ public class Inventario implements Serializable {
     
     public Inventario(){
         this.inv_cod=null;
-        this.existencia=null;
+        this.existencia=false;
     }
-    public Inventario(String inv_cod,String existencia){
+    public Inventario(String inv_cod, boolean existencia){
         this.inv_cod=inv_cod;
         this.existencia=existencia;
     }
@@ -55,7 +55,7 @@ public class Inventario implements Serializable {
         return inv_cod;
     }
 
-    public String getExistencia() {
+    public boolean getExistencia() {
         return existencia;
     }
 
@@ -71,7 +71,7 @@ public class Inventario implements Serializable {
         this.inv_cod = inv_cod;
     }
 
-    public void setExistencia(String existencia) {
+    public void setExistencia(boolean existencia) {
         this.existencia = existencia;
     }
 
