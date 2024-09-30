@@ -12,10 +12,10 @@ import estructuras.Direccion;
 public class RelSedeFab {
 
     public static void main(String[] args) {
-     EntityManagerFactory emf= Persistence.createEntityManagerFactory
-        ("$objectdb/db/cerveza.odb");
-        EntityManager em = emf.createEntityManager();
-        em.getTransaction().begin();
+        /*Cambiar ruta por la de ustedes :3*/
+     //EntityManagerFactory emf= Persistence.createEntityManagerFactory("C:\\Users\\ximen\\Documents\\NetBeansProjects\\objectdb-2.9.0\\db\\cervezadb.odb");
+     EntityManager em = emf.createEntityManager();
+     em.getTransaction().begin();
   
         // Crear la dirección
         Direccion direccion1 = new Direccion("Av Rio", 18, 17, "Colonia Doctores", 43815, "Hidalgo");
