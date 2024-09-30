@@ -40,21 +40,21 @@ private static final long serialVersionUID = 1L;
                 this.ven_numero, this.ven_cantidad, this.ven_fecha);
     }
   
-    public void formVe_exp(Expendio e1) {
-        this.ven_exp = e1;
+    public void formVe_exp(Expendio exp) {
+        this.ven_exp = exp;
     }
     
-    public void formVe_pre(Presentacion p1) {
-        this.ven_pre = p1;
+    public void formVe_pre(Presentacion pre) {
+        this.ven_pre = pre;
     }
 
     // Método para eliminar la relación con el fabricante
-    public void dropVe_exp() {
-        this.ven_exp = null; // Eliminar la relación
+    public void dropVe_exp(Expendio exp) {
+        this.ven_exp = exp; // Eliminar la relación
     }
     
-     public void dropVe_pre() {
-        this.ven_pre = null; // Eliminar la relación
+     public void dropVe_pre(Presentacion pre) {
+        this.ven_pre = pre; // Eliminar la relación
     }
      
     // Getters y Setters
