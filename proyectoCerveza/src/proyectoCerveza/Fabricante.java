@@ -25,7 +25,10 @@ import java.util.*;
     private List<Sede> fab_se=new ArrayList<Sede>();
     
  
-    public Fabricante(){}
+    public Fabricante(){
+     this.fab_nombre = "null";
+     this.fab_contacto = "null";
+    }
          
     public Fabricante(String nom, String con)
     {  
