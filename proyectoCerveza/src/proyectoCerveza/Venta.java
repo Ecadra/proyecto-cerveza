@@ -32,6 +32,12 @@ private static final long serialVersionUID = 1L;
         this.ven_fecha = null;
     }
     
+    public Venta(String vnom,String vcant,Date vfecha){
+        this.ven_numero = vnom;
+        this.ven_cantidad = vcant;
+        this.ven_fecha = vfecha;
+    }
+    
      @Override
     public String toString() {
          return String.format("\n-----\nNúmero de venta: %s "

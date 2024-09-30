@@ -12,32 +12,43 @@ import estructuras.Direccion;
 public class RelSedeFab {
 
     public static void main(String[] args) {
-        /*Cambiar ruta por la de ustedes :3*/
-     //EntityManagerFactory emf= Persistence.createEntityManagerFactory("C:\\Users\\ximen\\Documents\\NetBeansProjects\\objectdb-2.9.0\\db\\cervezadb.odb");
-     EntityManager em = emf.createEntityManager();
-     em.getTransaction().begin();
+        // Cambiar ruta por la de ustedes
+    //Xim
+       //EntityManagerFactory emf = Persistence.createEntityManagerFactory("C:\\Users\\ximen\\Documents\\NetBeansProjects\\objectdb-2.9.0\\db\\cervezadb.odb");
+    //Edwin
+        //EntityManagerFactory emf = Persistence.createEntityManagerFactory("/home/edwin-993/cervezaodb/cervezadb.odb");
+    //Sebas
+        //EntityManagerFactory emf= Persistence.createEntityManagerFactory("C:\\Users\\ulseg\\OneDrive\\Documentos\\NetBeansProjects\\objectdb-2.9.0\\db\\cervezadb.odb");
+    //Cesar
+        ////EntityManagerFactory emf= Persistence.createEntityManagerFactory("D:\\Documentos HDD\\Proyecto Neatbeans\\Librerias\\objectdb\\db\\cervezadb.odb");
+        
+        EntityManager em = emf.createEntityManager();
+        em.getTransaction().begin();
   
         // Crear la dirección
         Direccion direccion1 = new Direccion("Av Rio", 18, 17, "Colonia Doctores", 43815, "Hidalgo");
-
-        // Crear la instancia de Sede con la dirección
         Sede s1 = new Sede("Modelo", direccion1);
+        Fabricante fab = em.find(Fabricante.class, "Modelo");
+        //Fabricante fab = em.find(Fabricante.class, "fab_nombre");
 
-        // Buscar el fabricante
-        Fabricante f1 = em.find(Fabricante.class, "Fabrica1");
+        //Verificar si el fabricante existe
+        if (fab == null) {
+            System.out.println("El fabricante no se encontró en la base de datos.");
+            em.getTransaction().rollback(); // Deshacer la transacción si no se encontró el fabricante
+            em.close();
+            return; // Salir del método
+        }
 
         // Relacionar Sede con Fabricante
-        f1.formFab_se(s1);  // Relacionar fabricante con la sede
-        s1.formSe_fab(f1);  // Relacionar sede con el fabricante
-
-        // Persistir los objetos
+        fab.formFab_se(s1);  // Relacionar fabricante con la sede
+        s1.formSe_fab(fab);  // Relacionar sede con el fabricante
+        System.out.println("Sede: " + s1);
+        System.out.println("Fabricante: " + fab);
         em.persist(s1);
-        em.persist(f1);
-
-    
-        em.persist(s1);
-        em.persist(f1);
+        em.persist(fab);
         em.getTransaction().commit();
+
+        
+      
     }
-    
 }
