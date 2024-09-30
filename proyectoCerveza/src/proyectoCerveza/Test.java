@@ -22,6 +22,14 @@ public class Test {
         Inventario a2 = new Inventario("2",true);
         Inventario a3 = new Inventario("3",true);
         
+        a1.formPre_inv(p1);
+        a2.formPre_inv(p2);
+        a3.formPre_inv(p3);
+        
+        em.getTransaction().commit();
+        em.close();;
+        emf.close();
+        
         
      }
     

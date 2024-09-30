@@ -42,11 +42,11 @@ public class Inventario implements Serializable {
     {
         inv_exp=exp1;
     }
-     public void formPre_exp(Presentacion pre1)
+     public void formPre_inv(Presentacion pre1)
     {
         inv_pre=pre1;
     }
-    public void dropPre_exp(Presentacion pre1)
+    public void dropPre_inv(Presentacion pre1)
     {
         inv_pre=pre1;
     }
