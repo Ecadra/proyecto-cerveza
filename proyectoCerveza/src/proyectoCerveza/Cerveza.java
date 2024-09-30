@@ -29,7 +29,7 @@ public class Cerveza implements Serializable {
     private Marca cer_mar;
     @OneToMany
     @JoinColumn(name = "rec_cer", nullable = false)
-    private List<Receta> cer_rec = new ArrayList<Receta>();
+    private Receta cer_rec;
 
     public Cerveza() {
         this.id_cerveza = 0;
@@ -115,11 +115,11 @@ public class Cerveza implements Serializable {
         this.cer_mar = cer_mar;
     }
 
-    public List<Receta> getCer_rec() {
+    public Receta getCer_rec() {
         return cer_rec;
     }
 
-    public void setCer_rec(List<Receta> cer_rec) {
+    public void setCer_rec(Receta cer_rec) {
         this.cer_rec = cer_rec;
     }
 
@@ -141,11 +141,11 @@ public class Cerveza implements Serializable {
 
     ///CERVEZA - MARCA YA SE HIZO ANTERIORMENTE
     public void formCer_rec(Receta rec) {
-        this.cer_rec.add(rec);
+        this.cer_rec = rec;
     }
 
     public void dropCer_rec(Receta rec) {
-        this.cer_rec.remove(rec);
+        this.cer_rec = null;
     }
 
 }
