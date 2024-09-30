@@ -3,7 +3,7 @@ package proyectoCerveza;
 import java.io.Serializable;
 import java.util.Date;
 import javax.persistence.*;
-
+@Entity
 public class Lote implements Serializable {
     private static final long serialVersionUID=1L;
     

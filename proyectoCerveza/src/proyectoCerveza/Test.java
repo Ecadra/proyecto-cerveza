@@ -9,7 +9,12 @@ public class Test {
     public static void main(String [] args){
         //Open a database connection
         //create a new database if it doesn´t exist yet:
-        EntityManagerFactory emf= Persistence.createEntityManagerFactory("$objectdb/db/cervezadb.odb");
+  //Cesar    
+        //EntityManagerFactory emf= Persistence.createEntityManagerFactory("D:\\Documentos HDD\\Proyecto Neatbeans\\Librerias\\objectdb\\db\\cervezadb.odb");
+  //Sebas   
+        //EntityManagerFactory emf= Persistence.createEntityManagerFactory("C:\\Users\\ulseg\\OneDrive\\Documentos\\NetBeansProjects\\objectdb-2.9.0\\db\\cervezadb.odb");
+  //Xim     
+        //EntityManagerFactory emf= Persistence.createEntityManagerFactory("C:\\Users\\ximen\\Documents\\NetBeansProjects\\objectdb-2.9.0\\db\\cervezadb.odb");
         EntityManager em = emf.createEntityManager();
         
         em.getTransaction().begin();
@@ -26,9 +31,17 @@ public class Test {
         a2.formPre_inv(p2);
         a3.formPre_inv(p3);
         
+        em.persist(p1);
+        em.persist(p2);
+        em.persist(p3);
+        em.persist(a1);
+        em.persist(a2);
+        em.persist(a3);
+        
         em.getTransaction().commit();
         em.close();;
         emf.close();
+        
         
         
      }
