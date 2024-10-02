@@ -12,8 +12,7 @@ public class QFabricantes {
     public static void main(String[] args) {
         // Open a database connection
         // (create a new database if it doesn't exist yet):
-        EntityManagerFactory emf= Persistence.
-                createEntityManagerFactory("$objectdb/db/cervezadb.odb");
+        EntityManagerFactory emf= Persistence.createEntityManagerFactory("/home/edwin-993/cervezaodb/cervezadb.odb");
         EntityManager em = emf.createEntityManager();
 
         List<Fabricante> results = new ArrayList<Fabricante>();

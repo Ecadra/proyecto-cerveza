@@ -11,14 +11,14 @@ public class Presentacion implements Serializable {
     private String pre_cod;
     private String descripcion;
     private String tipoenvase;
-    private String capacidad;
+    private int capacidad;
     @ManyToOne
     @JoinColumn(name="cer_pre", nullable=false)
     private Cerveza pre_cer;
  
     
 
-    public Presentacion(String pre_cod, String descripcion, String tipoenvase, String capacidad) {
+    public Presentacion(String pre_cod, String descripcion, String tipoenvase, int capacidad) {
         this.pre_cod = pre_cod;
         this.descripcion = descripcion;
         this.tipoenvase = tipoenvase;
@@ -29,7 +29,7 @@ public class Presentacion implements Serializable {
         this.pre_cod = null;
         this.descripcion = null;
         this.tipoenvase = null;
-        this.capacidad = null;
+        this.capacidad = 0;
     }
     
     public String toString(){
@@ -61,7 +61,7 @@ public class Presentacion implements Serializable {
         this.tipoenvase = tipoenvase;
     }
 
-    public void setCapacidad(String capacidad) {
+    public void setCapacidad(int capacidad) {
         this.capacidad = capacidad;
     }
 
@@ -73,7 +73,7 @@ public class Presentacion implements Serializable {
         return tipoenvase;
     }
 
-    public String getCapacidad() {
+    public int getCapacidad() {
         return capacidad;
     }
 
