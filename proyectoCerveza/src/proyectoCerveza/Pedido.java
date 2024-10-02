@@ -9,6 +9,7 @@ import java.util.*;
  *
  * @author ulseg
  */
+@Entity
 public class Pedido implements Serializable{
 
     @Id
