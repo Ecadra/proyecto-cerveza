@@ -1,9 +1,10 @@
 package proyectoCerveza;
 import java.io.Serializable;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import javax.persistence.*;
 import java.util.*;
-import proyectoCerveza.Expendio;
-import proyectoCerveza.Presentacion;
+
 /**
  *
  * @author ulseg
@@ -42,17 +43,22 @@ public class Pedido implements Serializable{
     }
 
     
-    public Pedido(int ped_codigo, short ped_cantidad, Date ped_forden, Date ped_fdespacho, float ped_total,
+    public Pedido(int ped_codigo, short ped_cantidad, String ped_fordenstr, String ped_fdespachostr, float ped_total,
             float ped_subtotal, float ped_iva) {
         this.ped_codigo = ped_codigo;
         this.ped_cantidad = ped_cantidad;
-        this.ped_forden = ped_forden;
-        this.ped_fdespacho = ped_fdespacho;
+        try {
+            SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+            this.ped_forden = sdf.parse(ped_fordenstr);
+            this.ped_fdespacho = sdf.parse(ped_fdespachostr);
+        } catch (ParseException e) {
+            e.printStackTrace(); // Manejo de excepciones en caso de formato incorrecto
+        }
+        //this.ped_forden = ped_forden;
+        //this.ped_fdespacho = ped_fdespacho;
         this.ped_total = ped_total;
         this.ped_subtotal = ped_subtotal;
         this.ped_iva = ped_iva;
-        this.ped_exp = ped_exp;
-        this.ped_pre = ped_pre;
     }
     
     
