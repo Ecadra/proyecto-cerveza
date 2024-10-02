@@ -9,7 +9,7 @@ public class Lote implements Serializable {
     
     @Id
     private String lote_cod;
-    private String cantidad;
+    private int cantidad;
     private Date lote_fechaProduccion;
     private Date lote_fechaCaducidad;
     
@@ -17,7 +17,7 @@ public class Lote implements Serializable {
     @JoinColumn(name="cer_lote", nullable=false)
     private Cerveza lote_cer;
 
-    public Lote(String lote_cod, String cantidad, Date lote_fechaProduccion, Date lote_fechaCaducidad) {
+    public Lote(String lote_cod, int cantidad, Date lote_fechaProduccion, Date lote_fechaCaducidad) {
         this.lote_cod = lote_cod;
         this.cantidad = cantidad;
         this.lote_fechaProduccion = lote_fechaProduccion;
@@ -27,7 +27,7 @@ public class Lote implements Serializable {
     public Lote()
     {
         this.lote_cod=null;
-        this.cantidad=null;
+        this.cantidad=0;
         this.lote_fechaCaducidad=null;
         this.lote_fechaProduccion=null;
     }
@@ -37,12 +37,21 @@ public class Lote implements Serializable {
                 + "\nFecha Caducidad: %S"
                 + "\nFecha Produccion\n",this.lote_cod,this.cantidad,this.lote_fechaCaducidad,this.lote_fechaProduccion);
     }
+    
+    public void formLote_cer(Cerveza cer1)
+    {
+        this.lote_cer=cer1;
+    }
+    public void dropLote_cer(Cerveza cer1)
+    {
+        this.lote_cer=cer1;
+    }
 
     public void setLote_cod(String lote_cod) {
         this.lote_cod = lote_cod;
     }
 
-    public void setCantidad(String cantidad) {
+    public void setCantidad(int cantidad) {
         this.cantidad = cantidad;
     }
 
@@ -60,7 +69,7 @@ public class Lote implements Serializable {
         return lote_cod;
     }
 
-    public String getCantidad() {
+    public int getCantidad() {
         return cantidad;
     }
 
