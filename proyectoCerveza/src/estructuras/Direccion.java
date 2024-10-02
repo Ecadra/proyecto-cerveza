@@ -4,11 +4,15 @@
  */
 package estructuras;
 
+import java.io.Serializable;
+import javax.persistence.*;
+
 /**
  *
  * @author edwin-993
  */
-public class Direccion{
+@Embeddable
+public class Direccion implements Serializable{
     private String Calle;
     private int numeroExt;
     private int numeroInt;
