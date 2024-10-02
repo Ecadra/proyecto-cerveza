@@ -3,8 +3,7 @@ package proyectoCerveza;
 import java.io.Serializable;
 import javax.persistence.*;
 import java.util.*;
-import proyectoCerveza.Grano;
-import proyectoCerveza.Cerveza;
+
 
 /**
  *
