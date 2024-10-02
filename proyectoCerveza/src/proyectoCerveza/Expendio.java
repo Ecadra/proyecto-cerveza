@@ -28,7 +28,7 @@ public class Expendio implements Serializable {
     private String exp_rfc;
     private boolean exp_estado;
     private Direccion exp_direccion;
-    private int exp_telefono;
+    private String exp_telefono;
 
     /* //ATRIBUTOS DE LA CLASE
 	attribute int id_expendio;
@@ -100,11 +100,11 @@ public class Expendio implements Serializable {
         this.exp_nombre = exp_nombre;
     }
 
-    public int getExp_telefono() {
+    public String getExp_telefono() {
         return exp_telefono;
     }
 
-    public void setExp_telefono(int telefono) {
+    public void setExp_telefono(String telefono) {
         this.exp_telefono = telefono;
     }
 
@@ -170,12 +170,25 @@ public class Expendio implements Serializable {
                 + "\nNombre: %s"
                 + "\n Estado de operacion: %s"
                 + "\n Direccion: %s"
-                + "\n Telefono: %i"
+                + "\n Telefono: %s"
                 + "\n Ventas realizadas: %b \n",
                 this.exp_nombre, estado,
                 this.exp_direccion,
                 this.exp_telefono,
                 this.getExp_ven());
     }
+
+    public Expendio() {
+    }
+
+    public Expendio(int id_expendio, String exp_nombre, String exp_rfc, boolean exp_estado, Direccion exp_direccion, String exp_telefono) {
+        this.id_expendio = id_expendio;
+        this.exp_nombre = exp_nombre;
+        this.exp_rfc = exp_rfc;
+        this.exp_estado = exp_estado;
+        this.exp_direccion = exp_direccion;
+        this.exp_telefono = exp_telefono;
+    }
+    
 
 }
