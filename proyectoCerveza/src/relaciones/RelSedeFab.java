@@ -2,9 +2,11 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Main.java to edit this template
  */
-package proyectoCerveza;
-import javax.persistence.*;
+package relaciones;
 import estructuras.Direccion;
+import javax.persistence.*;
+import proyectoCerveza.Fabricante;
+import proyectoCerveza.Sede;
 /**
  *
  * @author ximen
@@ -21,6 +23,7 @@ public class RelSedeFab {
         //EntityManagerFactory emf= Persistence.createEntityManagerFactory("C:\\Users\\ulseg\\OneDrive\\Documentos\\NetBeansProjects\\objectdb-2.9.0\\db\\cervezadb.odb");
     //Cesar
         ////EntityManagerFactory emf= Persistence.createEntityManagerFactory("D:\\Documentos HDD\\Proyecto Neatbeans\\Librerias\\objectdb\\db\\cervezadb.odb");
+        EntityManagerFactory emf= Persistence.createEntityManagerFactory("/home/edwin-993/cervezaodb/cervezadb.odb");
         
         EntityManager em = emf.createEntityManager();
         em.getTransaction().begin();

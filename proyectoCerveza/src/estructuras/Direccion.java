@@ -8,7 +8,7 @@ package estructuras;
  *
  * @author edwin-993
  */
-public class Direccion {
+public class Direccion{
     private String Calle;
     private int numeroExt;
     private int numeroInt;
