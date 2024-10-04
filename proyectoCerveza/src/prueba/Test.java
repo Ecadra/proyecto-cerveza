@@ -1,5 +1,5 @@
 
-package test;
+package prueba;
 
 import estructuras.Direccion;
 import java.text.ParseException;
