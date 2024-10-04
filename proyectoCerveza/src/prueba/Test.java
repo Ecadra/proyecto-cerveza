@@ -224,7 +224,18 @@ public class Test {
         em.persist(g1);
         em.persist(g2);
         em.persist(g3);
-
+        
+        em.persist(c1);
+        em.persist(c2);
+        em.persist(c3);
+        
+        em.persist(e1);
+        em.persist(e2);
+        em.persist(e3);
+        
+        em.persist(m1);
+        em.persist(m2);
+        em.persist(m3);
 
         em.getTransaction().commit();
         em.close();;
