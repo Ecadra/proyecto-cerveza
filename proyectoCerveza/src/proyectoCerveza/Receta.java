@@ -16,13 +16,13 @@ public class Receta implements Serializable{
     private int id_receta;
     private String rec_cantidad;
    
-    @OneToMany
+    @ManyToOne
     @JoinColumn(name="gra_rec",nullable=false)
-    private List<Grano> rec_gra=new ArrayList<Grano>();
+    private Grano rec_gra;
     
-    @OneToMany
+    @ManyToOne
     @JoinColumn(name="cer_rec",nullable=false)
-    private List<Cerveza> rec_cer=new ArrayList<Cerveza>();
+    private Cerveza rec_cer;
     
     public Receta(){
         this.id_receta = -1;
@@ -38,36 +38,18 @@ public class Receta implements Serializable{
     @Override
     public String toString() {
         return String.format("\n-----\nId: %d"
-                + "\nCantidad: %s "
-                + "\nGrano: %s "
-                + "\nCerveza: %s \n",
-                this.id_receta, this.rec_cantidad, this.getRec_gra(), this.getRec_cer());
-    }
-    
-    public void printGranos(){
-        System.out.println("Salas: "+getRec_gra().size());
-        
-        for (int i=0;i<getRec_gra().size();i++) {
-            System.out.println(getRec_gra().get(i));
-        }
-    }
-    
-    public void printCervezas(){
-        System.out.println("Salas: "+getRec_cer().size());
-        
-        for (int i=0;i<getRec_cer().size();i++) {
-            System.out.println(getRec_cer().get(i));
-        }
+                + "\nCantidad: %s ",
+                this.id_receta, this.rec_cantidad);
     }
     
     public void formRec_gra(Grano g1)
     {
-        getRec_gra().add(g1);
+        rec_gra=g1;
     }
     
     public void formRec_cer(Cerveza c1)
     {
-        getRec_cer().add(c1);
+        rec_cer=c1;
     }    
 
     public int getId_receta() {
@@ -86,11 +68,20 @@ public class Receta implements Serializable{
         this.rec_cantidad = rec_cantidad;
     }
     
-    public List<Grano> getRec_gra() {
+    public Grano getRec_gra() {
         return rec_gra;
     }
-    
-    public List<Cerveza> getRec_cer() {
+
+    public void setRec_gra(Grano g1) {
+        this.rec_gra = rec_gra;
+    }
+
+    public Cerveza getRec_cer() {
         return rec_cer;
     }
+
+    public void setRec_cer(Cerveza c1) {
+        this.rec_cer = rec_cer;
+    }
+    
 }

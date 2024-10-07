@@ -23,9 +23,7 @@ public class RelRecGra {
         
         System.out.println(g1);
         rec4.formRec_gra(g1);
-        g1.formGra_rec(rec4);
-
-        
+        g1.formGra_rec(rec4);        
         em.persist(g1);
         em.persist(rec4);
         em.getTransaction().commit();
