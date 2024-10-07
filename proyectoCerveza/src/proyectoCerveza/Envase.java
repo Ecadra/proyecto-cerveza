@@ -29,9 +29,8 @@ public class Envase implements Serializable{
     @Override
     public String toString() {
         return String.format("\n-----\nEnvase: %s "
-                + "\nCapacidad en ml: %s "
-                + "\nPresentación: %s \n",
-                this.tipo_envase, this.capacidad_ml, this.getEnv_pre());
+                + "\nCapacidad en ml: %d ",  
+                this.tipo_envase, this.capacidad_ml);
     }
     
     public void formEnv_pre(Presentacion p1)

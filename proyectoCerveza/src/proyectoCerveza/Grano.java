@@ -17,9 +17,10 @@ public class Grano implements Serializable{
     private String gra_nombre;
     private String gra_procedencia;
             
-    @ManyToOne
+    @OneToMany
     @JoinColumn(name = "rec_gra", nullable = false)
-    private Receta gra_rec;
+    private List<Receta>gra_rec = new ArrayList<Receta>();
+
             
     public Grano(){
         this.gra_nombre = "";
@@ -38,8 +39,16 @@ public class Grano implements Serializable{
                 this.gra_nombre, this.gra_procedencia);
     }
     
-    public void formGra_rec(Receta r1) {
-        gra_rec = r1;
+    public void printRecetas(){
+        System.out.println(this.getGra_rec());
+        
+        for (int i=0;i<getGra_rec().size();i++) {
+            System.out.println(getGra_rec().get(i));
+        }
+    }
+    
+    public void formGra_rec(Receta rec1) {
+        getGra_rec().add(rec1);
     }
 
     public String getGra_nombre() {
@@ -58,14 +67,7 @@ public class Grano implements Serializable{
         this.gra_nombre = gra_procedencia;
     }
 
-
-    public Receta getGra_rec() {
+    public List<Receta> getGra_rec() {
         return gra_rec;
     }
-
-    public void setGra_rec(Receta gra_rec) {
-        this.gra_rec = gra_rec;
-    }
-
-    
 }

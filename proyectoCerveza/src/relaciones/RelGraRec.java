@@ -3,7 +3,6 @@ package relaciones;
 import javax.persistence.*;
 import proyectoCerveza.Grano;
 import proyectoCerveza.Receta;
-
 /**
  *
  * @author ulseg
