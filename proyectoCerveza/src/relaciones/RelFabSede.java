@@ -3,15 +3,18 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Main.java to edit this template
  */
 package relaciones;
-import estructuras.Direccion;
-import javax.persistence.*;
+
+import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.Persistence;
 import proyectoCerveza.Fabricante;
 import proyectoCerveza.Sede;
+
 /**
  *
  * @author ximen
  */
-public class RelSedeFab {
+public class RelFabSede {
 
     public static void main(String[] args) {
         // Cambiar ruta por la de ustedes
@@ -27,19 +30,21 @@ public class RelSedeFab {
         
         EntityManager em = emf.createEntityManager();
         em.getTransaction().begin();
-  
-        // Crear la dirección
-        Direccion direccion1 = new Direccion("Av Rio", 18, 17, "Colonia Doctores", 43815, "Hidalgo");
-        Sede s1 = new Sede("Cerveceria Artesanal", direccion1);
-        Fabricante fab1 = em.find(Fabricante.class, "Modelo");
-        if (fab1 != null) {
-        System.out.println("Fabricante encontrado: " + fab1.toString());
-        } else {
-        System.out.println("No se encontró el fabricante.");
-        }
         
-        em.persist(s1);
+        Fabricante fab1 = new Fabricante("Modelo", "5556789212");
+        Sede se1=em.find(Sede.class, "Cerveceria Artesanal");  
+        if (se1 != null) {
+        System.out.println("Sede encontrada: " + se1.toString());
+        } else {
+        System.out.println("No se encontró la Sede.");
+        }
+        se1.formSe_fab(fab1);
+        fab1.formFab_se(se1);
+    
         em.persist(fab1);
+        em.persist(se1);
         em.getTransaction().commit();
     }
+    
+    
 }

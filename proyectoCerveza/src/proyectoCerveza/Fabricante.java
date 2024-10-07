@@ -40,15 +40,17 @@ import java.util.*;
      fab_contacto=con;
      
     }
- 
+
   @Override
-    public String toString() {
-        return String.format("\n-----\nNombre: %s "
-            + "\nContacto: %s "
-            + "\nNúmero de sedes: %d ",
-        this.fab_nombre, this.fab_contacto,
-        this.getFab_se().size()); // Cambiado a .size()
+   public String toString() {
+    return String.format("\n-----\nNombre: %s "
+        + "\nContacto: %s "
+        + "\nNúmero de sedes: %d "
+        + "\nMarcas: %d ",
+    this.fab_nombre, this.fab_contacto,
+    this.getFab_se().size(), this.getFab_mar().size()); // Cambiado a .size()
     }
+
  
     public void printSedes(){
         System.out.println("Sedes: "+getFab_se().size());

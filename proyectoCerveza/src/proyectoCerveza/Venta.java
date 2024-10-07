@@ -16,6 +16,7 @@ public class Venta implements Serializable {
 private static final long serialVersionUID = 1L;
 
     @Id
+    private int id_venta;
     private int ven_cantidad;
     @Temporal(TemporalType.DATE)
     private Date ven_fecha;
@@ -31,12 +32,13 @@ private static final long serialVersionUID = 1L;
     
     
     public Venta() {
+        this.id_venta = 0;
         this.ven_total = 0.0f;
         this.ven_cantidad = 0; // null en lugar de un string
         this.ven_fecha = null;
     }
     
-    public Venta(int cant,String vfecha, float vtotal){
+    public Venta(int id_ven, int cant,String vfecha, float vtotal){
         this.ven_cantidad = cant;
         try {
             SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
@@ -52,10 +54,11 @@ private static final long serialVersionUID = 1L;
     
      @Override
     public String toString() {
-         return String.format("\n-----\nCantidad: %s "
+         return String.format("\n-----\nId Venta: %d "
+                + "\nCantidad: %d "
                 + "\nFecha: %s "
-                + "\nVenta total: %d \n",
-                this.ven_cantidad, this.ven_fecha, this.ven_total);
+                + "\nVenta total: %f \n",
+                this.id_venta,this.ven_cantidad, this.ven_fecha, this.ven_total);
     }
   
     public void formVe_exp(Expendio exp) {
@@ -86,6 +89,14 @@ private static final long serialVersionUID = 1L;
 
     public int getVen_cantidad() {
         return ven_cantidad;
+    }
+    
+    public int getId_venta() {
+        return ven_cantidad;
+    }
+    
+    public void setId_venta(int id_venta){
+        this.id_venta = id_venta;
     }
 
     public void setVen_cantidad(int ven_cantidad) {
