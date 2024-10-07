@@ -187,6 +187,12 @@ public class Expendio implements Serializable {
     }
 
     public Expendio() {
+        this.exp_direccion = null;
+        this.exp_estado = false;
+        this.exp_nombre = null;
+        this.exp_rfc = null;
+        this.exp_telefono = "";
+        this.id_expendio = 0;
     }
 
     public Expendio(int id_expendio, String exp_nombre, String exp_rfc, boolean exp_estado, Direccion exp_direccion, String exp_telefono) {
