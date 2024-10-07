@@ -52,6 +52,7 @@ public class Cerveza implements Serializable {
                 + "\nPresentaciones: %b"
                 + "\nMarca: %b"
                 + "\nRecetas: %b",
+                this.id_cerveza,
                 this.cer_nombre,
                 this.cer_graduacion,
                 this.getCer_lot(),

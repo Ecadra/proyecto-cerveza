@@ -155,6 +155,9 @@ public class Expendio implements Serializable {
     public void setExp_ped(List<Pedido> exp_ped) {
         this.exp_ped = exp_ped;
     }
+    public List<Pedido> getExp_ped(){
+        return this.exp_ped;
+    }
 
     public void printVentas() {
         System.out.println("Ventas: " + getExp_ven().size());
@@ -162,20 +165,25 @@ public class Expendio implements Serializable {
             System.out.println(getExp_ven().get(i));
         }
     }
+    public void printPedidos(){
+        System.out.println("Pedidos: " + getExp_ped().size());
+        for (int i = 0; i < getExp_ped().size(); i++) {
+            System.out.println(getExp_ped().get(i));
+        }
+    }
 
     @Override
     public String toString() {
         String estado = this.exp_estado == true ? "En operacion" : "Inhabilitado";
-        return String.format("\n-----\nNúmero de expendio: %s"
+        return String.format("\n-----\nNúmero de expendio: %d"
                 + "\nNombre: %s"
                 + "\n Estado de operacion: %s"
                 + "\n Direccion: %s"
-                + "\n Telefono: %s"
-                + "\n Ventas realizadas: %b \n",
+                + "\n Telefono: %s",
+                this.id_expendio,
                 this.exp_nombre, estado,
                 this.exp_direccion,
-                this.exp_telefono,
-                this.getExp_ven());
+                this.exp_telefono);
     }
 
     public Expendio() {
