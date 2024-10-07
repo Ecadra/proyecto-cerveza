@@ -85,9 +85,9 @@ public class Test {
         Pedido pe2 = new Pedido(2, (short)150, "15/10/2023", "25/10/2023", 800.0f, 600.0f, 200.0f);
         Pedido pe3 = new Pedido(3, (short)300, "01/09/2024", "10/09/2024", 1500.0f, 1000.0f, 500.0f);
         
-        Receta r1 = new Receta("200 gramos");
-        Receta r2 = new Receta("100 gramos");
-        Receta r3 = new Receta("150 gramos");
+        Receta r1 = new Receta(1,"200 gramos");
+        Receta r2 = new Receta(2,"100 gramos");
+        Receta r3 = new Receta(3,"150 gramos");
         
         Lote l1 = new Lote("1",500,fecha.parse("2024-9-5"),fecha.parse("2025-9-5"));
         Lote l2 = new Lote("1",500,fecha.parse("2024-9-5"),fecha.parse("2025-9-5"));
