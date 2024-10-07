@@ -37,11 +37,9 @@ public class Marca implements Serializable {
 
     public String toString() {
         return String.format("\n-----\nMarca: %d"
-                + "\nNombre: %s"
-                + "\nCervezas: %b",
+                + "\nNombre: %s",
                 this.id_marca,
-                this.mar_nombre,
-                this.getMar_cer());
+                this.mar_nombre);
     }
 
     public void printCervezas() {
@@ -96,6 +94,12 @@ public class Marca implements Serializable {
 
     public void setMar_fab(Fabricante mar_fab) {
         this.mar_fab = mar_fab;
+    }
+    public void printCervezas(){
+        System.out.println("Pedidos: " + getMar_cer().size());
+        for (int i = 0; i < getMar_cer().size(); i++) {
+            System.out.println(getMar_cer().get(i));
+        }
     }
 
     
