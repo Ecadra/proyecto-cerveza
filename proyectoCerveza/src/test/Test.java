@@ -29,8 +29,9 @@ public class Test {
         //create a new database if it doesn´t exist yet:
         //Cesar    
         //EntityManagerFactory emf = Persistence.createEntityManagerFactory("/home/edwin-993/cervezaodb/cervezadb.odb");
+        EntityManagerFactory emf = Persistence.createEntityManagerFactory("D:\\Documentos HDD\\Proyecto Neatbeans\\Librerias\\objectdb-2.9.0\\db\\cervezadb.odb");
         //Sebas   
-        EntityManagerFactory emf = Persistence.createEntityManagerFactory("C:\\Users\\ulseg\\Downloads\\NetBeansProjects\\objectdb-2.9.0\\db\\cervezaodb.odb");
+        //EntityManagerFactory emf = Persistence.createEntityManagerFactory("C:\\Users\\ulseg\\Downloads\\NetBeansProjects\\objectdb-2.9.0\\db\\cervezaodb.odb");
         //Xim     
         //EntityManagerFactory emf= Persistence.createEntityManagerFactory("C:\\Users\\ximen\\Documents\\NetBeansProjects\\objectdb-2.9.0\\db\\cervezadb.odb");
         EntityManager em = emf.createEntityManager();
@@ -63,7 +64,7 @@ public class Test {
 
         Sede se1 = new Sede("Cerveceria Artesanal", dir1);
         Sede se2 = new Sede("Cervecería Hidalgo", dir2);
-        Sede se3 = new Sede("Cervecería Hidalgo", dir3);
+        Sede se3 = new Sede("Cervecería Pachus", dir3);
         
         Envase en1 = new Envase("Lata", (short)300);
         Envase en2 = new Envase("Botella", (short)350);
@@ -91,8 +92,8 @@ public class Test {
         Receta r3 = new Receta(3,"150 gramos");
         
         Lote l1 = new Lote("1",500,fecha.parse("2024-9-5"),fecha.parse("2025-9-5"));
-        Lote l2 = new Lote("1",500,fecha.parse("2024-9-5"),fecha.parse("2025-9-5"));
-        Lote l3 = new Lote("1",500,fecha.parse("2024-9-5"),fecha.parse("2025-9-5"));
+        Lote l2 = new Lote("2",525,fecha.parse("2024-9-5"),fecha.parse("2025-7-8"));
+        Lote l3 = new Lote("3",450,fecha.parse("2024-9-5"),fecha.parse("2025-3-6"));
 
         
         ///
@@ -115,6 +116,10 @@ public class Test {
         p1.formPre_env(en1);
         p2.formPre_env(en2);
         p3.formPre_env(en3);
+        //Relacion de pedido con presentacion
+        pe1.formPed_pre(p1);
+        pe2.formPed_pre(p2);
+        pe3.formPed_pre(p3);
         //Relación presentación con pedido
         p1.formPre_ped(pe1);
         p2.formPre_ped(pe2);
@@ -196,7 +201,6 @@ public class Test {
         r1.formRec_gra(g1);
         r2.formRec_gra(g2);
         r3.formRec_gra(g3);
-        
         //Relacion de receta con cerveza
         r1.formRec_cer(c1);
         r2.formRec_cer(c2);
@@ -205,10 +209,7 @@ public class Test {
         pe1.formPed_exp(e1);
         pe2.formPed_exp(e2);
         pe3.formPed_exp(e3);
-        //Relacion de pedido con presentacion
-        pe1.formPed_pre(p1);
-        pe2.formPed_pre(p2);
-        pe3.formPed_pre(p3);
+        
 
         em.persist(c1);
         em.persist(c2);
@@ -258,6 +259,10 @@ public class Test {
         em.persist(g1);
         em.persist(g2);
         em.persist(g3);
+        
+        em.persist(l1);
+        em.persist(l2);
+        em.persist(l3);
 
 
         em.getTransaction().commit();
