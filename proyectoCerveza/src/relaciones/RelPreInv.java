@@ -14,7 +14,7 @@ public class RelPreInv {
         EntityManager em = emf.createEntityManager();
         em.getTransaction().begin();
         
-        Presentacion p7=new Presentacion("7");
+        Presentacion p7=new Presentacion(7);
         Inventario inv = em.find(Inventario.class, "3");
         System.out.print(inv);
         p7.dropPre_inv(inv);

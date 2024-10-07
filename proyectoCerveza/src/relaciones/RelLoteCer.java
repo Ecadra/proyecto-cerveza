@@ -17,7 +17,7 @@ public class RelLoteCer {
         EntityManager em = emf.createEntityManager();
         em.getTransaction().begin();
         
-        Lote l4=new Lote("4",250,fecha.parse("2024-9-5"),fecha.parse("2025-3-6"));
+        Lote l4=new Lote(4,250,fecha.parse("2024-9-5"),fecha.parse("2025-3-6"));
         Cerveza cer=em.find(Cerveza.class, 1);
         System.out.print(cer);
         

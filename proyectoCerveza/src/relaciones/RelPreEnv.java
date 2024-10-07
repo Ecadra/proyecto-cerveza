@@ -13,7 +13,7 @@ public class RelPreEnv {
         EntityManager em = emf.createEntityManager();
         em.getTransaction().begin();
         
-        Presentacion p4 = new Presentacion("4");
+        Presentacion p4 = new Presentacion(4);
         Envase env= em.find(Envase.class,"Lata");
         System.out.print(env);
         env.formEnv_pre(p4);

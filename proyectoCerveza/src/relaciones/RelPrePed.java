@@ -14,7 +14,7 @@ public class RelPrePed {
         EntityManager em = emf.createEntityManager();
         em.getTransaction().begin();
         
-        Presentacion p6=new Presentacion("6");
+        Presentacion p6=new Presentacion(6);
         Pedido ped=em.find(Pedido.class,1);
         System.out.print(ped);
         ped.formPed_pre(p6);

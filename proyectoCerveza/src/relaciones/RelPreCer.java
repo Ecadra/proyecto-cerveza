@@ -14,7 +14,7 @@ public class RelPreCer {
         EntityManager em = emf.createEntityManager();
         em.getTransaction().begin();
         
-        Presentacion p5 = new Presentacion("5");
+        Presentacion p5 = new Presentacion(5);
         Cerveza cer=em.find(Cerveza.class,1);
         System.out.print(cer);
         cer.formCer_pre(p5);
