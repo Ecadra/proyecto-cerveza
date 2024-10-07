@@ -1,6 +1,7 @@
 package proyectoCerveza;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.*;
 
@@ -19,9 +20,10 @@ public class Presentacion implements Serializable {
     private Cerveza pre_cer;
     @OneToMany
     @JoinColumn(name="ped_pre",nullable=false)
-    private List<Pedido> pre_ped;
+    private List<Pedido> pre_ped=new ArrayList<Pedido>();
+    @OneToMany
     @JoinColumn(name="inv_pre",nullable=false)
-    private List<Inventario> pre_inv;
+    private List<Inventario> pre_inv =new ArrayList<Inventario>();
     
     @Override
     public String toString(){
@@ -55,6 +57,7 @@ public class Presentacion implements Serializable {
     public void dropPre_cer(Cerveza cer1){
         this.pre_cer=cer1;
     }
+    /////////////////////////////////////////////////////
      public void formPre_ped(Pedido ped1){
         getPre_ped().add(ped1);
     }
