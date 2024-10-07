@@ -39,6 +39,7 @@ private static final long serialVersionUID = 1L;
     }
     
     public Venta(int id_ven, int cant,String vfecha, float vtotal){
+        this.id_venta = id_ven;
         this.ven_cantidad = cant;
         try {
             SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
