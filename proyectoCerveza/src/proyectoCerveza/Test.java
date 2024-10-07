@@ -37,13 +37,13 @@ public class Test {
 
         em.getTransaction().begin();
 
-        Presentacion p1 = new Presentacion("1", "Lata de alumnio", "Lata", 355);
-        Presentacion p2 = new Presentacion("2", "Botella de cristal", "Botella", 210);
-        Presentacion p3 = new Presentacion("3", "Botella de cristal", "Botella", 355);
+        Presentacion p1 = new Presentacion("1");
+        Presentacion p2 = new Presentacion("2");
+        Presentacion p3 = new Presentacion("3");
 
-        Inventario i1 = new Inventario("1", false);
-        Inventario i2 = new Inventario("2", true);
-        Inventario i3 = new Inventario("3", true);
+        Inventario i1 = new Inventario("1",50.0f,false);
+        Inventario i2 = new Inventario("2",70.f,true);
+        Inventario i3 = new Inventario("3",80.5f,true);
 
         Fabricante fab1 = new Fabricante("Modelo", "5556789212");
         Fabricante fab2 = new Fabricante("Corona", "5557809221");
@@ -107,12 +107,22 @@ public class Test {
         i1.formInv_pre(p1);
         i2.formInv_pre(p2);
         i3.formInv_pre(p3);
-        
         //Relacion presentacion cerveza
         p1.formPre_cer(c1);
         p2.formPre_cer(c2);
         p3.formPre_cer(c3);
-        
+        //Relación presentación con envase
+        p1.formPre_env(en1);
+        p2.formPre_env(en2);
+        p3.formPre_env(en3);
+        //Relación presentación con pedido
+        p1.formPre_ped(pe1);
+        p2.formPre_ped(pe2);
+        p3.formPre_ped(pe3);
+        //Relación presentación con inventario
+        p1.formPre_inv(i1);
+        p1.formPre_inv(i2);
+        p1.formPre_inv(i3);
         //Relación envase presentacion
         en1.formEnv_pre(p1);
         en2.formEnv_pre(p2);
