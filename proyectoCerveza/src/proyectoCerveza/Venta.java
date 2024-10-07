@@ -5,6 +5,8 @@
 package proyectoCerveza;
 
 import java.io.Serializable;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import javax.persistence.*;
 
@@ -14,44 +16,54 @@ public class Venta implements Serializable {
 private static final long serialVersionUID = 1L;
 
     @Id
-    private String ven_numero;
-    private String ven_cantidad;
+    private int ven_cantidad;
+    @Temporal(TemporalType.DATE)
     private Date ven_fecha;
+    private float ven_total;
     
     @ManyToOne
-    @JoinColumn(name = "exp_ve", nullable = false)
+    @JoinColumn(name = "exp_ven", nullable = false)
     private Expendio ven_exp;
     
     @ManyToOne
-    @JoinColumn(name = "pre_ve", nullable = false)
-    private Presentacion ven_pre;
+    @JoinColumn(name = "inv_ven", nullable = false )
+    private Inventario ven_inv;
+    
     
     public Venta() {
-        this.ven_numero = "null";
-        this.ven_cantidad = "null"; // null en lugar de un string
+        this.ven_total = 0.0f;
+        this.ven_cantidad = 0; // null en lugar de un string
         this.ven_fecha = null;
     }
     
-    public Venta(String vnom,String vcant,Date vfecha){
-        this.ven_numero = vnom;
-        this.ven_cantidad = vcant;
-        this.ven_fecha = vfecha;
+    public Venta(int cant,String vfecha, float vtotal){
+        this.ven_cantidad = cant;
+        try {
+            SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+            this.ven_fecha = sdf.parse(vfecha);
+
+        } catch (ParseException e) {
+            e.printStackTrace(); // Manejo de excepciones en caso de formato incorrecto
+        }
+        
+        this.ven_total = vtotal;
+     
     }
     
      @Override
     public String toString() {
-         return String.format("\n-----\nNúmero de venta: %s "
-                + "\nCantidad de ventas: %s "
-                + "\nFecha de venta: %d \n",
-                this.ven_numero, this.ven_cantidad, this.ven_fecha);
+         return String.format("\n-----\nCantidad: %s "
+                + "\nFecha: %s "
+                + "\nVenta total: %d \n",
+                this.ven_cantidad, this.ven_fecha, this.ven_total);
     }
   
     public void formVe_exp(Expendio exp) {
         this.ven_exp = exp;
     }
     
-    public void formVe_pre(Presentacion pre) {
-        this.ven_pre = pre;
+    public void formVe_inv(Inventario inv) {
+        this.ven_inv = inv;
     }
 
     // Método para eliminar la relación con el fabricante
@@ -59,24 +71,24 @@ private static final long serialVersionUID = 1L;
         this.ven_exp = exp; // Eliminar la relación
     }
     
-     public void dropVe_pre(Presentacion pre) {
-        this.ven_pre = pre; // Eliminar la relación
+     public void dropVe_inv(Inventario inv) {
+        this.ven_inv = inv; // Eliminar la relación
     }
      
     // Getters y Setters
-    public String getVen_numero() {
-        return ven_numero;
+    public float getVen_total() {
+        return ven_total;
     }
 
-    public void setVen_numero(String ven_numero) {
-        this.ven_numero = ven_numero;
+    public void setVen_numero(float ven_total) {
+        this.ven_total = ven_total;
     }
 
-    public String getVen_cantidad() {
+    public int getVen_cantidad() {
         return ven_cantidad;
     }
 
-    public void setVen_cantidad(String ven_cantidad) {
+    public void setVen_cantidad(int ven_cantidad) {
         this.ven_cantidad = ven_cantidad;
     }
     
@@ -92,16 +104,16 @@ private static final long serialVersionUID = 1L;
         return ven_exp;
     }
     
-    public Presentacion getVen_pre() {
-        return ven_pre;
+    public Inventario getVen_inv() {
+        return ven_inv;
     }
 
     public void setVen_exp(Expendio ven_exp) {
         this.ven_exp = ven_exp;
     }
     
-    public void setVen_pre(Presentacion ven_pre) {
-        this.ven_pre = ven_pre;
+    public void setVen_inv(Inventario ven_inv) {
+        this.ven_inv = ven_inv;
     }
 
 
