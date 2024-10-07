@@ -24,6 +24,10 @@ import java.util.*;
     @JoinColumn(name="se_fab",nullable=false)
     private List<Sede> fab_se = new ArrayList<Sede>();
     
+    @OneToMany
+    @JoinColumn(name = "mar_fab",nullable=false)
+    private List<Marca> fab_mar = new ArrayList<Marca>();
+    
  
     public Fabricante(){
      this.fab_nombre = "null";
@@ -54,6 +58,14 @@ import java.util.*;
     }
     }
     
+    public void printMarcas(){
+        System.out.println("Marca: "+getFab_mar().size());
+        
+        for (int i=0;i<getFab_mar().size();i++) {
+            System.out.println(getFab_mar().get(i));
+    }
+    }
+    
     public void formFab_se(Sede se)
     {
         getFab_se().add(se);
@@ -62,6 +74,16 @@ import java.util.*;
     public void dropFab_se(Sede se)
     {
         getFab_se().remove(se);
+    }
+    
+    public void formFab_mar(Marca mar)
+    {
+        getFab_mar().add(mar);
+    }
+    
+    public void dropFab_se(Marca mar)
+    {
+        getFab_mar().remove(mar);
     }
  
     public String getFab_nombre() {
@@ -82,6 +104,10 @@ import java.util.*;
 
     public List<Sede> getFab_se() {
         return fab_se;
+    }
+    
+     public List<Marca> getFab_mar() {
+        return fab_mar;
     }
  
 
