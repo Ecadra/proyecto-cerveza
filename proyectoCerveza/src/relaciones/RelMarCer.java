@@ -21,7 +21,7 @@ public static void main(String[] args) {
 
     // Crear una cerveza con el siguiente ID disponible
     Marca marca = new Marca(4, "Marca4");  // Usar el ID existente de Marca
-    Cerveza cerveza = em.find(Cerveza.class, "1");
+    Cerveza cerveza = em.find(Cerveza.class, 1);
     
 
     // Verificar si la marca existe
