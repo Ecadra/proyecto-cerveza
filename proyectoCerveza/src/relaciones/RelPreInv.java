@@ -15,7 +15,7 @@ public class RelPreInv {
         em.getTransaction().begin();
         
         Presentacion p7=new Presentacion(7);
-        Inventario inv = em.find(Inventario.class, "3");
+        Inventario inv = em.find(Inventario.class, 3);
         System.out.print(inv);
         p7.dropPre_inv(inv);
         inv.formInv_pre(p7);

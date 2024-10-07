@@ -29,22 +29,22 @@ public class Test {
         //create a new database if it doesn´t exist yet:
         //Cesar    
         //EntityManagerFactory emf = Persistence.createEntityManagerFactory("/home/edwin-993/cervezaodb/cervezadb.odb");
-        //EntityManagerFactory emf = Persistence.createEntityManagerFactory("D:\\Documentos HDD\\Proyecto Neatbeans\\Librerias\\objectdb-2.9.0\\db\\cervezadb.odb");
+        EntityManagerFactory emf = Persistence.createEntityManagerFactory("D:\\Documentos HDD\\Proyecto Neatbeans\\Librerias\\objectdb-2.9.0\\db\\cervezadb.odb");
         //Sebas   
-        EntityManagerFactory emf = Persistence.createEntityManagerFactory("C:\\Users\\ulseg\\Downloads\\NetBeansProjects\\objectdb-2.9.0\\db\\cervezaodb.odb");
+        //EntityManagerFactory emf = Persistence.createEntityManagerFactory("C:\\Users\\ulseg\\Downloads\\NetBeansProjects\\objectdb-2.9.0\\db\\cervezaodb.odb");
         //Xim     
         //EntityManagerFactory emf= Persistence.createEntityManagerFactory("C:\\\\objectdb-2.9.0\\\\db\\\\cervezadb.odb");
         EntityManager em = emf.createEntityManager();
 
         em.getTransaction().begin();
 
-        Presentacion p1 = new Presentacion("1");
-        Presentacion p2 = new Presentacion("2");
-        Presentacion p3 = new Presentacion("3");
+        Presentacion p1 = new Presentacion(1);
+        Presentacion p2 = new Presentacion(2);
+        Presentacion p3 = new Presentacion(3);
 
-        Inventario i1 = new Inventario("1",50.0f,false);
-        Inventario i2 = new Inventario("2",70.f,true);
-        Inventario i3 = new Inventario("3",80.5f,true);
+        Inventario i1 = new Inventario(1,50.0f,false);
+        Inventario i2 = new Inventario(2,70.f,true);
+        Inventario i3 = new Inventario(3,80.5f,true);
 
         Fabricante fab1 = new Fabricante("Modelo", "5556789212");
         Fabricante fab2 = new Fabricante("Corona", "5557809221");
@@ -91,9 +91,9 @@ public class Test {
         Receta r2 = new Receta(2,"100 gramos");
         Receta r3 = new Receta(3,"150 gramos");
         
-        Lote l1 = new Lote("1",500,fecha.parse("2024-9-5"),fecha.parse("2025-9-5"));
-        Lote l2 = new Lote("2",525,fecha.parse("2024-9-5"),fecha.parse("2025-7-8"));
-        Lote l3 = new Lote("3",450,fecha.parse("2024-9-5"),fecha.parse("2025-3-6"));
+        Lote l1 = new Lote(1,500,fecha.parse("2024-9-5"),fecha.parse("2025-9-5"));
+        Lote l2 = new Lote(2,525,fecha.parse("2024-9-5"),fecha.parse("2025-7-8"));
+        Lote l3 = new Lote(3,450,fecha.parse("2024-9-5"),fecha.parse("2025-3-6"));
 
         
         ///
