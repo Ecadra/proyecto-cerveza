@@ -69,9 +69,10 @@ public class Test {
         Envase en2 = new Envase("Botella", (short)350);
         Envase en3 = new Envase("Barril", (short)20000);
 
-        Venta ve1 = new Venta("1", "2000", fecha.parse("2024-9-1"));
-        Venta ve2 = new Venta("2", "358", fecha.parse("2024-9-21"));
-        Venta ve3 = new Venta("3", "2765", fecha.parse("2024-9-11"));
+       //Venta 
+        Venta ve1 = new Venta(460,"11/10/2024",2347.50f);
+        Venta ve2 = new Venta(2000,"17/10/2024",500034);
+        Venta ve3 = new Venta(3000,"20/10/2024",458960);
 
         Marca m1 = new Marca(1, "Modelo");
         Marca m2 = new Marca(2, "Victoria");
@@ -132,10 +133,10 @@ public class Test {
         ve2.formVe_exp(e2);
         ve3.formVe_exp(e3);
 
-        //Relacion Venta - Presentación
-        ve1.formVe_pre(p1);
-        ve2.formVe_pre(p2);
-        ve3.formVe_pre(p3);
+        //Relacion Venta - Inventario
+        ve1.formVe_inv(i1);
+        ve2.formVe_inv(i2);
+        ve3.formVe_inv(i3);
 
         //Relacion de Cerveza con Marca
         c1.formCer_mar(m1);
