@@ -1,5 +1,5 @@
 
-package test;
+package prueba;
 
 import estructuras.Direccion;
 import java.text.ParseException;
@@ -26,11 +26,11 @@ public class Test {
         //Open a database connection
         //create a new database if it doesn´t exist yet:
         //Cesar    
-        EntityManagerFactory emf = Persistence.createEntityManagerFactory("/home/edwin-993/cervezaodb/cervezadb.odb");
+        //EntityManagerFactory emf = Persistence.createEntityManagerFactory("/home/edwin-993/cervezaodb/cervezadb.odb");
         //Sebas   
         //EntityManagerFactory emf= Persistence.createEntityManagerFactory("C:\\Users\\ulseg\\OneDrive\\Documentos\\NetBeansProjects\\objectdb-2.9.0\\db\\cervezadb.odb");
         //Xim     
-        //EntityManagerFactory emf= Persistence.createEntityManagerFactory("C:\\Users\\ximen\\Documents\\NetBeansProjects\\objectdb-2.9.0\\db\\cervezadb.odb");
+        EntityManagerFactory emf= Persistence.createEntityManagerFactory("C:\\objectdb-2.9.0\\db\\cervezadb.odb");
         EntityManager em = emf.createEntityManager();
 
         em.getTransaction().begin();
@@ -63,9 +63,10 @@ public class Test {
         Sede se2 = new Sede("Cervecería Hidalgo", dir2);
         Sede se3 = new Sede("Cervecería Hidalgo", dir3);
 
-        Venta ve1 = new Venta("1", "2000", fecha.parse("2024-9-1"));
-        Venta ve2 = new Venta("2", "358", fecha.parse("2024-9-21"));
-        Venta ve3 = new Venta("3", "2765", fecha.parse("2024-9-11"));
+        //Venta 
+        Venta ve1 = new Venta(460,"11/10/2024",2347.50f);
+        Venta ve2 = new Venta(2000,"17/10/2024",500034);
+        Venta ve3 = new Venta(3000,"20/10/2024",458960);
 
         Marca m1 = new Marca(1, "Modelo");
         Marca m2 = new Marca(2, "Victoria");
@@ -116,16 +117,18 @@ public class Test {
         se1.formSe_fab(fab1);
         se2.formSe_fab(fab2);
         se3.formSe_fab(fab3);
+        
 
         //Relacion Venta - Expendio
         ve1.formVe_exp(e1);
         ve2.formVe_exp(e2);
         ve3.formVe_exp(e3);
 
-        //Relacion Venta - Presentación
-        ve1.formVe_pre(p1);
-        ve2.formVe_pre(p2);
-        ve3.formVe_pre(p3);
+        //Relacion Venta - Inventario
+        ve1.formVe_inv(i1);
+        ve2.formVe_inv(i2);
+        ve3.formVe_inv(i3);
+
 
         //Relacion de Cerveza con Marca
         c1.formCer_mar(m1);
@@ -224,6 +227,18 @@ public class Test {
         em.persist(g1);
         em.persist(g2);
         em.persist(g3);
+        
+        em.persist(c1);
+        em.persist(c2);
+        em.persist(c3);
+        
+        em.persist(e1);
+        em.persist(e2);
+        em.persist(e3);
+        
+        em.persist(m1);
+        em.persist(m2);
+        em.persist(m3);
 
 
         em.getTransaction().commit();
