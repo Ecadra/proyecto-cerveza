@@ -10,7 +10,7 @@ public class Presentacion implements Serializable {
     private static final long serialVersionUID=1L;
     
     @Id
-    private String pre_cod;
+    private int pre_cod;
     
     @ManyToOne
     @JoinColumn(name="env_pre",nullable=false)
@@ -30,12 +30,12 @@ public class Presentacion implements Serializable {
         return String.format("\n-----\nCódigo de la presentación: %s", this.pre_cod);
     }
     
-    public Presentacion(String pre_cod) {
+    public Presentacion(int pre_cod) {
         this.pre_cod = pre_cod;
     }
     
     public Presentacion(){
-        this.pre_cod=null;
+        this.pre_cod=0;
     }
     
     public void formPre_env(Envase env1){
@@ -71,11 +71,11 @@ public class Presentacion implements Serializable {
      
     
 
-    public void setPre_cod(String pre_cod) {
+    public void setPre_cod(int pre_cod) {
         this.pre_cod = pre_cod;
     }
 
-    public String getPre_cod() {
+    public int getPre_cod() {
         return pre_cod;
     }
 

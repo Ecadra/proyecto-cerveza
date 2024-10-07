@@ -12,7 +12,7 @@ public class Inventario implements Serializable {
     private static final long serialVersionUID=1L;
     
     @Id
-    private String inv_cod;
+    private int inv_cod;
     private float precio_unitario;
     private boolean existencia;
     @ManyToOne
@@ -33,12 +33,12 @@ public class Inventario implements Serializable {
     }
 
     public Inventario(){
-        this.inv_cod=null;
+        this.inv_cod=0;
         this.precio_unitario=0.0f;
         this.existencia=false;
     }
 
-    public Inventario(String inv_cod, float precio_unitario, boolean existencia) {
+    public Inventario(int inv_cod, float precio_unitario, boolean existencia) {
         this.inv_cod = inv_cod;
         this.precio_unitario = precio_unitario;
         this.existencia = existencia;
@@ -63,7 +63,7 @@ public class Inventario implements Serializable {
         this.inv_pre=pre1;
     }
 
-    public void setInv_cod(String inv_cod) {
+    public void setInv_cod(int inv_cod) {
         this.inv_cod = inv_cod;
     }
 
@@ -75,7 +75,7 @@ public class Inventario implements Serializable {
         this.existencia = existencia;
     }
 
-    public String getInv_cod() {
+    public int getInv_cod() {
         return inv_cod;
     }
 

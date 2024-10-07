@@ -14,7 +14,7 @@ public class RelInvExp {
         EntityManager em = emf.createEntityManager();
         em.getTransaction().begin();
         
-        Inventario i4=new Inventario("4",60.0f,false);
+        Inventario i4=new Inventario(4,60.0f,false);
         Expendio exp=em.find(Expendio.class,3);
         System.out.print(exp);
         i4.formInv_exp(exp);
