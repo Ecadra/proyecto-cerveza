@@ -27,11 +27,7 @@ public class Presentacion implements Serializable {
     
     @Override
     public String toString(){
-        return String.format("\n-----\nCódigo de la presentación: %s"
-                + "\nEnvase: %s"
-                + "\nCerveza: %s"
-                + "\nPedido: %s"
-                + "\nInventario:%s\n", this.pre_cod,this.pre_env,this.pre_cer, this.getPre_ped(),this.getPre_inv());
+        return String.format("\n-----\nCódigo de la presentación: %s", this.pre_cod);
     }
     
     public Presentacion(String pre_cod) {
