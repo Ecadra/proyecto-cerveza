@@ -33,8 +33,8 @@ public class Lote implements Serializable {
     }
     public String toString(){
         return String.format("\n-----\nCodigo del lote: %S "
-                + "\nCantidad: %S "
-                + "\nFecha Caducidad: %S"
+                + "\nCantidad: %d "
+                + "\nFecha Caducidad: %s"
                 + "\nFecha Produccion\n",this.lote_cod,this.cantidad,this.lote_fechaCaducidad,this.lote_fechaProduccion);
     }
     

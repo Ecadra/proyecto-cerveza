@@ -23,10 +23,8 @@ public class Inventario implements Serializable {
     @Override
     public String toString(){
         return String.format("\n-----\nCódigo de inventario %s "
-                + "\nPrecio Unitario: %f"
-                + "\nExistencia: %b"
-                + "\n Expendio: %b"
-                + "\nPresentación: %b", this.inv_cod, this.precio_unitario, this.existencia, this.inv_exp, this.inv_pre);
+                + "\nPrecio Unitario: %.2f"
+                + "\nExistencia: %b", this.inv_cod, this.precio_unitario, this.existencia);
     }
 
     public Inventario(){
