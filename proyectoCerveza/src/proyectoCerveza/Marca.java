@@ -20,6 +20,10 @@ public class Marca implements Serializable {
     @OneToMany
     @JoinColumn(name = "cer_mar", nullable = false)
     private List<Cerveza> mar_cer = new ArrayList<Cerveza>();
+    
+    @ManyToOne
+    @JoinColumn(name = "fab_mar",nullable = false)
+    private Fabricante mar_fab = new Fabricante();
 
     public Marca(int id_marca, String mar_nombre) {
         this.id_marca = id_marca;
@@ -54,6 +58,13 @@ public class Marca implements Serializable {
     public void dropMar_cer(Cerveza cer) {
         this.mar_cer.remove(cer);
     }
+    public void formMar_fab(Fabricante fab) {
+        this.mar_fab = fab;
+    }
+
+    public void dropMar_fab(Fabricante fab) {
+        this.mar_fab = fab;
+    }
 
     public int getId_marca() {
         return id_marca;
@@ -79,4 +90,13 @@ public class Marca implements Serializable {
         this.mar_cer = mar_cer;
     }
 
+    public Fabricante getMar_fab() {
+        return mar_fab;
+    }
+
+    public void setMar_fab(Fabricante mar_fab) {
+        this.mar_fab = mar_fab;
+    }
+
+    
 }
