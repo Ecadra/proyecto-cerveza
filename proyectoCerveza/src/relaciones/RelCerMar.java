@@ -22,7 +22,7 @@ public class RelCerMar {
         em.getTransaction().begin();
   
         // Crear la dirección
-        Cerveza cerveza1 = new Cerveza(1, "Clara", 15.5f);
+        Cerveza cerveza1 = new Cerveza(7, "Cerveza7", 24.5f);
         Marca mar = em.find(Marca.class, 1);
         //Fabricante fab = em.find(Fabricante.class, "fab_nombre");
 

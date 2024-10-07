@@ -3,44 +3,43 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
 package relaciones;
+
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
-import proyectoCerveza.Cerveza;
+import proyectoCerveza.Fabricante;
 import proyectoCerveza.Marca;
 
 /**
  *
  * @author edwin-993
  */
-public class RelMarCer {
-public static void main(String[] args) {
+public class RelMarFab {
+    public static void main(String[] args) {
     EntityManagerFactory emf = Persistence.createEntityManagerFactory("/home/edwin-993/cervezaodb/cervezadb.odb");
     EntityManager em = emf.createEntityManager();
     em.getTransaction().begin();
 
-    // Crear una cerveza con el siguiente ID disponible
-    Marca marca = new Marca(4, "Marca4");  // Usar el ID existente de Marca
-    Cerveza cerveza = em.find(Cerveza.class, "1");
-    
+    // Crear una marca con el siguiente ID disponible
+    Marca marca = new Marca(5, "Marca5");  // Usar el ID existente de Marca
+    Fabricante fabricante = em.find(Fabricante.class, 1);  // Usar el ID existente de Fabricante
 
-    // Verificar si la marca existe
-    if (cerveza == null) {
-        System.out.println("La cerveza no se encontró en la base de datos.");
+    // Verificar si el fabricante existe
+    if (fabricante == null) {
+        System.out.println("El fabricante no se encontró en la base de datos.");
         em.getTransaction().rollback();
         em.close();
         return;
     }
 
-    // Relacionar Marca con Cerveza
-    cerveza.formCer_mar(marca);
-    marca.formMar_cer(cerveza);
+    // Relacionar Marca con Fabricante
+    marca.formMar_fab(fabricante);
+    fabricante.formFab_mar(marca);
 
-    em.persist(cerveza);
     em.persist(marca);
+    em.persist(fabricante);
     em.getTransaction().commit();
     em.close();
 }
-
 
 }
