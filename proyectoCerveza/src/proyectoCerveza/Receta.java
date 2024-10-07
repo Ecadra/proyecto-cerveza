@@ -13,6 +13,7 @@ import java.util.*;
 public class Receta implements Serializable{
 
     @Id
+    private int id_receta;
     private String rec_cantidad;
    
     @OneToMany
@@ -24,20 +25,23 @@ public class Receta implements Serializable{
     private List<Cerveza> rec_cer=new ArrayList<Cerveza>();
     
     public Receta(){
+        this.id_receta = -1;
         this.rec_cantidad = "";
     }
     
-    public Receta(String nom){
+    public Receta(int id, String nom){
+        this.id_receta = id;
         this.rec_cantidad = nom;
     }
     
     
     @Override
     public String toString() {
-        return String.format("\n-----\nCantidad: %s "
+        return String.format("\n-----\nId: %d"
+                + "\nCantidad: %s "
                 + "\nGrano: %s "
                 + "\nCerveza: %s \n",
-                this.rec_cantidad, this.getRec_gra(), this.getRec_cer());
+                this.id_receta, this.rec_cantidad, this.getRec_gra(), this.getRec_cer());
     }
     
     public void printGranos(){
@@ -65,6 +69,14 @@ public class Receta implements Serializable{
     {
         getRec_cer().add(c1);
     }    
+
+    public int getId_receta() {
+        return id_receta;
+    }
+
+    public void setId_receta(int id_receta) {
+        this.id_receta = id_receta;
+    }
     
     public String getRec_cantidad() {
         return rec_cantidad;
