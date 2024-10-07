@@ -2,6 +2,8 @@ package proyectoCerveza;
 
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 import javax.persistence.*;
 
 
@@ -19,11 +21,14 @@ public class Inventario implements Serializable {
     @ManyToOne
     @JoinColumn(name="pre_inv",nullable=false)
     private Presentacion inv_pre;
+    @OneToMany
+    @JoinColumn(name="ven_inv", nullable=false)
+    private List<Venta> inv_ven =new ArrayList<Venta>();
     
     @Override
     public String toString(){
         return String.format("\n-----\nCódigo de inventario %s "
-                + "\nPrecio Unitario: %.2f"
+                + "\nPrecio Unitario: %f"
                 + "\nExistencia: %b", this.inv_cod, this.precio_unitario, this.existencia);
     }
 
@@ -39,6 +44,12 @@ public class Inventario implements Serializable {
         this.existencia = existencia;
     }
     
+    public void formInv_ven(Venta ven1){
+        this.inv_ven.add(ven1);
+    }
+    public void dropInv_ven(Venta ven1){
+        getInv_ven().remove(ven1);
+    }
     public void formInv_exp(Expendio e1){
         this.inv_exp=e1;
     }
@@ -82,6 +93,10 @@ public class Inventario implements Serializable {
 
     public Presentacion getInv_pre() {
         return inv_pre;
+    }
+
+    public List<Venta> getInv_ven() {
+        return inv_ven;
     }
    
     
