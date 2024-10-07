@@ -29,11 +29,11 @@ public class Test {
         //create a new database if it doesn´t exist yet:
         //Cesar    
         //EntityManagerFactory emf = Persistence.createEntityManagerFactory("/home/edwin-993/cervezaodb/cervezadb.odb");
-        EntityManagerFactory emf = Persistence.createEntityManagerFactory("D:\\Documentos HDD\\Proyecto Neatbeans\\Librerias\\objectdb-2.9.0\\db\\cervezadb.odb");
+        //EntityManagerFactory emf = Persistence.createEntityManagerFactory("D:\\Documentos HDD\\Proyecto Neatbeans\\Librerias\\objectdb-2.9.0\\db\\cervezadb.odb");
         //Sebas   
         //EntityManagerFactory emf = Persistence.createEntityManagerFactory("C:\\Users\\ulseg\\Downloads\\NetBeansProjects\\objectdb-2.9.0\\db\\cervezaodb.odb");
         //Xim     
-        //EntityManagerFactory emf= Persistence.createEntityManagerFactory("C:\\Users\\ximen\\Documents\\NetBeansProjects\\objectdb-2.9.0\\db\\cervezadb.odb");
+        EntityManagerFactory emf= Persistence.createEntityManagerFactory("C:\\\\objectdb-2.9.0\\\\db\\\\cervezadb.odb");
         EntityManager em = emf.createEntityManager();
 
         em.getTransaction().begin();
@@ -71,9 +71,9 @@ public class Test {
         Envase en3 = new Envase("Barril", (short)20000);
 
        //Venta 
-        Venta ve1 = new Venta(460,"11/10/2024",2347.50f);
-        Venta ve2 = new Venta(2000,"17/10/2024",500034);
-        Venta ve3 = new Venta(3000,"20/10/2024",458960);
+        Venta ve1 = new Venta(1,460,"11/10/2024",2347.50f);
+        Venta ve2 = new Venta(2,2000,"17/10/2024",500034);
+        Venta ve3 = new Venta(3,3000,"20/10/2024",458960);
 
         Marca m1 = new Marca(1, "Modelo");
         Marca m2 = new Marca(2, "Victoria");
