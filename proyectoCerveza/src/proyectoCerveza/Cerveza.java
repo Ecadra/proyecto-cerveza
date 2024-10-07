@@ -29,7 +29,7 @@ public class Cerveza implements Serializable {
     private Marca cer_mar;
     @OneToMany
     @JoinColumn(name = "rec_cer", nullable = false)
-    private Receta cer_rec;
+    private List<Receta> cer_rec = new ArrayList<Receta>();
 
     public Cerveza() {
         this.id_cerveza = 0;
@@ -47,24 +47,22 @@ public class Cerveza implements Serializable {
     public String toString() {
         return String.format("\n-----\nCerveza: %s"
                 + "\nNombre: %s"
-                + "\nGraduacion : %f"
-                + "\nLotes: %b"
-                + "\nPresentaciones: %b"
-                + "\nMarca: %b"
-                + "\nRecetas: %b",
+                + "\nGraduacion : %f",
                 this.id_cerveza,
                 this.cer_nombre,
-                this.cer_graduacion,
-                this.getCer_lot(),
-                this.getCer_pre(),
-                this.getCer_mar(),
-                this.getCer_rec());
+                this.cer_graduacion);
     }
 
     public void printLotes() {
         System.out.println("Lotes: " + getCer_lot().size());
         for (int i = 0; i < getCer_lot().size(); i++) {
             System.out.println(getCer_lot().get(i));
+        }
+    }
+    public void printRecetas() {
+        System.out.println("Lotes: " + getCer_rec().size());
+        for (int i = 0; i < getCer_rec().size(); i++) {
+            System.out.println(getCer_rec().get(i));
         }
     }
 
@@ -116,11 +114,11 @@ public class Cerveza implements Serializable {
         this.cer_mar = cer_mar;
     }
 
-    public Receta getCer_rec() {
+    public List<Receta> getCer_rec() {
         return cer_rec;
     }
 
-    public void setCer_rec(Receta cer_rec) {
+    public void setCer_rec(List<Receta> cer_rec) {
         this.cer_rec = cer_rec;
     }
 
@@ -142,11 +140,11 @@ public class Cerveza implements Serializable {
 
     ///CERVEZA - MARCA YA SE HIZO ANTERIORMENTE
     public void formCer_rec(Receta rec) {
-        this.cer_rec = rec;
+        this.cer_rec.add(rec);
     }
 
     public void dropCer_rec(Receta rec) {
-        this.cer_rec = null;
+        this.cer_rec.remove(rec);
     }
 
 }
