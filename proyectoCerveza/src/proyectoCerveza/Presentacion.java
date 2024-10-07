@@ -22,7 +22,16 @@ public class Presentacion implements Serializable {
     private List<Pedido> pre_ped;
     @JoinColumn(name="inv_pre",nullable=false)
     private List<Inventario> pre_inv;
-
+    
+    @Override
+    public String toString(){
+        return String.format("\n-----\nCódigo de la presentación: %s"
+                + "\nEnvase: %s"
+                + "\nCerveza: %s"
+                + "\nPedido: %s"
+                + "\nInventario:%s\n", this.pre_cod,this.pre_env,this.pre_cer, this.getPre_ped(),this.getPre_inv());
+    }
+    
     public Presentacion(String pre_cod) {
         this.pre_cod = pre_cod;
     }
@@ -30,6 +39,38 @@ public class Presentacion implements Serializable {
     public Presentacion(){
         this.pre_cod=null;
     }
+    
+    public void formPre_env(Envase env1){
+        this.pre_env=env1;
+    }
+    
+    public void dropPre_env(Envase env1){
+        this.pre_env=env1;
+    }
+    
+    public void formPre_cer(Cerveza cer1){
+        this.pre_cer=cer1;
+    }
+    
+    public void dropPre_cer(Cerveza cer1){
+        this.pre_cer=cer1;
+    }
+     public void formPre_ped(Pedido ped1){
+        getPre_ped().add(ped1);
+    }
+     public void dropPre_ped(Pedido ped1){
+        getPre_ped().remove(ped1);
+    }
+     
+      public void formPre_inv(Inventario inv1){
+        getPre_inv().add(inv1);
+    }
+     public void dropPre_inv(Inventario inv1){
+        getPre_inv().remove(inv1);
+    }
+     
+     
+    
 
     public void setPre_cod(String pre_cod) {
         this.pre_cod = pre_cod;
