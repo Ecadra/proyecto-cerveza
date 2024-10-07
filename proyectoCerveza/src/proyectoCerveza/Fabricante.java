@@ -22,7 +22,7 @@ import java.util.*;
     
     @OneToMany
     @JoinColumn(name="se_fab",nullable=false)
-    private List<Sede> fab_se=new ArrayList<Sede>();
+    private List<Sede> fab_se = new ArrayList<Sede>();
     
  
     public Fabricante(){
@@ -40,10 +40,10 @@ import java.util.*;
   @Override
     public String toString() {
         return String.format("\n-----\nNombre: %s "
-                + "\nContacto: %s "
-                + "\nNúmero de sedes: %d ",
-                this.fab_nombre, this.fab_contacto,
-                this.getFab_se());
+            + "\nContacto: %s "
+            + "\nNúmero de sedes: %d ",
+        this.fab_nombre, this.fab_contacto,
+        this.getFab_se().size()); // Cambiado a .size()
     }
  
     public void printSedes(){
