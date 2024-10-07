@@ -37,6 +37,10 @@ public class Envase implements Serializable{
     {
         getEnv_pre().add(p1);
     }
+    
+    public void dropEnv_pre(Presentacion p1) {
+        this.env_pre.remove(p1);
+    }
    
     public String getTipo_envase() {
         return tipo_envase;

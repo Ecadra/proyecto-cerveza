@@ -50,6 +50,10 @@ public class Grano implements Serializable{
     public void formGra_rec(Receta rec1) {
         getGra_rec().add(rec1);
     }
+    
+    public void dropGra_rec(Receta rec1) {
+        this.gra_rec.remove(rec1);
+    }
 
     public String getGra_nombre() {
         return gra_nombre;
