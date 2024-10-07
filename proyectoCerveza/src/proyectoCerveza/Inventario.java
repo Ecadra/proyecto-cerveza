@@ -11,51 +11,70 @@ public class Inventario implements Serializable {
     
     @Id
     private String inv_cod;
+    private float precio_unitario;
     private boolean existencia;
     @ManyToOne
-    @JoinColumn(name="exp_inv", nullable=false)
+    @JoinColumn(name="exp_inv",nullable=false)
     private Expendio inv_exp;
     @ManyToOne
-    @JoinColumn(name="pre_inv", nullable=false)
+    @JoinColumn(name="pre_inv",nullable=false)
     private Presentacion inv_pre;
     
+    @Override
+    public String toString(){
+        return String.format("\n-----\nCódigo de inventario %s "
+                + "\nPrecio Unitario: %f"
+                + "\nExistencia: %b"
+                + "\n Expendio: %b"
+                + "\nPresentación: %b", this.inv_cod, this.precio_unitario, this.existencia, this.inv_exp, this.inv_pre);
+    }
+
     public Inventario(){
         this.inv_cod=null;
+        this.precio_unitario=0.0f;
         this.existencia=false;
     }
-    public Inventario(String inv_cod, boolean existencia){
-        this.inv_cod=inv_cod;
-        this.existencia=existencia;
-    }
-    public String toString(){
-        return String.format("\n-----\nNumero sala: %S "
-                + "\nCodigo: %S "
-                + "\nExistencia: %S\n",
-                this.inv_cod,this.existencia);
+
+    public Inventario(String inv_cod, float precio_unitario, boolean existencia) {
+        this.inv_cod = inv_cod;
+        this.precio_unitario = precio_unitario;
+        this.existencia = existencia;
     }
     
-    public void formInv_exp(Expendio exp1)
-    {
-        inv_exp=exp1;
+    public void formInv_exp(Expendio e1){
+        this.inv_exp=e1;
     }
-    public void dropInv_exp(Expendio exp1)
-    {
-        inv_exp=exp1;
+    public void dropInv_exp(Expendio e1){
+        this.inv_exp=e1;
     }
-     public void formInv_pre(Presentacion pre1)
-    {
-        inv_pre=pre1;
+    public void formInv_pre(Presentacion pre1){
+        this.inv_pre=pre1;
     }
-    public void dropInv_pre(Presentacion pre1)
-    {
-        inv_pre=pre1;
+    public void dropInv_pre(Presentacion pre1){
+        this.inv_pre=pre1;
+    }
+
+    public void setInv_cod(String inv_cod) {
+        this.inv_cod = inv_cod;
+    }
+
+    public void setPrecio_unitario(float precio_unitario) {
+        this.precio_unitario = precio_unitario;
+    }
+
+    public void setExistencia(boolean existencia) {
+        this.existencia = existencia;
     }
 
     public String getInv_cod() {
         return inv_cod;
     }
 
-    public boolean getExistencia() {
+    public float getPrecio_unitario() {
+        return precio_unitario;
+    }
+
+    public boolean isExistencia() {
         return existencia;
     }
 
@@ -66,21 +85,9 @@ public class Inventario implements Serializable {
     public Presentacion getInv_pre() {
         return inv_pre;
     }
-
-    public void setInv_cod(String inv_cod) {
-        this.inv_cod = inv_cod;
-    }
-
-    public void setExistencia(boolean existencia) {
-        this.existencia = existencia;
-    }
-
-    public void setInv_exp(Expendio inv_exp) {
-        this.inv_exp = inv_exp;
-    }
-
-    public void setInv_pre(Presentacion inv_pre) {
-        this.inv_pre = inv_pre;
-    }
+   
     
+    
+    
+   
 }
