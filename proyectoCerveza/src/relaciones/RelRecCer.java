@@ -18,8 +18,8 @@ public class RelRecCer {
         EntityManager em = emf.createEntityManager();
         em.getTransaction().begin();
             
-        Receta rec4 = new Receta(4,"1 kilo");
-        Cerveza c1 = em.find(Cerveza.class, "1");   
+        Receta rec4 = new Receta(5,"1 kilo");
+        Cerveza c1 = em.find(Cerveza.class, 1);   
         
         System.out.println(c1);
         rec4.formRec_cer(c1);

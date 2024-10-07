@@ -81,10 +81,18 @@ public class Pedido implements Serializable{
         ped_exp = e1;
     }
     
+    public void dropPed_exp(Expendio e1) {
+        this.ped_exp = e1;
+    }
+    
     public void formPed_pre(Presentacion p1) {
         ped_pre = p1;
     }
 
+    public void dropPed_pre(Presentacion p1) {
+        this.ped_pre = p1;
+    }
+    
     public int getPed_codigo() {
         return ped_codigo;
     }

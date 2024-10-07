@@ -47,10 +47,18 @@ public class Receta implements Serializable{
         rec_gra=g1;
     }
     
+    public void dropRec_gra(Grano g1) {
+        this.rec_gra = g1;
+    }
+    
     public void formRec_cer(Cerveza c1)
     {
         rec_cer=c1;
-    }    
+    } 
+    
+    public void dropRec_cer(Cerveza c1) {
+        this.rec_cer = c1;
+    }
 
     public int getId_receta() {
         return id_receta;
