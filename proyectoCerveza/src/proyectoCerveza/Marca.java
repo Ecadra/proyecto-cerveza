@@ -95,12 +95,6 @@ public class Marca implements Serializable {
     public void setMar_fab(Fabricante mar_fab) {
         this.mar_fab = mar_fab;
     }
-    public void printCervezas(){
-        System.out.println("Pedidos: " + getMar_cer().size());
-        for (int i = 0; i < getMar_cer().size(); i++) {
-            System.out.println(getMar_cer().get(i));
-        }
-    }
-
+   
     
 }
