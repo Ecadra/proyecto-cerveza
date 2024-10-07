@@ -15,6 +15,7 @@ import proyectoCerveza.Inventario;
  *
  * @author edwin-993
  */
+//PASO LA PRUEBA
 public class RelExpInv {
     public static void main(String[] args) {
     EntityManagerFactory emf = Persistence.createEntityManagerFactory("/home/edwin-993/cervezaodb/cervezadb.odb");
@@ -24,7 +25,7 @@ public class RelExpInv {
     Direccion dir1 = new Direccion("Avenida Siempre Viva2", 743, 4, "Springfield2", 12345, "Illinois2");
     // Crear un expendio con el siguiente ID disponible
     Expendio expendio = new Expendio(6, "Malaquitas4", "RFCexpendio4", true, dir1, "7721231231");
-    Inventario inventario = em.find(Inventario.class, 1);  // Usar el ID existente de Inventario
+    Inventario inventario = em.find(Inventario.class, "1");  // Usar el ID existente de Inventario
 
     // Verificar si el inventario existe
     if (inventario == null) {

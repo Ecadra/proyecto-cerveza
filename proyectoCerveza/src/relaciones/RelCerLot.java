@@ -14,6 +14,7 @@ import proyectoCerveza.Lote;
  *
  * @author edwin-993
  */
+//PASO LA PRUEBA
 public class RelCerLot {
     public static void main(String[] args) {
     EntityManagerFactory emf = Persistence.createEntityManagerFactory("/home/edwin-993/cervezaodb/cervezadb.odb");
@@ -22,7 +23,7 @@ public class RelCerLot {
 
     // Crear una cerveza con el siguiente ID disponible
     Cerveza cerveza = new Cerveza(4, "Amber", 12.0f);
-    Lote lote = em.find(Lote.class, 1);  // Usar el ID existente de Lote
+    Lote lote = em.find(Lote.class, "1");  // Usar el ID existente de Lote
 
     // Verificar si el lote existe
     if (lote == null) {

@@ -14,6 +14,7 @@ import proyectoCerveza.Marca;
  *
  * @author edwin-993
  */
+//PASO LA PRUEBA
 public class RelCerMar {
     public static void main(String[] args){
          EntityManagerFactory emf= Persistence.createEntityManagerFactory("/home/edwin-993/cervezaodb/cervezadb.odb");

@@ -14,6 +14,7 @@ import proyectoCerveza.Presentacion;
  *
  * @author edwin-993
  */
+//PASO LA PRUEBA
 public class RelCerPre {
     public static void main(String[] args) {
     EntityManagerFactory emf = Persistence.createEntityManagerFactory("/home/edwin-993/cervezaodb/cervezadb.odb");
@@ -22,7 +23,7 @@ public class RelCerPre {
 
     // Crear una cerveza con el siguiente ID disponible
     Cerveza cerveza = new Cerveza(5, "Porter", 14.0f);
-    Presentacion presentacion = em.find(Presentacion.class, 2);  // Usar el ID existente de Presentación
+    Presentacion presentacion = em.find(Presentacion.class, "2");  // Usar el ID existente de Presentación
 
     // Verificar si la presentación existe
     if (presentacion == null) {

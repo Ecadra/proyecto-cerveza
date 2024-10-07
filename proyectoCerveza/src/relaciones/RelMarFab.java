@@ -22,7 +22,7 @@ public class RelMarFab {
 
     // Crear una marca con el siguiente ID disponible
     Marca marca = new Marca(5, "Marca5");  // Usar el ID existente de Marca
-    Fabricante fabricante = em.find(Fabricante.class, 1);  // Usar el ID existente de Fabricante
+    Fabricante fabricante = em.find(Fabricante.class, "Modelo");  // Usar el ID existente de Fabricante
 
     // Verificar si el fabricante existe
     if (fabricante == null) {
