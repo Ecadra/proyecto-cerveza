@@ -28,8 +28,8 @@ public class Test {
         //Open a database connection
         //create a new database if it doesn´t exist yet:
         //Cesar    
-        //EntityManagerFactory emf = Persistence.createEntityManagerFactory("/home/edwin-993/cervezaodb/cervezadb.odb");
-        EntityManagerFactory emf = Persistence.createEntityManagerFactory("D:\\Documentos HDD\\Proyecto Neatbeans\\Librerias\\objectdb-2.9.0\\db\\cervezadb.odb");
+        EntityManagerFactory emf = Persistence.createEntityManagerFactory("/home/edwin-993/cervezaodb/cervezadb.odb");
+        //EntityManagerFactory emf = Persistence.createEntityManagerFactory("D:\\Documentos HDD\\Proyecto Neatbeans\\Librerias\\objectdb-2.9.0\\db\\cervezadb.odb");
         //Sebas   
         //EntityManagerFactory emf = Persistence.createEntityManagerFactory("C:\\Users\\ulseg\\Downloads\\NetBeansProjects\\objectdb-2.9.0\\db\\cervezaodb.odb");
         //Xim     
@@ -177,6 +177,12 @@ public class Test {
         m1.formMar_cer(c1);
         m2.formMar_cer(c2);
         m3.formMar_cer(c3);
+        
+        //Relacion de Marca con Fabricante
+        m1.formMar_fab(fab1);
+        m2.formMar_fab(fab2);
+        m3.formMar_fab(fab3);
+        
         
         //Relacion de Expendio con Ventas
         e1.formExp_ven(ve1);
