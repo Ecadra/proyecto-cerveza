@@ -6,6 +6,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import javax.persistence.*;
 import proyectoCerveza.Cerveza;
+import proyectoCerveza.Envase;
 import proyectoCerveza.Expendio;
 import proyectoCerveza.Fabricante;
 import proyectoCerveza.Grano;
@@ -17,7 +18,6 @@ import proyectoCerveza.Presentacion;
 import proyectoCerveza.Receta;
 import proyectoCerveza.Sede;
 import proyectoCerveza.Venta;
-import proyectoCerveza.Envase;
 
 
 public class Test {
