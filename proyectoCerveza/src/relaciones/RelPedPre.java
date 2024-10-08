@@ -19,7 +19,7 @@ public class RelPedPre {
         em.getTransaction().begin();
             
         Pedido ped4 = new Pedido(4, (short)1500, "01/10/2024", "25/09/2024", 1550.0f, 8000.0f, 400.0f);
-        Presentacion p1 = em.find(Presentacion.class, "1");   
+        Presentacion p1 = em.find(Presentacion.class, 1);   
         
         System.out.println(p1);
         ped4.formPed_pre(p1);
