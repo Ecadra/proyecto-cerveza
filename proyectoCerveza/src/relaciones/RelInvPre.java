@@ -4,24 +4,25 @@ package relaciones;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
-import proyectoCerveza.Envase;
+import proyectoCerveza.Inventario;
 import proyectoCerveza.Presentacion;
 
-public class RelPreEnv {
-    public static void main (String[] args){
+
+public class RelInvPre {
+     public static void main (String[] args){
         EntityManagerFactory emf= Persistence.createEntityManagerFactory("D:\\Documentos HDD\\Proyecto Neatbeans\\Librerias\\objectdb-2.9.0\\db\\cervezadb.odb");
         EntityManager em = emf.createEntityManager();
         em.getTransaction().begin();
         
-        Presentacion p4 = new Presentacion(4);
-        Envase env= em.find(Envase.class,"Lata");
-        System.out.print(env);
-        env.formEnv_pre(p4);
-        p4.formPre_env(env);
+        Inventario i5=new Inventario(5,20.1f,false);
+        Presentacion pre=em.find(Presentacion.class, 3);
+        System.out.print(pre);
+        i5.formInv_pre(pre);
+        pre.formPre_inv(i5);
         
-        em.persist(p4);
-        em.persist(env);
+        em.persist(i5);
+        em.persist(pre);
         
         em.getTransaction().commit();
-    }
+     }
 }

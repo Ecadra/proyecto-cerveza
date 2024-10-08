@@ -2,6 +2,8 @@ package proyectoCerveza;
 
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 import javax.persistence.*;
 
 
@@ -10,7 +12,7 @@ public class Inventario implements Serializable {
     private static final long serialVersionUID=1L;
     
     @Id
-    private String inv_cod;
+    private int inv_cod;
     private float precio_unitario;
     private boolean existencia;
     @ManyToOne
@@ -19,26 +21,35 @@ public class Inventario implements Serializable {
     @ManyToOne
     @JoinColumn(name="pre_inv",nullable=false)
     private Presentacion inv_pre;
+    @OneToMany
+    @JoinColumn(name="ven_inv", nullable=false)
+    private List<Venta> inv_ven =new ArrayList<Venta>();
     
     @Override
     public String toString(){
-        return String.format("\n-----\nCódigo de inventario %s "
-                + "\nPrecio Unitario: %.2f"
+        return String.format("\n-----\nCódigo de inventario %d "
+                + "\nPrecio Unitario: %f"
                 + "\nExistencia: %b", this.inv_cod, this.precio_unitario, this.existencia);
     }
 
     public Inventario(){
-        this.inv_cod=null;
+        this.inv_cod=0;
         this.precio_unitario=0.0f;
         this.existencia=false;
     }
 
-    public Inventario(String inv_cod, float precio_unitario, boolean existencia) {
+    public Inventario(int inv_cod, float precio_unitario, boolean existencia) {
         this.inv_cod = inv_cod;
         this.precio_unitario = precio_unitario;
         this.existencia = existencia;
     }
     
+    public void formInv_ven(Venta ven1){
+        this.inv_ven.add(ven1);
+    }
+    public void dropInv_ven(Venta ven1){
+        getInv_ven().remove(ven1);
+    }
     public void formInv_exp(Expendio e1){
         this.inv_exp=e1;
     }
@@ -52,7 +63,7 @@ public class Inventario implements Serializable {
         this.inv_pre=pre1;
     }
 
-    public void setInv_cod(String inv_cod) {
+    public void setInv_cod(int inv_cod) {
         this.inv_cod = inv_cod;
     }
 
@@ -64,7 +75,7 @@ public class Inventario implements Serializable {
         this.existencia = existencia;
     }
 
-    public String getInv_cod() {
+    public int getInv_cod() {
         return inv_cod;
     }
 
@@ -82,6 +93,10 @@ public class Inventario implements Serializable {
 
     public Presentacion getInv_pre() {
         return inv_pre;
+    }
+
+    public List<Venta> getInv_ven() {
+        return inv_ven;
     }
    
     
