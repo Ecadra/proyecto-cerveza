@@ -14,7 +14,7 @@ public class RelInvVen {
         EntityManager em = emf.createEntityManager();
         em.getTransaction().begin();
         
-        Inventario i6 = new Inventario(6,20.1f,false);
+        Inventario i6 = new Inventario(6,20.1f,60,false);
         Venta ven =em.find(Venta.class, 1);
         System.out.print(ven);
         i6.formInv_ven(ven);

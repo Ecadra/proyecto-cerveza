@@ -14,7 +14,7 @@ public class RelInvPre {
         EntityManager em = emf.createEntityManager();
         em.getTransaction().begin();
         
-        Inventario i5=new Inventario(5,20.1f,false);
+        Inventario i5=new Inventario(5,20.1f,200,false);
         Presentacion pre=em.find(Presentacion.class, 3);
         System.out.print(pre);
         i5.formInv_pre(pre);
