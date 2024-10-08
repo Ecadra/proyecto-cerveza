@@ -42,9 +42,9 @@ public class Test {
         Presentacion p2 = new Presentacion(2);
         Presentacion p3 = new Presentacion(3);
 
-        Inventario i1 = new Inventario(1,50.0f,false);
-        Inventario i2 = new Inventario(2,70.f,true);
-        Inventario i3 = new Inventario(3,80.5f,true);
+        Inventario i1 = new Inventario(1,50.0f,100,false);
+        Inventario i2 = new Inventario(2,70.f,150,true);
+        Inventario i3 = new Inventario(3,80.5f,300,true);
 
         Fabricante fab1 = new Fabricante("Modelo", "5556789212");
         Fabricante fab2 = new Fabricante("Corona", "5557809221");

@@ -14,6 +14,7 @@ public class Inventario implements Serializable {
     @Id
     private int inv_cod;
     private float precio_unitario;
+    private int cantidad;
     private boolean existencia;
     @ManyToOne
     @JoinColumn(name="exp_inv",nullable=false)
@@ -29,18 +30,21 @@ public class Inventario implements Serializable {
     public String toString(){
         return String.format("\n-----\nCódigo de inventario %d "
                 + "\nPrecio Unitario: %f"
+                + "\nCantidad: %d"
                 + "\nExistencia: %b", this.inv_cod, this.precio_unitario, this.existencia);
     }
 
     public Inventario(){
         this.inv_cod=0;
         this.precio_unitario=0.0f;
+        this.cantidad=0;
         this.existencia=false;
     }
 
-    public Inventario(int inv_cod, float precio_unitario, boolean existencia) {
+    public Inventario(int inv_cod, float precio_unitario, int cantidad, boolean existencia) {
         this.inv_cod = inv_cod;
         this.precio_unitario = precio_unitario;
+        this.cantidad=cantidad;
         this.existencia = existencia;
     }
     
@@ -75,10 +79,19 @@ public class Inventario implements Serializable {
         this.existencia = existencia;
     }
 
+    public void setCantidad(int cantidad) {
+        this.cantidad = cantidad;
+    }
+    
+
     public int getInv_cod() {
         return inv_cod;
     }
 
+    public int getCantidad() {
+        return cantidad;
+    }
+    
     public float getPrecio_unitario() {
         return precio_unitario;
     }
