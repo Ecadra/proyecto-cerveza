@@ -137,6 +137,16 @@ public class Test {
         fab1.formFab_se(se1);
         fab2.formFab_se(se2);
         fab3.formFab_se(se3);
+        
+        //Relacion Fabricante Marca
+        fab1.formFab_mar(m1);
+        fab2.formFab_mar(m2);
+        fab3.formFab_mar(m3);
+        
+        //Relacion Marca Fabricante
+        m1.formMar_fab(fab1);
+        m2.formMar_fab(fab2);
+        m3.formMar_fab(fab3);
 
         //Relacion Sede Fabricante
         se1.formSe_fab(fab1);
