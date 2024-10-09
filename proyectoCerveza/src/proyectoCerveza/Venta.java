@@ -84,7 +84,7 @@ private static final long serialVersionUID = 1L;
         return ven_total;
     }
 
-    public void setVen_numero(float ven_total) {
+    public void setVen_total(float ven_total) {
         this.ven_total = ven_total;
     }
 
