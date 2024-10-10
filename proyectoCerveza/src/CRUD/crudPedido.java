@@ -9,15 +9,15 @@ import javax.persistence.Persistence;
 import javax.persistence.TypedQuery;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
-import proyectoCerveza.Envase;
+import proyectoCerveza.Pedido;
 
 /**
  *
  * @author ulseg
  */
-public class crudEnvase {
-    void opCreateEnvase(Envase env) {
-        Envase en;
+public class crudPedido {
+    void opCreatePedido(Pedido ped) {
+        Pedido pd;
         // Abre una conexión a la base de datos (crea una nueva si no existe)
         // Diferentes configuraciones de rutas para distintos usuarios:
         // Cesar    
@@ -33,9 +33,9 @@ public class crudEnvase {
         // Inicia la transacción
         em.getTransaction().begin();
 
-        // Asigna el objeto Envase y lo persiste en la base de datos
-        en = env;
-        em.persist(en);
+        // Asigna el objeto Pedido y lo persiste en la base de datos
+        pd = ped;
+        em.persist(pd);
 
         // Confirma la transacción
         em.getTransaction().commit();
@@ -45,15 +45,15 @@ public class crudEnvase {
         emf.close();
 
         // Mensaje de confirmación
-        System.out.println("Envase registrado");
+        System.out.println("Pedido registrado");
     }
 
-    void opUpdateEnvase(Envase env) {
-        Envase en;
-        String aux;
+    void opUpdatePedido(Pedido ped) {
+        Pedido pd;
+        int aux;
 
-        // Muestra el envase que está entrando a la función
-        System.out.println("Envase entra" + env);
+        // Muestra el pedido que está entrando a la función
+        System.out.println("Pedido entra" + ped);
 
         // Abre una conexión a la base de datos (diferentes rutas comentadas):
         // Cesar    
@@ -66,25 +66,30 @@ public class crudEnvase {
         // Crea un EntityManager
         EntityManager em = emf.createEntityManager();
 
-        // Obtiene el tipo de envase que se usará para buscar en la base de datos
-        aux = env.getTipo_envase();
+        // Obtiene el tipo de pedido que se usará para buscar en la base de datos
+        aux = ped.getPed_codigo();
 
         // Inicia la transacción
         em.getTransaction().begin();
 
-        // Busca el envase en la base de datos usando el identificador (tipo_envase)
-        en = em.find(Envase.class, aux);
+        // Busca el pedido en la base de datos usando el identificador (ped_codigo)
+        pd = em.find(Pedido.class, aux);
 
-        // Muestra el envase encontrado
-        System.out.println("Envase encontrado con id " + aux);
-        System.out.println(en);
+        // Muestra el pedido encontrado
+        System.out.println("Pedido encontrado con id " + aux);
+        System.out.println(pd);
 
-        // Actualiza la capacidad del envase
-        //en.setTipo_envase(aux);
-        en.setCapacidad_ml(env.getEnvase_capacidad());
+        // Actualiza el pedido
+        //pd.setPed_codigo(aux);
+        pd.setPed_cantidad(ped.getPed_cantidad());
+        pd.setPed_forden(ped.getPed_forden());
+        pd.setPed_fdespacho(ped.getPed_fdespacho());
+        pd.setPed_total(ped.getPed_total());
+        pd.setPed_subtotal(ped.getPed_subtotal());
+        pd.setPed_iva(ped.getPed_iva());
 
-        // Muestra el envase modificado
-        System.out.println("Envase modificado \n" + en);
+        // Muestra el pedido modificado
+        System.out.println("Pedido modificado \n" + pd);
 
         // Confirma la transacción
         em.getTransaction().commit();
@@ -94,10 +99,10 @@ public class crudEnvase {
         emf.close();
 
         // Mensaje de confirmación
-        System.out.println("Envase actualizado");
+        System.out.println("Pedido actualizado");
     }
 
-    public List opReadEnvase(String ent, String field, String crit) {
+    public List opReadPedido(String ent, String field, String crit) {
 
         // Abre una conexión a la base de datos
         // Cesar    
@@ -108,25 +113,25 @@ public class crudEnvase {
         // EntityManagerFactory emf= Persistence.createEntityManagerFactory("C:\\\\objectdb-2.9.0\\\\db\\\\cervezadb.odb");           
         EntityManager em = emf.createEntityManager();
 
-        if (ent.equals("Envase")) {
+        if (ent.equals("Pedido")) {
             // Consulta tipada para obtener objetos de la base de datos
-            TypedQuery<Envase> query = null;
-            List<Envase> results = new ArrayList<Envase>();
+            TypedQuery<Pedido> query = null;
+            List<Pedido> results = new ArrayList<Pedido>();
 
-            // Si no hay criterio de búsqueda, devuelve todos los envases
+            // Si no hay criterio de búsqueda, devuelve todos los pedidos
             if (crit.equals("")) {
-                query = em.createQuery("select e from Envase e", Envase.class);
+                query = em.createQuery("select p from Pedido p", Pedido.class);
             } 
             // Si hay criterio de búsqueda, filtra por el campo especificado
             else {
-                query = em.createQuery("select e from Envase e where e." + field.toLowerCase() + " like '%" + crit + "%'", Envase.class);
+                query = em.createQuery("select p from Pedido p where p." + field.toLowerCase() + " like '%" + crit + "%'", Pedido.class);
             }
 
             // Obtiene los resultados de la consulta
             results = query.getResultList();
-            System.out.println("Envases encontrados: " + results.size());
+            System.out.println("Pedidos encontrados: " + results.size());
 
-            // Devuelve la lista de envases encontrados
+            // Devuelve la lista de pedidos encontrados
             return results;
         }
 
@@ -137,26 +142,36 @@ public class crudEnvase {
         return null;
     }
 
-    public TableModel listtoTMEnvase(List rs, String entit) {
+    public TableModel listtoTMPedido(List rs, String entit) {
         Vector columnNames = new Vector();
         Vector rows = new Vector();
 
-        // Nombres de campos según la entidad Envase
-        if (entit.equals("Envase")) {
-            Envase e;
+        // Nombres de campos según la entidad pedido
+        if (entit.equals("Pedido")) {
+            Pedido p;
             // Añade nombres de columnas
-            columnNames.addElement("Tipo de envase");
-            columnNames.addElement("Envase capacidad");
+            columnNames.addElement("Código de pedido");
+            columnNames.addElement("Cantidad de cerveza");
+            columnNames.addElement("Fecha de orden");
+            columnNames.addElement("Fecha de despacho");
+            columnNames.addElement("Total");
+            columnNames.addElement("Subtotal");
+            columnNames.addElement("IVA");
 
             // Itera sobre los resultados para llenar las filas de la tabla
             Iterator it = rs.iterator();
             while (it.hasNext()) {
-                e = (Envase) it.next();
+                p = (Pedido) it.next();
                 Vector newRow = new Vector();
 
                 // Añade valores a la nueva fila
-                newRow.addElement(e.getTipo_envase());
-                newRow.addElement(e.getEnvase_capacidad());
+                newRow.addElement(p.getPed_codigo());
+                newRow.addElement(p.getPed_cantidad());
+                newRow.addElement(p.getPed_forden());
+                newRow.addElement(p.getPed_fdespacho());
+                newRow.addElement(p.getPed_total());
+                newRow.addElement(p.getPed_subtotal());
+                newRow.addElement(p.getPed_iva());
                 rows.addElement(newRow);
             }
         }
@@ -165,21 +180,21 @@ public class crudEnvase {
         return new DefaultTableModel(rows, columnNames);
     }
 
-    public TableModel opBuscarEnvase(String ent, String field, String crit) {
+    public TableModel opBuscarPedido(String ent, String field, String crit) {
         TableModel tm = null;
 
-        // Busca en la entidad Envase según los criterios especificados
-        if (ent.equals("Envase")) {
-            List<Envase> res = opReadEnvase(ent, field, crit);
-            tm = listtoTMEnvase(res, ent);
+        // Busca en la entidad PEdido según los criterios especificados
+        if (ent.equals("Pedido")) {
+            List<Pedido> res = opReadPedido(ent, field, crit);
+            tm = listtoTMPedido(res, ent);
         }
 
         // Devuelve el modelo de tabla con los resultados
         return tm;
     }
 
-    public Object opBuscarEnvase1(String ent, String crit) {
-        Object e = null;
+    public Object opBuscarPedido1(String ent, String crit) {
+        Object p = null;
 
         // Abre una conexión a la base de datos
         // Cesar    
@@ -190,9 +205,9 @@ public class crudEnvase {
         // EntityManagerFactory emf= Persistence.createEntityManagerFactory("C:\\\\objectdb-2.9.0\\\\db\\\\cervezadb.odb"); 
         EntityManager em = emf.createEntityManager();
 
-        // Busca un envase específico usando su identificador (tipo_envase)
-        if (ent.equals("Envase")) {
-            e = em.find(Envase.class, crit);
+        // Busca un pedido específico usando su identificador
+        if (ent.equals("Pedido")) {
+            p = em.find(Pedido.class, crit);
         }
 
         // Cierra la conexión a la base de datos
@@ -200,11 +215,11 @@ public class crudEnvase {
         emf.close();
 
         // Devuelve el objeto encontrado
-        return e;
+        return p;
     }
 
-    public void opDeleteEnvase(String ent, String crit) {
-        Object e = null;
+    public void opDeletePedido(String ent, String crit) {
+        Object p = null;
 
         // Abre una conexión a la base de datos
         // Cesar    
@@ -218,10 +233,10 @@ public class crudEnvase {
         // Inicia la transacción
         em.getTransaction().begin();
 
-        // Si la entidad es Envase, busca el envase por su ID y lo elimina
-        if (ent.equals("Envase")) {
-            e = em.find(Envase.class, crit);
-            em.remove(e);
+        // Si la entidad es Pedido, busca el Pedido por su ID y lo elimina
+        if (ent.equals("Pedido")) {
+            p = em.find(Pedido.class, crit);
+            em.remove(p);
         }
 
         // Confirma la transacción
@@ -232,7 +247,7 @@ public class crudEnvase {
         emf.close();
 
         // Mensaje de confirmación de eliminación
-        System.out.println("Envase eliminado");
+        System.out.println("Pedido eliminado");
     }
   
 }

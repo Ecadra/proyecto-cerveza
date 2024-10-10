@@ -9,15 +9,15 @@ import javax.persistence.Persistence;
 import javax.persistence.TypedQuery;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
-import proyectoCerveza.Envase;
+import proyectoCerveza.Grano;
 
 /**
  *
  * @author ulseg
  */
-public class crudEnvase {
-    void opCreateEnvase(Envase env) {
-        Envase en;
+public class crudGrano {
+    void opCreateGrano(Grano gra) {
+        Grano gr;
         // Abre una conexión a la base de datos (crea una nueva si no existe)
         // Diferentes configuraciones de rutas para distintos usuarios:
         // Cesar    
@@ -33,9 +33,9 @@ public class crudEnvase {
         // Inicia la transacción
         em.getTransaction().begin();
 
-        // Asigna el objeto Envase y lo persiste en la base de datos
-        en = env;
-        em.persist(en);
+        // Asigna el objeto Grano y lo persiste en la base de datos
+        gr = gra;
+        em.persist(gr);
 
         // Confirma la transacción
         em.getTransaction().commit();
@@ -45,15 +45,15 @@ public class crudEnvase {
         emf.close();
 
         // Mensaje de confirmación
-        System.out.println("Envase registrado");
+        System.out.println("Grano registrado");
     }
 
-    void opUpdateEnvase(Envase env) {
-        Envase en;
+    void opUpdateGrano(Grano gra) {
+        Grano gr;
         String aux;
 
-        // Muestra el envase que está entrando a la función
-        System.out.println("Envase entra" + env);
+        // Muestra el grano que está entrando a la función
+        System.out.println("Grano entra" + gra);
 
         // Abre una conexión a la base de datos (diferentes rutas comentadas):
         // Cesar    
@@ -66,25 +66,25 @@ public class crudEnvase {
         // Crea un EntityManager
         EntityManager em = emf.createEntityManager();
 
-        // Obtiene el tipo de envase que se usará para buscar en la base de datos
-        aux = env.getTipo_envase();
+        // Obtiene el tipo de grano que se usará para buscar en la base de datos
+        aux = gra.getGra_nombre();
 
         // Inicia la transacción
         em.getTransaction().begin();
 
-        // Busca el envase en la base de datos usando el identificador (tipo_envase)
-        en = em.find(Envase.class, aux);
+        // Busca el grano en la base de datos usando el identificador 
+        gr = em.find(Grano.class, aux);
 
-        // Muestra el envase encontrado
-        System.out.println("Envase encontrado con id " + aux);
-        System.out.println(en);
+        // Muestra el grano encontrado
+        System.out.println("Grano encontrado con id " + aux);
+        System.out.println(gr);
 
-        // Actualiza la capacidad del envase
-        //en.setTipo_envase(aux);
-        en.setCapacidad_ml(env.getEnvase_capacidad());
+        // Actualiza la procedencia del grano
+        //gr.setGra_nombre(aux);
+        gr.setGra_procedencia(gra.getGra_procedencia());
 
-        // Muestra el envase modificado
-        System.out.println("Envase modificado \n" + en);
+        // Muestra el Grano modificado
+        System.out.println("Grano modificado \n" + gr);
 
         // Confirma la transacción
         em.getTransaction().commit();
@@ -94,10 +94,10 @@ public class crudEnvase {
         emf.close();
 
         // Mensaje de confirmación
-        System.out.println("Envase actualizado");
+        System.out.println("Grano actualizado");
     }
 
-    public List opReadEnvase(String ent, String field, String crit) {
+    public List opReadGrano(String ent, String field, String crit) {
 
         // Abre una conexión a la base de datos
         // Cesar    
@@ -108,25 +108,25 @@ public class crudEnvase {
         // EntityManagerFactory emf= Persistence.createEntityManagerFactory("C:\\\\objectdb-2.9.0\\\\db\\\\cervezadb.odb");           
         EntityManager em = emf.createEntityManager();
 
-        if (ent.equals("Envase")) {
+        if (ent.equals("Grano")) {
             // Consulta tipada para obtener objetos de la base de datos
-            TypedQuery<Envase> query = null;
-            List<Envase> results = new ArrayList<Envase>();
+            TypedQuery<Grano> query = null;
+            List<Grano> results = new ArrayList<Grano>();
 
-            // Si no hay criterio de búsqueda, devuelve todos los envases
+            // Si no hay criterio de búsqueda, devuelve todos los granos
             if (crit.equals("")) {
-                query = em.createQuery("select e from Envase e", Envase.class);
+                query = em.createQuery("select g from Grano g", Grano.class);
             } 
             // Si hay criterio de búsqueda, filtra por el campo especificado
             else {
-                query = em.createQuery("select e from Envase e where e." + field.toLowerCase() + " like '%" + crit + "%'", Envase.class);
+                query = em.createQuery("select g from Grano g where g." + field.toLowerCase() + " like '%" + crit + "%'", Grano.class);
             }
 
             // Obtiene los resultados de la consulta
             results = query.getResultList();
-            System.out.println("Envases encontrados: " + results.size());
+            System.out.println("Granos encontrados: " + results.size());
 
-            // Devuelve la lista de envases encontrados
+            // Devuelve la lista de granos encontrados
             return results;
         }
 
@@ -137,26 +137,27 @@ public class crudEnvase {
         return null;
     }
 
-    public TableModel listtoTMEnvase(List rs, String entit) {
+    public TableModel listtoTMGrano(List rs, String entit) {
         Vector columnNames = new Vector();
         Vector rows = new Vector();
 
-        // Nombres de campos según la entidad Envase
-        if (entit.equals("Envase")) {
-            Envase e;
+        // Nombres de campos según la entidad Grano
+        if (entit.equals("Grano")) {
+            Grano g;
+
             // Añade nombres de columnas
-            columnNames.addElement("Tipo de envase");
-            columnNames.addElement("Envase capacidad");
+            columnNames.addElement("Nombre del grano");
+            columnNames.addElement("Procedencia");
 
             // Itera sobre los resultados para llenar las filas de la tabla
             Iterator it = rs.iterator();
             while (it.hasNext()) {
-                e = (Envase) it.next();
+                g = (Grano) it.next();
                 Vector newRow = new Vector();
 
                 // Añade valores a la nueva fila
-                newRow.addElement(e.getTipo_envase());
-                newRow.addElement(e.getEnvase_capacidad());
+                newRow.addElement(g.getGra_nombre());
+                newRow.addElement(g.getGra_procedencia());
                 rows.addElement(newRow);
             }
         }
@@ -165,20 +166,20 @@ public class crudEnvase {
         return new DefaultTableModel(rows, columnNames);
     }
 
-    public TableModel opBuscarEnvase(String ent, String field, String crit) {
+    public TableModel opBuscarGrano(String ent, String field, String crit) {
         TableModel tm = null;
 
-        // Busca en la entidad Envase según los criterios especificados
-        if (ent.equals("Envase")) {
-            List<Envase> res = opReadEnvase(ent, field, crit);
-            tm = listtoTMEnvase(res, ent);
+        // Busca en la entidad grano según los criterios especificados
+        if (ent.equals("Grano")) {
+            List<Grano> res = opReadGrano(ent, field, crit);
+            tm = listtoTMGrano(res, ent);
         }
 
         // Devuelve el modelo de tabla con los resultados
         return tm;
     }
 
-    public Object opBuscarEnvase1(String ent, String crit) {
+    public Object opBuscarGrano1(String ent, String crit) {
         Object e = null;
 
         // Abre una conexión a la base de datos
@@ -190,9 +191,9 @@ public class crudEnvase {
         // EntityManagerFactory emf= Persistence.createEntityManagerFactory("C:\\\\objectdb-2.9.0\\\\db\\\\cervezadb.odb"); 
         EntityManager em = emf.createEntityManager();
 
-        // Busca un envase específico usando su identificador (tipo_envase)
-        if (ent.equals("Envase")) {
-            e = em.find(Envase.class, crit);
+        // Busca un grano específico usando su identificador 
+        if (ent.equals("Grano")) {
+            e = em.find(Grano.class, crit);
         }
 
         // Cierra la conexión a la base de datos
@@ -203,8 +204,8 @@ public class crudEnvase {
         return e;
     }
 
-    public void opDeleteEnvase(String ent, String crit) {
-        Object e = null;
+    public void opDeleteGrano(String ent, String crit) {
+        Object g = null;
 
         // Abre una conexión a la base de datos
         // Cesar    
@@ -218,10 +219,10 @@ public class crudEnvase {
         // Inicia la transacción
         em.getTransaction().begin();
 
-        // Si la entidad es Envase, busca el envase por su ID y lo elimina
-        if (ent.equals("Envase")) {
-            e = em.find(Envase.class, crit);
-            em.remove(e);
+        // Si la entidad es grano, busca el grano por su ID y lo elimina
+        if (ent.equals("Grano")) {
+            g = em.find(Grano.class, crit);
+            em.remove(g);
         }
 
         // Confirma la transacción
@@ -232,7 +233,7 @@ public class crudEnvase {
         emf.close();
 
         // Mensaje de confirmación de eliminación
-        System.out.println("Envase eliminado");
+        System.out.println("Grano eliminado");
     }
   
 }
