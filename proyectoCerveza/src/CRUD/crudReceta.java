@@ -9,15 +9,15 @@ import javax.persistence.Persistence;
 import javax.persistence.TypedQuery;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
-import proyectoCerveza.Envase;
+import proyectoCerveza.Receta;
 
 /**
  *
  * @author ulseg
  */
-public class crudEnvase {
-    void opCreateEnvase(Envase env) {
-        Envase en;
+public class crudReceta {
+    void opCreateReceta(Receta rec) {
+        Receta rc;
         // Abre una conexión a la base de datos (crea una nueva si no existe)
         // Diferentes configuraciones de rutas para distintos usuarios:
         // Cesar    
@@ -33,9 +33,9 @@ public class crudEnvase {
         // Inicia la transacción
         em.getTransaction().begin();
 
-        // Asigna el objeto Envase y lo persiste en la base de datos
-        en = env;
-        em.persist(en);
+        // Asigna el objeto Grano y lo persiste en la base de datos
+        rc = rec;
+        em.persist(rc);
 
         // Confirma la transacción
         em.getTransaction().commit();
@@ -45,15 +45,15 @@ public class crudEnvase {
         emf.close();
 
         // Mensaje de confirmación
-        System.out.println("Envase registrado");
+        System.out.println("Receta registrada");
     }
 
-    void opUpdateEnvase(Envase env) {
-        Envase en;
-        String aux;
+    void opUpdateReceta(Receta rec) {
+        Receta rc;
+        int aux;
 
-        // Muestra el envase que está entrando a la función
-        System.out.println("Envase entra" + env);
+        // Muestra la receta que está entrando a la función
+        System.out.println("Receta entra" + rec);
 
         // Abre una conexión a la base de datos (diferentes rutas comentadas):
         // Cesar    
@@ -66,25 +66,25 @@ public class crudEnvase {
         // Crea un EntityManager
         EntityManager em = emf.createEntityManager();
 
-        // Obtiene el tipo de envase que se usará para buscar en la base de datos
-        aux = env.getTipo_envase();
+        // Obtiene el tipo de receta que se usará para buscar en la base de datos
+        aux = rec.getId_receta();
 
         // Inicia la transacción
         em.getTransaction().begin();
 
-        // Busca el envase en la base de datos usando el identificador (tipo_envase)
-        en = em.find(Envase.class, aux);
+        // Busca la receta en la base de datos usando el identificador 
+        rc = em.find(Receta.class, aux);
 
-        // Muestra el envase encontrado
-        System.out.println("Envase encontrado con id " + aux);
-        System.out.println(en);
+        // Muestra la receta encontrado
+        System.out.println("Receta encontrada con id " + aux);
+        System.out.println(rc);
 
-        // Actualiza la capacidad del envase
-        //en.setTipo_envase(aux);
-        en.setCapacidad_ml(env.getEnvase_capacidad());
+        // Actualiza la procedencia del grano
+        //gr.setGra_nombre(aux);
+        rc.setRec_cantidad(rec.getRec_cantidad());
 
-        // Muestra el envase modificado
-        System.out.println("Envase modificado \n" + en);
+        // Muestra la receta modificado
+        System.out.println("Receta modificada \n" + rc);
 
         // Confirma la transacción
         em.getTransaction().commit();
@@ -94,10 +94,10 @@ public class crudEnvase {
         emf.close();
 
         // Mensaje de confirmación
-        System.out.println("Envase actualizado");
+        System.out.println("Receta actualizada");
     }
 
-    public List opReadEnvase(String ent, String field, String crit) {
+    public List opReadReceta(String ent, String field, String crit) {
 
         // Abre una conexión a la base de datos
         // Cesar    
@@ -108,25 +108,26 @@ public class crudEnvase {
         // EntityManagerFactory emf= Persistence.createEntityManagerFactory("C:\\\\objectdb-2.9.0\\\\db\\\\cervezadb.odb");           
         EntityManager em = emf.createEntityManager();
 
-        if (ent.equals("Envase")) {
+        if (ent.equals("Receta")) {
             // Consulta tipada para obtener objetos de la base de datos
-            TypedQuery<Envase> query = null;
-            List<Envase> results = new ArrayList<Envase>();
+            TypedQuery<Receta> query = null;
+            List<Receta> results = new ArrayList<Receta>();
 
-            // Si no hay criterio de búsqueda, devuelve todos los envases
+            // Si no hay criterio de búsqueda, devuelve todos las recetas
             if (crit.equals("")) {
-                query = em.createQuery("select e from Envase e", Envase.class);
+                query = em.createQuery("select r from Receta r", Receta.class);
             } 
             // Si hay criterio de búsqueda, filtra por el campo especificado
             else {
-                query = em.createQuery("select e from Envase e where e." + field.toLowerCase() + " like '%" + crit + "%'", Envase.class);
+                query = em.createQuery("select r from Receta r where r." + field.toLowerCase() 
+                        + " like '%" + crit + "%'", Receta.class);
             }
 
             // Obtiene los resultados de la consulta
             results = query.getResultList();
-            System.out.println("Envases encontrados: " + results.size());
+            System.out.println("Recetas encontradas: " + results.size());
 
-            // Devuelve la lista de envases encontrados
+            // Devuelve la lista de recetas encontrados
             return results;
         }
 
@@ -137,26 +138,27 @@ public class crudEnvase {
         return null;
     }
 
-    public TableModel listtoTMEnvase(List rs, String entit) {
+    public TableModel listtoTMReceta(List rs, String entit) {
         Vector columnNames = new Vector();
         Vector rows = new Vector();
 
-        // Nombres de campos según la entidad Envase
-        if (entit.equals("Envase")) {
-            Envase e;
+        // Nombres de campos según la entidad Receta
+        if (entit.equals("Receta")) {
+            Receta r;
+
             // Añade nombres de columnas
-            columnNames.addElement("Tipo de envase");
-            columnNames.addElement("Envase capacidad");
+            columnNames.addElement("Id de la receta");
+            columnNames.addElement("Cantidad");
 
             // Itera sobre los resultados para llenar las filas de la tabla
             Iterator it = rs.iterator();
             while (it.hasNext()) {
-                e = (Envase) it.next();
+                r = (Receta) it.next();
                 Vector newRow = new Vector();
 
                 // Añade valores a la nueva fila
-                newRow.addElement(e.getTipo_envase());
-                newRow.addElement(e.getEnvase_capacidad());
+                newRow.addElement(r.getId_receta());
+                newRow.addElement(r.getRec_cantidad());
                 rows.addElement(newRow);
             }
         }
@@ -165,21 +167,21 @@ public class crudEnvase {
         return new DefaultTableModel(rows, columnNames);
     }
 
-    public TableModel opBuscarEnvase(String ent, String field, String crit) {
+    public TableModel opBuscarReceta(String ent, String field, String crit) {
         TableModel tm = null;
 
-        // Busca en la entidad Envase según los criterios especificados
-        if (ent.equals("Envase")) {
-            List<Envase> res = opReadEnvase(ent, field, crit);
-            tm = listtoTMEnvase(res, ent);
+        // Busca en la entidad receta según los criterios especificados
+        if (ent.equals("Receta")) {
+            List<Receta> res = opReadReceta(ent, field, crit);
+            tm = listtoTMReceta(res, ent);
         }
 
         // Devuelve el modelo de tabla con los resultados
         return tm;
     }
 
-    public Object opBuscarEnvase1(String ent, String crit) {
-        Object e = null;
+    public Object opBuscarReceta1(String ent, String crit) {
+        Object r = null;
 
         // Abre una conexión a la base de datos
         // Cesar    
@@ -190,9 +192,9 @@ public class crudEnvase {
         // EntityManagerFactory emf= Persistence.createEntityManagerFactory("C:\\\\objectdb-2.9.0\\\\db\\\\cervezadb.odb"); 
         EntityManager em = emf.createEntityManager();
 
-        // Busca un envase específico usando su identificador (tipo_envase)
-        if (ent.equals("Envase")) {
-            e = em.find(Envase.class, crit);
+        // Busca una receta específica usando su identificador 
+        if (ent.equals("Receta")) {
+            r = em.find(Receta.class, crit);
         }
 
         // Cierra la conexión a la base de datos
@@ -200,11 +202,11 @@ public class crudEnvase {
         emf.close();
 
         // Devuelve el objeto encontrado
-        return e;
+        return r;
     }
 
-    public void opDeleteEnvase(String ent, String crit) {
-        Object e = null;
+    public void opDeleteReceta(String ent, String crit) {
+        Object r = null;
 
         // Abre una conexión a la base de datos
         // Cesar    
@@ -218,10 +220,10 @@ public class crudEnvase {
         // Inicia la transacción
         em.getTransaction().begin();
 
-        // Si la entidad es Envase, busca el envase por su ID y lo elimina
-        if (ent.equals("Envase")) {
-            e = em.find(Envase.class, crit);
-            em.remove(e);
+        // Si la entidad es receta, busca la receta por su ID y lo elimina
+        if (ent.equals("Receta")) {
+            r = em.find(Receta.class, crit);
+            em.remove(r);
         }
 
         // Confirma la transacción
@@ -232,7 +234,7 @@ public class crudEnvase {
         emf.close();
 
         // Mensaje de confirmación de eliminación
-        System.out.println("Envase eliminado");
+        System.out.println("Receta eliminada");
     }
   
 }
