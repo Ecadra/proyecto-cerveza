@@ -19,7 +19,7 @@ public class RelEnvPre {
         em.getTransaction().begin();
             
         Envase env4 = new Envase("Botella vidrio", (short)1100);
-        Presentacion p1 = em.find(Presentacion.class, "1");   
+        Presentacion p1 = em.find(Presentacion.class, 1);   
         
         System.out.println(p1);
         env4.formEnv_pre(p1);
