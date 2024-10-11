@@ -11,72 +11,67 @@ import javax.persistence.Persistence;
 import javax.persistence.TypedQuery;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
-import proyectoCerveza.Inventario;
+import proyectoCerveza.Lote;
 
-
-public class crudInventario {
+public class crudLote {
     
-    void opCreateInventario(Inventario invv){
+    void opCreateLote(Lote lott){
+        Lote lot;
         
-        Inventario inv;
         EntityManagerFactory emf= Persistence.createEntityManagerFactory("D:\\Documentos HDD\\Proyecto Neatbeans\\Librerias\\objectdb-2.9.0\\db\\cervezadb.odb");
         EntityManager em = emf.createEntityManager();
-        em.getTransaction().begin();
         
-        inv=invv;
-        em.persist(inv);
-        
+        lot=lott;
+        em.persist(lot);
         em.getTransaction().commit();
         em.close();
         emf.close();
-        System.out.print("Inventario registrado");
+        System.out.print("Lote registrado");
     }
     
-    void opUpdateInventario(Inventario invv){
-        Inventario inv;
+    void opUpdateLote(Lote lott){
+        Lote lot;
         int aux=-1;
         EntityManagerFactory emf= Persistence.createEntityManagerFactory("D:\\Documentos HDD\\Proyecto Neatbeans\\Librerias\\objectdb-2.9.0\\db\\cervezadb.odb");
         EntityManager em = emf.createEntityManager();
-        aux=invv.getInv_cod();
+        aux=lott.getLote_cod();
         em.getTransaction().begin();
         
-        inv = em.find(Inventario.class, aux);//buscar la clase 
-        System.out.print("Invenrario encontrado con el id "+aux);
-        System.out.print(inv);
-        inv.setExistencia(invv.isExistencia());
-        inv.setCantidad(invv.getCantidad());
-        inv.setPrecio_unitario(invv.getPrecio_unitario());
+        lot=em.find(Lote.class, aux);
+        System.out.print("Lote encontrado con el ID: " + aux);
+        System.out.print(lot);
+        lot.setCantidad(lott.getCantidad());
+        lot.setLote_fechaProduccion(lott.getLote_fechaProduccion());
+        lot.setLote_fechaCaducidad(lott.getLote_fechaCaducidad());
+       
         
-        System.out.print("Inventario modificado \n"+inv);
+        System.out.print("Lote modificado \n"+lot);
         
         em.getTransaction().commit();
         em.close();
         emf.close();
-        System.out.print("Inventario actualizado");
-
+        System.out.print("Lote actualizado");
     }
     
     public List opRead(String ent, String field, String crit){
-        
         EntityManagerFactory emf= Persistence.createEntityManagerFactory("D:\\Documentos HDD\\Proyecto Neatbeans\\Librerias\\objectdb-2.9.0\\db\\cervezadb.odb");
         EntityManager em = emf.createEntityManager();
         
-        if(ent.equals("Inventario")){
-            TypedQuery<Inventario>query=null;//Donde se va a guardar la Query
-            List<Inventario>results=new ArrayList<Inventario>();//Resultados
+        if(ent.equals("Lote")){
+            TypedQuery<Lote>query=null;
+            List<Lote>results=new ArrayList<Lote>();
             
             if(crit.equals(""))
             {
-                query=em.createQuery("Select c From Inventario c",Inventario.class);
-                
+                query=em.createQuery("Select c From Lote c",Lote.class);
             }else{
-                query=em.createQuery("Select c FROM Inventario c WHERE c."+field.toLowerCase() + "LIKE '%"+crit+"%'", Inventario.class);
+                 query=em.createQuery("Select c FROM Lote c WHERE c."+field.toLowerCase() + "LIKE '%"+crit+"%'", Lote.class);
             }
-            results=query.getResultList();//Se guardan los resultados
+            results=query.getResultList();
             System.out.print("Objetos encontrados "+ results.size());
             return results;
-            
         }
+        
         em.close();
         emf.close();
         return null;
@@ -85,36 +80,38 @@ public class crudInventario {
     public TableModel listToTM(List rs, String entit){
         Vector columnNames=new Vector();
         Vector rows = new Vector();
-        Inventario inv;
+        Lote lot;
         
+        columnNames.addElement("Código de lote");
         columnNames.addElement("Cantidad");
-        columnNames.addElement("Existencia");
-        columnNames.addElement("Precio Unitario");
+        columnNames.addElement("Fecha de producción");
+        columnNames.addElement("Fecha de caducidad");
         
         Iterator it= rs.iterator();
         
         while(it.hasNext())
         {
-            inv=(Inventario)it.next();
+            lot=(Lote)it.next();
             Vector newRow=new Vector();
             
-            newRow.addElement(inv.getCantidad());
-            newRow.addElement(inv.isExistencia());
-            newRow.addElement(inv.getPrecio_unitario());
+            newRow.addElement(lot.getLote_cod());
+            newRow.addElement(lot.getCantidad());
+            newRow.addElement(lot.getLote_fechaProduccion());
+            newRow.addElement(lot.getLote_fechaCaducidad());
             rows.addElement(newRow);
         }
         
         return new DefaultTableModel(rows,columnNames);
     }
     
-    public Object opBuscar(String ent, String field, String crit){
+       public Object opBuscar(String ent, String field, String crit){
         TableModel tm=null;
         
-        List<Inventario> res=opRead(ent,field,crit);
+        List<Lote> res=opRead(ent,field,crit);
         tm=listToTM(res,ent);
         return tm;
     }
-    
+       
     public void opDelete(String ent, String crit){
         Object c= null;
         
@@ -122,7 +119,7 @@ public class crudInventario {
         EntityManager em = emf.createEntityManager();
         em.getTransaction().begin();
         
-        c=em.find(Inventario.class, crit);
+        c=em.find(Lote.class, crit);
         em.remove(c);
         
         em.getTransaction().commit();
