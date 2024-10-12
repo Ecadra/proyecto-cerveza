@@ -20,7 +20,7 @@ import proyectoCerveza.Marca;
  *
  * @author edwin-993
  */
-public class crudCerveza {
+public class crudGeneralCEM {
     public static void opCreateObjeto(Object objeto){
         //Se crea la conexion a la base de datos (Si no existe, se crea)
         EntityManagerFactory emf = Persistence.createEntityManagerFactory("");
