@@ -21,7 +21,7 @@ import proyectoCerveza.Marca;
  * @author edwin-993
  */
 public class crudGeneralCEM {
-    public static void opCreateObjeto(String entidad,Object objeto){
+    public void opPersistObjeto(String entidad,Object objeto){
         //Se crea la conexion a la base de datos (Si no existe, se crea)
         //Cesar    
         //EntityManagerFactory emf = Persistence.createEntityManagerFactory("D:\\Documentos HDD\\Proyecto Neatbeans\\Librerias\\objectdb-2.9.0\\db\\cervezadb.odb");
@@ -33,21 +33,38 @@ public class crudGeneralCEM {
         EntityManagerFactory emf = Persistence.createEntityManagerFactory("/home/edwin-993/cervezaodb/cervezadb.odb");
         EntityManager em = emf.createEntityManager();
         
-        em.getTransaction().begin();
-        
-        switch(entidad){
-            case"Cerveza":
-                em.persist(objeto);
-                em.getTransaction().commit();
+        switch(entidad){//Switch para crear los 3 objetos (Cerveza, Marca y Expendio)
+            case"Cerveza": //Creacion del objeto cerveza (Incluyendo la relacion bidireccional con marca)
+                Cerveza cervezaNueva = (Cerveza)objeto;
                 
-        }
-        em.persist(objeto);
-        em.getTransaction().commit();
-        em.close();
-        emf.close();
-        JOptionPane.showMessageDialog(null, "Se ha vuelto persistente la cerveza:\n" + objeto.toString());
+                //Se busca la marca con la que se relaciono el objeto en la interfaz
+                Marca mar = em.find(Marca.class, cervezaNueva.getCer_mar().getId_marca());
+                
+                //NO ES NECESARIO VERIFICAR LA EXISTENCIA DE LA MARCA PORQUE LA COMBO SE RELLENA CON OBJETOS EXISTENTES
+                
+                //Relacionar la nueva cerveza con una marca ya existente
+                cervezaNueva.formCer_mar(mar);  // Se establece la relacion de Cerveza a Marca
+                mar.formMar_cer(cervezaNueva);  // Se establece la relacion Marca a Cerveza
+                
+                em.getTransaction().begin();//Inicia la transaccion
+                //Persistencia de los objetos
+                em.persist(cervezaNueva);
+                em.persist(mar);
+                em.getTransaction().commit();//Se compromete la transaccion con la base de datos
+                
+                //Se cierra la conexion
+                em.close();
+                emf.close();
+                
+                JOptionPane.showMessageDialog(null, "Se ha guardado la cerveza" + cervezaNueva); //Se manda mensaje de confirmacion
+                break;
+            case"Marca":
+                
+                    break;
+            }
+        //JOptionPane.showMessageDialog(null, "Se ha vuelto persistente la cerveza:\n" + objeto.toString());
     }
-    public  void opUpdateObjeto(Cerveza cerveza){
+    public void opUpdateObjeto(Cerveza cerveza){
         Cerveza cerActualizar;
         //Cesar    
         //EntityManagerFactory emf = Persistence.createEntityManagerFactory("D:\\Documentos HDD\\Proyecto Neatbeans\\Librerias\\objectdb-2.9.0\\db\\cervezadb.odb");
@@ -79,7 +96,7 @@ public class crudGeneralCEM {
             System.out.println("Se ha encontrado la cerveza \n" + cerveza.toString());
             cerActualizar.setCer_graduacion(cerveza.getCer_graduacion());
             cerActualizar.setCer_nombre(cerveza.getCer_nombre());
-            //Se compromete la relacion
+            //Se compromete la transaccion
             em.getTransaction().commit(); 
             //Se cierran las conexiones a la base de datos
             em.close();

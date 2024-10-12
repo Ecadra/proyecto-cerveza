@@ -17,8 +17,7 @@ import proyectoCerveza.Marca;
 //PASO LA PRUEBA
 public class RelCerMar {
     public static void main(String[] args){
-         EntityManagerFactory emf= Persistence.createEntityManagerFactory("/home/edwin-993/cervezaodb/cervezadb.odb");
-        
+        EntityManagerFactory emf= Persistence.createEntityManagerFactory("/home/edwin-993/cervezaodb/cervezadb.odb");
         EntityManager em = emf.createEntityManager();
         em.getTransaction().begin();
   
