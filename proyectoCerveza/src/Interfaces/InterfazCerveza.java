@@ -257,6 +257,11 @@ public class InterfazCerveza extends javax.swing.JFrame {
         );
 
         btnEditar.setText("Guardar cambios");
+        btnEditar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnEditarActionPerformed(evt);
+            }
+        });
 
         btnLimpiar1.setText("Limpiar campos");
 
@@ -442,15 +447,14 @@ public class InterfazCerveza extends javax.swing.JFrame {
                 .addContainerGap()
                 .addComponent(tbdFunciones, javax.swing.GroupLayout.DEFAULT_SIZE, 244, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(txtCriterio, javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(cmbFiltro, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(layout.createSequentialGroup()
                         .addGap(6, 6, 6)
-                        .addComponent(jLabel13, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addComponent(cmbFiltro)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(6, 6, 6)
-                        .addComponent(jLabel16, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addComponent(txtCriterio))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel13, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jLabel16, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 167, Short.MAX_VALUE)
                 .addContainerGap())
@@ -523,6 +527,28 @@ public class InterfazCerveza extends javax.swing.JFrame {
         // TODO add your handling code here:
         actualizarTabla();
     }//GEN-LAST:event_txtCriterioKeyReleased
+    private boolean validacionEditar(){
+        if(txtNombre1.getText().isEmpty() || txtGraduacion1.getText().isEmpty() ||
+                cmbMarca1.getSelectedIndex()==-1){
+            return false;
+        }
+        return true;
+    }
+    private void btnEditarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditarActionPerformed
+
+        //Se crea el objeto con los datos nuevos
+        if(validacionEditar()){
+            try{
+                Cerveza nuevosDatosCer = new Cerveza(Integer.parseInt(txtId1.getText()),
+                    txtNombre1.getText(),
+                    Float.parseFloat(txtGraduacion1.getText()));
+                operacionesCRUD.opUpdateObjeto("Cerveza", nuevosDatosCer);
+            }catch(NumberFormatException err){
+                JOptionPane.showMessageDialog(null, "Los datos introducidos no son validos",
+                        "Error en InterfazCerveza -> btnEditarActionPerformed",JOptionPane.ERROR_MESSAGE);
+            }
+        }
+    }//GEN-LAST:event_btnEditarActionPerformed
 
     /**
      * @param args the command line arguments

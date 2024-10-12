@@ -211,6 +211,18 @@ public class crudGeneralCEM {
                 em.close();
                 emf.close();
                 return resultadosMarca;
+            case "Fabricante":
+                //Se recuperan los objetos Fabricante desde la base de datos
+                TypedQuery<Fabricante> consultaFabricante = null;
+                List<Fabricante> resultadosFabricante = new ArrayList<Fabricante>();
+                consultaFabricante = criterio.equals("")
+                        ? em.createQuery("SELECT c FROM Fabricante c", Fabricante.class)
+                        : em.createQuery("SELECT c FROM Fabricante c WHERE c." + field.toLowerCase() + " LIKE '%" + criterio + "%'", Fabricante.class);
+                resultadosFabricante = consultaFabricante.getResultList();
+                System.out.println("Se han recuperado satisfactoriamente " + resultadosFabricante.size() + " Fabricantes");
+                em.close();
+                emf.close();
+                return resultadosFabricante;
             default:
                 JOptionPane.showMessageDialog(null,
                         "La clase que se intenta buscar no se encuentra registrada en este metodo",
@@ -266,7 +278,7 @@ public class crudGeneralCEM {
                 break;
             case "Marca":
                 Marca Marca;
-                columnNames.addElement("Nombre");
+                columnNames.addElement("Nombre de la marca");
                 Iterator itMar = resultados.iterator();
                 while (itMar.hasNext()) {
                     Marca = (Marca) itMar.next();
@@ -334,6 +346,11 @@ public class crudGeneralCEM {
                 return objeto;
             case "Marca":
                 objeto = em.find(Marca.class, nameToID("Marca", criterio)); //Marca se busca mediante el nombreí
+                em.close();
+                emf.close();
+                return objeto;
+            case"Fabricante":
+                objeto = em.find(Fabricante.class, criterio); //Marca se busca mediante el nombreí
                 em.close();
                 emf.close();
                 return objeto;
@@ -411,7 +428,7 @@ public class crudGeneralCEM {
                 TypedQuery<Integer> consultaExpendio = null; //Objeto para la consulta
                 List<Integer> resultadosExpendio = new ArrayList<Integer>();//Lista para los resultados
 
-                consultaExpendio = em.createQuery("SELECT MAX(c.id_Integer) FROM Integer c", Integer.class);
+                consultaExpendio = em.createQuery("SELECT MAX(c.id_expendio) FROM Integer c", Integer.class);
                 resultadosExpendio = consultaExpendio.getResultList();
 
                 System.out.println("Se han recuperado satisfactoriamente " + resultadosExpendio.size() + " Expendios");
@@ -424,7 +441,7 @@ public class crudGeneralCEM {
                 TypedQuery<Integer> consultaMarca = null; //Objeto para la consulta
                 List<Integer> resultadosMarca = new ArrayList<Integer>();//Lista para los resultados
 
-                consultaMarca = em.createQuery("SELECT MAX(c.id_Marca) FROM Marca c", Integer.class);
+                consultaMarca = em.createQuery("SELECT MAX(c.id_marca) FROM Marca c", Integer.class);
                 resultadosMarca = consultaMarca.getResultList();
 
                 System.out.println("Se han recuperado satisfactoriamente " + resultadosMarca.size() + " Marcas");
