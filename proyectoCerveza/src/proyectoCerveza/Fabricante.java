@@ -5,8 +5,8 @@
 package proyectoCerveza;
 
 import java.io.Serializable;
-import javax.persistence.*;
 import java.util.*;
+import javax.persistence.*;
 
 /**
  *
@@ -44,11 +44,8 @@ import java.util.*;
   @Override
    public String toString() {
     return String.format("\n-----\nNombre: %s "
-        + "\nContacto: %s "
-        + "\nNúmero de sedes: %d "
-        + "\nMarcas: %d ",
-    this.fab_nombre, this.fab_contacto,
-    this.getFab_se().size(), this.getFab_mar().size()); // Cambiado a .size()
+        + "\nContacto: %s ",
+    this.fab_nombre, this.fab_contacto);
     }
 
  
