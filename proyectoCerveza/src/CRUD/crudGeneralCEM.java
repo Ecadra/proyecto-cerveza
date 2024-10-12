@@ -105,26 +105,58 @@ public class crudGeneralCEM {
         EntityManager em = emf.createEntityManager();
         switch (entidad) {
             case "Cerveza":
-                Cerveza nuevosDatos= (Cerveza) objeto;
+                Cerveza nuevosDatosCer= (Cerveza) objeto;
                 Cerveza cerActualizar;
                 
                 //Inicia la transaccion con la base de datos
                 em.getTransaction().begin();
                 
-                //Se busca la nuevosDatos a actualizar mediante el ID
-                cerActualizar = em.find(Cerveza.class, nuevosDatos.getId_cerveza());
+                //Se busca la nuevosDatosCer a actualizar mediante el ID
+                cerActualizar = em.find(Cerveza.class, nuevosDatosCer.getId_cerveza());
                 
-                //En caso de que se encuentre la cerveza se notifica por consola y se actualizan los datos de la nuevosDatos (Excluendo las relaciones del objeto)
+                //En caso de que se encuentre la cerveza se notifica por consola y se actualizan los datos de la nuevosDatosCer (Excluendo las relaciones del objeto)
                 System.out.println("Se ha encontrado la cerveza a actualizar.\n"
-                        + "Datos anteriores:  \n" + nuevosDatos);
-                cerActualizar.setCer_graduacion(nuevosDatos.getCer_graduacion());
-                cerActualizar.setCer_nombre(nuevosDatos.getCer_nombre());
+                        + "Datos anteriores:  \n" + nuevosDatosCer);
+                cerActualizar.setCer_graduacion(nuevosDatosCer.getCer_graduacion());
+                cerActualizar.setCer_nombre(nuevosDatosCer.getCer_nombre());
                 //Se compromete la transaccion
                 em.getTransaction().commit();
                 //Se cierran las conexiones a la base de datos
                 em.close();
                 emf.close();
                 break;
+            case "Marca":
+                Marca nuevosDatosMar = (Marca) objeto;
+                Marca marActualizar;
+                em.getTransaction().begin();
+                
+                marActualizar = em.find(Marca.class, nuevosDatosMar.getId_marca());
+                
+                System.out.println("Se ha encontrado la marca a actualizar. \n"
+                        + "Datos anteriores: \n" + nuevosDatosMar);
+                
+                marActualizar.setMar_nombre(nuevosDatosMar.getMar_nombre());
+                
+                em.getTransaction().commit();
+                em.close();
+                emf.close();
+                break;
+            case"Expendio":
+                Expendio nuevosDatosExp = (Expendio) objeto;
+                Expendio expActualizar;
+                em.getTransaction().begin();
+
+                expActualizar = em.find(Expendio.class, nuevosDatosExp.getExp_nombre());
+
+                System.out.println("Se ha encontrado la marca a actualizar. \n"
+                        + "Datos anteriores: \n" + nuevosDatosExp);
+
+                expActualizar.setExp_nombre(nuevosDatosExp.getExp_nombre());
+
+                em.getTransaction().commit();
+                em.close();
+                emf.close();
+            break;
         }
 
     }
