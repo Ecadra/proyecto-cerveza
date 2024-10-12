@@ -17,6 +17,7 @@ import proyectoCerveza.Fabricante;
  * @author Xim
  */
 public class crudFabricante {
+    
     void opCreateFabricante(Fabricante fab) {
         Fabricante fa;
         // Open a database connection
