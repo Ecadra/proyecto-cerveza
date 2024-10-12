@@ -223,6 +223,18 @@ public class crudGeneralCEM {
                 em.close();
                 emf.close();
                 return resultadosFabricante;
+            case "Inventario":
+                //Se recuperan los objetos Inventario desde la base de datos
+                TypedQuery<Inventario> consultaInventario = null;
+                List<Inventario> resultadosInventario = new ArrayList<Inventario>();
+                consultaInventario = criterio.equals("")
+                        ? em.createQuery("SELECT c FROM Inventario c", Inventario.class)
+                        : em.createQuery("SELECT c FROM Inventario c WHERE c." + field.toLowerCase() + " LIKE '%" + criterio + "%'", Inventario.class);
+                resultadosInventario = consultaInventario.getResultList();
+                System.out.println("Se han recuperado satisfactoriamente " + resultadosInventario.size() + " Inventarios");
+                em.close();
+                emf.close();
+                return resultadosInventario;
             default:
                 JOptionPane.showMessageDialog(null,
                         "La clase que se intenta buscar no se encuentra registrada en este metodo",
@@ -311,8 +323,24 @@ public class crudGeneralCEM {
             }
         }
         if (ent.equals("Expendio")) {
-            List<Expendio> resultados = opReadObjetos(ent, field, criterio);
-            tm = listToTM(resultados, ent);
+            List<Expendio> resultadosExpendio;
+            switch(field){
+                case "Nombre":
+                 resultadosExpendio = opReadObjetos(ent, "exp_nombre", criterio);
+                 tm = listToTM(resultadosExpendio, ent);
+                 break;
+             case "RFC":
+                 resultadosExpendio = opReadObjetos(ent, "exp_graduacion", criterio);
+                 tm = listToTM(resultadosExpendio, ent);
+                 break;
+             case "Numero de telefono":
+                 resultadosExpendio = opReadObjetos(ent,"exp_telefono",criterio);
+             default:
+                 resultadosExpendio = opReadObjetos(ent, field, criterio);
+                 tm = listToTM(resultadosExpendio, ent);
+                 break;
+
+            }
         }
         if (ent.equals("Marca")) {
             List<Marca> resultados = opReadObjetos(ent, field, criterio);
@@ -351,6 +379,12 @@ public class crudGeneralCEM {
                 return objeto;
             case"Fabricante":
                 objeto = em.find(Fabricante.class, criterio); //Marca se busca mediante el nombreí
+                em.close();
+                emf.close();
+                return objeto;
+            case"Inventario":
+                int id = Integer.parseInt(criterio);
+                objeto = em.find(Inventario.class,id); //Marca se busca mediante el nombreí
                 em.close();
                 emf.close();
                 return objeto;
@@ -428,7 +462,7 @@ public class crudGeneralCEM {
                 TypedQuery<Integer> consultaExpendio = null; //Objeto para la consulta
                 List<Integer> resultadosExpendio = new ArrayList<Integer>();//Lista para los resultados
 
-                consultaExpendio = em.createQuery("SELECT MAX(c.id_expendio) FROM Integer c", Integer.class);
+                consultaExpendio = em.createQuery("SELECT MAX(c.id_expendio) FROM Expendio c", Integer.class);
                 resultadosExpendio = consultaExpendio.getResultList();
 
                 System.out.println("Se han recuperado satisfactoriamente " + resultadosExpendio.size() + " Expendios");
