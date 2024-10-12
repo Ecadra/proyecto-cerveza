@@ -5,7 +5,10 @@
 package Interfaces;
 
 import CRUD.crudGeneralCEM;
+import java.util.List;
+import javax.swing.JOptionPane;
 import proyectoCerveza.Cerveza;
+import proyectoCerveza.Marca;
 
 /**
  *
@@ -19,6 +22,9 @@ public class InterfazCerveza extends javax.swing.JFrame {
     private crudGeneralCEM operacionesCRUD = new crudGeneralCEM();
     public InterfazCerveza() {
         initComponents();
+        cargarMarcas();
+        txtId.setText((operacionesCRUD.opMaxID("Cerveza")+1)+"");
+        tblRegistros.setModel(operacionesCRUD.opBuscar("Cerveza", "", ""));
     }
 
     /**
@@ -30,6 +36,8 @@ public class InterfazCerveza extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jLabel14 = new javax.swing.JLabel();
+        jLabel15 = new javax.swing.JLabel();
         tbdFunciones = new javax.swing.JTabbedPane();
         jPanel1 = new javax.swing.JPanel();
         jPanel2 = new javax.swing.JPanel();
@@ -38,7 +46,7 @@ public class InterfazCerveza extends javax.swing.JFrame {
         jLabel2 = new javax.swing.JLabel();
         txtGraduacion = new javax.swing.JTextField();
         jLabel3 = new javax.swing.JLabel();
-        jComboBox1 = new javax.swing.JComboBox<>();
+        cmbMarca = new javax.swing.JComboBox<>();
         jLabel10 = new javax.swing.JLabel();
         txtId = new javax.swing.JTextField();
         btnRegistrar = new javax.swing.JButton();
@@ -50,7 +58,7 @@ public class InterfazCerveza extends javax.swing.JFrame {
         jLabel5 = new javax.swing.JLabel();
         txtGraduacion1 = new javax.swing.JTextField();
         jLabel6 = new javax.swing.JLabel();
-        jComboBox2 = new javax.swing.JComboBox<>();
+        cmbMarca1 = new javax.swing.JComboBox<>();
         jLabel11 = new javax.swing.JLabel();
         txtId1 = new javax.swing.JTextField();
         btnEditar = new javax.swing.JButton();
@@ -62,13 +70,21 @@ public class InterfazCerveza extends javax.swing.JFrame {
         jLabel8 = new javax.swing.JLabel();
         txtGraduacion2 = new javax.swing.JTextField();
         jLabel9 = new javax.swing.JLabel();
-        jComboBox3 = new javax.swing.JComboBox<>();
+        cmbMarca2 = new javax.swing.JComboBox<>();
         jLabel12 = new javax.swing.JLabel();
         txtId2 = new javax.swing.JTextField();
         btnEliminar = new javax.swing.JButton();
         btnLimpiar2 = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         tblRegistros = new javax.swing.JTable();
+        jLabel13 = new javax.swing.JLabel();
+        cmbFiltro = new javax.swing.JComboBox<>();
+        jLabel16 = new javax.swing.JLabel();
+        txtCriterio = new javax.swing.JTextField();
+
+        jLabel14.setText("jLabel14");
+
+        jLabel15.setText("jLabel15");
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -87,10 +103,9 @@ public class InterfazCerveza extends javax.swing.JFrame {
 
         jLabel3.setText("Marca:");
 
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-
         jLabel10.setText("Identificador:");
 
+        txtId.setEditable(false);
         txtId.setText("Identificador");
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
@@ -113,7 +128,7 @@ public class InterfazCerveza extends javax.swing.JFrame {
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(txtNombre)
                             .addComponent(txtGraduacion)
-                            .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 157, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                            .addComponent(cmbMarca, javax.swing.GroupLayout.PREFERRED_SIZE, 157, javax.swing.GroupLayout.PREFERRED_SIZE))))
                 .addGap(80, 80, 80))
         );
         jPanel2Layout.setVerticalGroup(
@@ -134,7 +149,7 @@ public class InterfazCerveza extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel3)
-                    .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(cmbMarca, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -154,7 +169,7 @@ public class InterfazCerveza extends javax.swing.JFrame {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(btnRegistrar)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -165,12 +180,12 @@ public class InterfazCerveza extends javax.swing.JFrame {
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnRegistrar)
                     .addComponent(btnLimpiar))
-                .addContainerGap())
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         tbdFunciones.addTab("Insertar", jPanel1);
@@ -188,7 +203,7 @@ public class InterfazCerveza extends javax.swing.JFrame {
 
         jLabel6.setText("Marca:");
 
-        jComboBox2.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        cmbMarca1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
         jLabel11.setText("Identificador:");
 
@@ -211,7 +226,7 @@ public class InterfazCerveza extends javax.swing.JFrame {
                     .addComponent(txtId1)
                     .addComponent(txtNombre1, javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(txtGraduacion1, javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jComboBox2, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(cmbMarca1, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addGap(80, 80, 80))
         );
         jPanel4Layout.setVerticalGroup(
@@ -231,7 +246,7 @@ public class InterfazCerveza extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel6)
-                    .addComponent(jComboBox2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(cmbMarca1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(8, Short.MAX_VALUE))
         );
 
@@ -246,7 +261,7 @@ public class InterfazCerveza extends javax.swing.JFrame {
             .addGroup(jPanel3Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(jPanel3Layout.createSequentialGroup()
                         .addComponent(btnEditar)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -257,12 +272,12 @@ public class InterfazCerveza extends javax.swing.JFrame {
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel3Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnEditar)
                     .addComponent(btnLimpiar1))
-                .addContainerGap())
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         tbdFunciones.addTab("Editar", jPanel3);
@@ -280,7 +295,7 @@ public class InterfazCerveza extends javax.swing.JFrame {
 
         jLabel9.setText("Marca:");
 
-        jComboBox3.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        cmbMarca2.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
         jLabel12.setText("Identificador:");
 
@@ -303,7 +318,7 @@ public class InterfazCerveza extends javax.swing.JFrame {
                     .addComponent(txtId2)
                     .addComponent(txtNombre2, javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(txtGraduacion2, javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jComboBox3, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(cmbMarca2, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addGap(80, 80, 80))
         );
         jPanel6Layout.setVerticalGroup(
@@ -323,7 +338,7 @@ public class InterfazCerveza extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel9)
-                    .addComponent(jComboBox3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(cmbMarca2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(8, Short.MAX_VALUE))
         );
 
@@ -338,7 +353,7 @@ public class InterfazCerveza extends javax.swing.JFrame {
             .addGroup(jPanel5Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jPanel6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jPanel6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(jPanel5Layout.createSequentialGroup()
                         .addComponent(btnEliminar)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -349,12 +364,12 @@ public class InterfazCerveza extends javax.swing.JFrame {
             jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel5Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jPanel6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jPanel6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnEliminar)
                     .addComponent(btnLimpiar2))
-                .addContainerGap())
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         tbdFunciones.addTab("Eliminar", jPanel5);
@@ -372,6 +387,13 @@ public class InterfazCerveza extends javax.swing.JFrame {
         ));
         jScrollPane1.setViewportView(tblRegistros);
 
+        jLabel13.setText("Filtrar por:");
+
+        cmbFiltro.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Id", "Nombre", "Graduacion", "Marca" }));
+        cmbFiltro.setSelectedIndex(-1);
+
+        jLabel16.setText("Criterio:");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -379,27 +401,78 @@ public class InterfazCerveza extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(tbdFunciones)
-                    .addComponent(jScrollPane1))
+                    .addComponent(jScrollPane1)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(layout.createSequentialGroup()
+                            .addComponent(tbdFunciones, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGap(0, 0, Short.MAX_VALUE))
+                        .addGroup(layout.createSequentialGroup()
+                            .addComponent(jLabel13)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                            .addComponent(cmbFiltro, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                            .addComponent(jLabel16)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                            .addComponent(txtCriterio))))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(tbdFunciones, javax.swing.GroupLayout.PREFERRED_SIZE, 228, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 192, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(tbdFunciones, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(6, 6, 6)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel13)
+                    .addComponent(cmbFiltro, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel16)
+                    .addComponent(txtCriterio, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 167, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
+    private boolean validacion(){
+        if(txtNombre.getText().isEmpty() || 
+                txtGraduacion.getText().isEmpty() || 
+                cmbMarca.getSelectedIndex() == -1 || 
+                txtId.getText().isEmpty()){
+            return false;
+        }
+        return true;
+    }
+    private void cargarMarcas(){
+        List<Marca> listaMarcas = operacionesCRUD.opReadObjetos("Marca", "", "");
+        for(Marca marca : listaMarcas){
+            cmbMarca.addItem(marca.getMar_nombre());
+            cmbMarca1.addItem(marca.getMar_nombre());
+            cmbMarca2.addItem(marca.getMar_nombre());
+        }
+    }
+    private void actualizarTabla(){
+        tblRegistros.setModel(operacionesCRUD.opBuscar("Cerveza", (String)cmbFiltro.getSelectedItem(), txtCriterio.getText()));
+    }
     private void btnRegistrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRegistrarActionPerformed
         // TODO add your handling code here:
-        Cerveza nuevaCerveza = new Cerveza();
-        operacionesCRUD.opCreateObjeto(nuevaCerveza);
+        if(validacion()){
+            try{
+            Cerveza nuevaCerveza = new Cerveza(Integer.parseInt(txtId.getText()),
+                                            txtNombre.getText(),
+                                        Float.parseFloat(txtGraduacion.getText()));
+            nuevaCerveza.formCer_mar((Marca)operacionesCRUD.opBuscarObjeto("Marca", cmbMarca.getSelectedItem().toString()));
+            
+            operacionesCRUD.opCreateObjeto("Cerveza",nuevaCerveza);
+            actualizarTabla();
+            }catch(NumberFormatException err){
+                JOptionPane.showMessageDialog(null, "Los datos introducidos no son válidos",
+                        "Error en InterfazCerveza -> btnRegistrarActionPerformed",
+                        JOptionPane.ERROR_MESSAGE);
+                txtGraduacion.setText("");
+            }
+        }
+        
     }//GEN-LAST:event_btnRegistrarActionPerformed
 
     /**
@@ -444,13 +517,18 @@ public class InterfazCerveza extends javax.swing.JFrame {
     private javax.swing.JButton btnLimpiar1;
     private javax.swing.JButton btnLimpiar2;
     private javax.swing.JButton btnRegistrar;
-    private javax.swing.JComboBox<String> jComboBox1;
-    private javax.swing.JComboBox<String> jComboBox2;
-    private javax.swing.JComboBox<String> jComboBox3;
+    private javax.swing.JComboBox<String> cmbFiltro;
+    private javax.swing.JComboBox<String> cmbMarca;
+    private javax.swing.JComboBox<String> cmbMarca1;
+    private javax.swing.JComboBox<String> cmbMarca2;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel12;
+    private javax.swing.JLabel jLabel13;
+    private javax.swing.JLabel jLabel14;
+    private javax.swing.JLabel jLabel15;
+    private javax.swing.JLabel jLabel16;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
@@ -468,6 +546,7 @@ public class InterfazCerveza extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTabbedPane tbdFunciones;
     private javax.swing.JTable tblRegistros;
+    private javax.swing.JTextField txtCriterio;
     private javax.swing.JTextField txtGraduacion;
     private javax.swing.JTextField txtGraduacion1;
     private javax.swing.JTextField txtGraduacion2;
