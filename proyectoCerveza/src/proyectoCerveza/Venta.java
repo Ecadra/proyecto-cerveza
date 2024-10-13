@@ -38,7 +38,7 @@ private static final long serialVersionUID = 1L;
         this.ven_fecha = null;
     }
     
-    public Venta(int id_ven, int cant,String vfecha, float vtotal){
+    public Venta(int id_ven,int cant,String vfecha, float vtotal){
         this.id_venta = id_ven;
         this.ven_cantidad = cant;
         try {
