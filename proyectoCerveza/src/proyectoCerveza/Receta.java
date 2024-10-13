@@ -11,7 +11,8 @@ import java.util.*;
  */
 @Entity
 public class Receta implements Serializable{
-
+    
+    private static final long serialVersionUID = 1L;
     @Id
     private int id_receta;
     private String rec_cantidad;

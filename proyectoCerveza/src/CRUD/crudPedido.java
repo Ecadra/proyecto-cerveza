@@ -102,7 +102,7 @@ public class crudPedido {
         System.out.println("Pedido actualizado");
     }
 
-    public List opReadPedido(String ent, String field, String crit) {
+    public static List opReadPedido(String ent, String field, String crit) {
 
         // Abre una conexión a la base de datos
         // Cesar    
@@ -142,7 +142,7 @@ public class crudPedido {
         return null;
     }
 
-    public TableModel listtoTMPedido(List rs, String entit) {
+    public static TableModel listtoTMPedido(List rs, String entit) {
         Vector columnNames = new Vector();
         Vector rows = new Vector();
 
@@ -180,7 +180,7 @@ public class crudPedido {
         return new DefaultTableModel(rows, columnNames);
     }
 
-    public TableModel opBuscarPedido(String ent, String field, String crit) {
+    public static TableModel opBuscarPedido(String ent, String field, String crit) {
         TableModel tm = null;
 
         // Busca en la entidad PEdido según los criterios especificados
@@ -193,7 +193,7 @@ public class crudPedido {
         return tm;
     }
 
-    public Object opBuscarPedido1(String ent, String crit) {
+    public static Object opBuscarPedido1(String ent, String crit) {
         Object p = null;
 
         // Abre una conexión a la base de datos
@@ -218,7 +218,7 @@ public class crudPedido {
         return p;
     }
 
-    public void opDeletePedido(String ent, String crit) {
+    public static void opDeletePedido(String ent, String crit) {
         Object p = null;
 
         // Abre una conexión a la base de datos

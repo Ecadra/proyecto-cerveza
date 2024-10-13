@@ -12,6 +12,7 @@ import java.util.*;
 @Entity
 public class Pedido implements Serializable{
 
+    private static final long serialVersionUID = 1L;
     @Id
     private int ped_codigo;
     private short ped_cantidad;
