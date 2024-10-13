@@ -31,6 +31,7 @@ public class InterfazFabricante extends javax.swing.JFrame {
      */
     public InterfazFabricante() {
         initComponents();
+        this.setLocationRelativeTo(null);
         actualizarTabla();
         
     }
@@ -47,14 +48,32 @@ public class InterfazFabricante extends javax.swing.JFrame {
         //Xim     
         EntityManagerFactory emf= Persistence.createEntityManagerFactory("C:\\\\objectdb-2.9.0\\\\db\\\\cervezadb.odb");       
         EntityManager em = emf.createEntityManager();
+        
+        try {
         em.getTransaction().begin();
+        // Buscar si ya existe un fabricante con ese nombre
+        Fabricante existente = em.find(Fabricante.class, fab.getFab_nombre());
+
+        if (existente != null) {
+            throw new Exception("El fabricante con el nombre '" + fab.getFab_nombre() + "' ya está registrado.");
+        }
+        else{
         fa = fab;
         em.persist(fa);
         em.getTransaction().commit();
-        // Close the database connection:
+        System.out.println("Fabricante registrado");
+        JOptionPane.showMessageDialog(this, "Fabricante registrado correctamente.");
+        }
+        
+    }catch(Exception e) {
+        em.getTransaction().rollback(); // Si hay un error, deshacer la transacción
+        System.out.println("Error al registrar fabricante: " + e.getMessage());
+        JOptionPane.showMessageDialog(null, "Error: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+
+    } finally {
         em.close();
         emf.close();
-        System.out.println("Fabricante registrado");
+        }
     }
     
     void opUpdateFabricante(Fabricante fab) {
@@ -225,6 +244,11 @@ public class InterfazFabricante extends javax.swing.JFrame {
     return listaFabricantes;
 }
     
+    public void Limpiar(){
+        txtNomFabricante.setText("");
+        txtContacto.setText("");
+    }
+    
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -235,15 +259,6 @@ public class InterfazFabricante extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jPanel1 = new javax.swing.JPanel();
-        jLabel1 = new javax.swing.JLabel();
-        jLabel2 = new javax.swing.JLabel();
-        txtNomFabricante = new javax.swing.JTextField();
-        txtContacto = new javax.swing.JTextField();
-        jLabel3 = new javax.swing.JLabel();
-        btnRegistrar = new javax.swing.JButton();
-        btnEliminar = new javax.swing.JButton();
-        btnActualizar = new javax.swing.JButton();
         btnRegresar = new javax.swing.JButton();
         PanelRegistros = new javax.swing.JPanel();
         jLabel4 = new javax.swing.JLabel();
@@ -252,84 +267,32 @@ public class InterfazFabricante extends javax.swing.JFrame {
         cmbAtributo = new javax.swing.JComboBox<>();
         ScrollFabricante = new javax.swing.JScrollPane();
         tableFabricante = new javax.swing.JTable();
-        btnNewFabricante = new javax.swing.JButton();
+        jTabbedPane1 = new javax.swing.JTabbedPane();
+        jPanel1 = new javax.swing.JPanel();
+        jLabel1 = new javax.swing.JLabel();
+        jLabel2 = new javax.swing.JLabel();
+        txtNomFabricante = new javax.swing.JTextField();
+        txtContacto = new javax.swing.JTextField();
+        btnRegistrar = new javax.swing.JButton();
+        btnLimpiar = new javax.swing.JButton();
+        jPanel2 = new javax.swing.JPanel();
+        btnActualizar = new javax.swing.JButton();
+        w = new javax.swing.JLabel();
+        jLabel7 = new javax.swing.JLabel();
+        txtNomFabricante1 = new javax.swing.JTextField();
+        txtContacto1 = new javax.swing.JTextField();
+        btnLimpiar1 = new javax.swing.JButton();
+        jPanel3 = new javax.swing.JPanel();
+        btnEliminar = new javax.swing.JButton();
+        btnLimpiar2 = new javax.swing.JButton();
+        jLabel3 = new javax.swing.JLabel();
+        jLabel6 = new javax.swing.JLabel();
+        txtNomFabricante2 = new javax.swing.JTextField();
+        txtContacto2 = new javax.swing.JTextField();
+        jLabel8 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-
-        jPanel1.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
-
-        jLabel1.setText("Nombre:");
-
-        jLabel2.setText("Contacto:");
-
-        jLabel3.setText("Datos del fabricante:");
-
-        btnRegistrar.setText("Registrar");
-        btnRegistrar.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnRegistrarActionPerformed(evt);
-            }
-        });
-
-        btnEliminar.setText("Eliminar");
-        btnEliminar.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnEliminarActionPerformed(evt);
-            }
-        });
-
-        btnActualizar.setText("Actualizar");
-        btnActualizar.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnActualizarActionPerformed(evt);
-            }
-        });
-
-        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
-        jPanel1.setLayout(jPanel1Layout);
-        jPanel1Layout.setHorizontalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel3)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(13, 13, 13)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jLabel2)
-                            .addComponent(jLabel1))
-                        .addGap(29, 29, 29)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addComponent(txtNomFabricante, javax.swing.GroupLayout.PREFERRED_SIZE, 205, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(46, 46, 46)
-                                .addComponent(btnRegistrar)
-                                .addGap(18, 18, 18)
-                                .addComponent(btnEliminar)
-                                .addGap(18, 18, 18)
-                                .addComponent(btnActualizar))
-                            .addComponent(txtContacto, javax.swing.GroupLayout.PREFERRED_SIZE, 205, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                .addContainerGap(27, Short.MAX_VALUE))
-        );
-        jPanel1Layout.setVerticalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(7, 7, 7)
-                .addComponent(jLabel3)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel1)
-                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(txtNomFabricante, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(btnRegistrar)
-                        .addComponent(btnEliminar)
-                        .addComponent(btnActualizar)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(txtContacto, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel2))
-                .addContainerGap(30, Short.MAX_VALUE))
-        );
+        setResizable(false);
 
         btnRegresar.setText("Regresar al menu");
 
@@ -373,7 +336,7 @@ public class InterfazFabricante extends javax.swing.JFrame {
                         .addComponent(jLabel5)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(cmbAtributo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(101, Short.MAX_VALUE))
         );
         PanelRegistrosLayout.setVerticalGroup(
             PanelRegistrosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -389,103 +352,263 @@ public class InterfazFabricante extends javax.swing.JFrame {
                 .addGap(12, 12, 12))
         );
 
-        btnNewFabricante.setText("Nuevo Fabricante");
-        btnNewFabricante.addActionListener(new java.awt.event.ActionListener() {
+        jTabbedPane1.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+
+        jPanel1.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+
+        jLabel1.setText("Nombre:");
+
+        jLabel2.setText("Contacto:");
+
+        btnRegistrar.setText("Registrar");
+        btnRegistrar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnNewFabricanteActionPerformed(evt);
+                btnRegistrarActionPerformed(evt);
             }
         });
+
+        btnLimpiar.setText("Limpiar Campos");
+        btnLimpiar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnLimpiarActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
+        jPanel1.setLayout(jPanel1Layout);
+        jPanel1Layout.setHorizontalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGap(19, 19, 19)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel2)
+                    .addComponent(jLabel1))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(txtContacto, javax.swing.GroupLayout.PREFERRED_SIZE, 205, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(56, 56, 56)
+                        .addComponent(btnRegistrar)
+                        .addGap(31, 31, 31)
+                        .addComponent(btnLimpiar))
+                    .addComponent(txtNomFabricante, javax.swing.GroupLayout.PREFERRED_SIZE, 205, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(102, Short.MAX_VALUE))
+        );
+        jPanel1Layout.setVerticalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGap(18, 18, 18)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel1)
+                    .addComponent(txtNomFabricante, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(30, 30, 30)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(txtContacto)
+                            .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 46, Short.MAX_VALUE)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(btnRegistrar)
+                            .addComponent(btnLimpiar))
+                        .addGap(36, 36, 36))))
+        );
+
+        jTabbedPane1.addTab("Registar", jPanel1);
+
+        jPanel2.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+
+        btnActualizar.setText("Actualizar");
+        btnActualizar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnActualizarActionPerformed(evt);
+            }
+        });
+
+        w.setText("Nombre:");
+
+        jLabel7.setText("Contacto:");
+
+        txtNomFabricante1.setEditable(false);
+
+        btnLimpiar1.setText("Limpiar Campos");
+
+        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
+        jPanel2.setLayout(jPanel2Layout);
+        jPanel2Layout.setHorizontalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+                .addContainerGap(370, Short.MAX_VALUE)
+                .addComponent(btnActualizar, javax.swing.GroupLayout.PREFERRED_SIZE, 92, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(btnLimpiar1)
+                .addGap(73, 73, 73))
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addGap(38, 38, 38)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addComponent(jLabel7)
+                        .addGap(18, 18, 18)
+                        .addComponent(txtContacto1))
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addComponent(w)
+                        .addGap(18, 18, 18)
+                        .addComponent(txtNomFabricante1, javax.swing.GroupLayout.PREFERRED_SIZE, 169, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+        jPanel2Layout.setVerticalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addGap(17, 17, 17)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(w)
+                    .addComponent(txtNomFabricante1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel7)
+                    .addComponent(txtContacto1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 27, Short.MAX_VALUE)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnActualizar)
+                    .addComponent(btnLimpiar1))
+                .addGap(16, 16, 16))
+        );
+
+        jTabbedPane1.addTab("Actualizar", jPanel2);
+
+        jPanel3.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+
+        btnEliminar.setText("Eliminar");
+
+        btnLimpiar2.setText("Limpiar Campos");
+
+        jLabel3.setText("Nombre:");
+
+        jLabel6.setText("Contacto:");
+
+        txtNomFabricante2.setEditable(false);
+
+        txtContacto2.setEditable(false);
+
+        javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
+        jPanel3.setLayout(jPanel3Layout);
+        jPanel3Layout.setHorizontalGroup(
+            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(btnEliminar)
+                .addGap(18, 18, 18)
+                .addComponent(btnLimpiar2)
+                .addGap(62, 62, 62))
+            .addGroup(jPanel3Layout.createSequentialGroup()
+                .addGap(26, 26, 26)
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addGroup(jPanel3Layout.createSequentialGroup()
+                        .addComponent(jLabel6)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(txtContacto2))
+                    .addGroup(jPanel3Layout.createSequentialGroup()
+                        .addComponent(jLabel3)
+                        .addGap(18, 18, 18)
+                        .addComponent(txtNomFabricante2, javax.swing.GroupLayout.PREFERRED_SIZE, 208, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(370, Short.MAX_VALUE))
+        );
+        jPanel3Layout.setVerticalGroup(
+            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel3Layout.createSequentialGroup()
+                .addGap(18, 18, 18)
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel3)
+                    .addComponent(txtNomFabricante2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 21, Short.MAX_VALUE)
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel6)
+                    .addComponent(txtContacto2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(17, 17, 17)
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnEliminar)
+                    .addComponent(btnLimpiar2))
+                .addGap(22, 22, 22))
+        );
+
+        jTabbedPane1.addTab("Eliminar", jPanel3);
+
+        jLabel8.setText("Datos del fabricante:");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(btnRegresar)
-                        .addGap(0, 0, Short.MAX_VALUE))
-                    .addComponent(PanelRegistros, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addContainerGap()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(PanelRegistros, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(btnRegresar)
+                                .addGap(0, 0, Short.MAX_VALUE))))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(14, 14, 14)
+                                .addComponent(jTabbedPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 673, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(291, 291, 291)
+                                .addComponent(jLabel8)))
+                        .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(btnNewFabricante)
-                .addGap(90, 90, 90))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(btnRegresar)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(btnNewFabricante)
-                .addGap(7, 7, 7)
+                .addGap(2, 2, 2)
+                .addComponent(jLabel8)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jTabbedPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 184, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
                 .addComponent(PanelRegistros, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(12, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnRegistrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRegistrarActionPerformed
-        // Capturar datos del formulario
     String nombre = txtNomFabricante.getText();
     String contacto = txtContacto.getText();
 
-    // Verificar que no estén vacíos
     if (!nombre.isEmpty() && !contacto.isEmpty()) {
-        // Crear un nuevo objeto Fabricante
         Fabricante nuevoFabricante = new Fabricante();
         nuevoFabricante.setFab_nombre(nombre);
         nuevoFabricante.setFab_contacto(contacto);
-
-        // Llamar al método para registrar el fabricante
-        opCreateFabricante(nuevoFabricante);
-
-        // Mostrar mensaje de confirmación
-        JOptionPane.showMessageDialog(this, "Fabricante registrado correctamente.");
-
-        // Limpiar los campos de texto
-        txtNomFabricante.setText("");
-        txtContacto.setText("");
         
-        // Actualizar la tabla
-        actualizarTabla();
+        try {
+            opCreateFabricante(nuevoFabricante);
+            txtNomFabricante.setText("");
+            txtContacto.setText("");
+            actualizarTabla();
+        } catch (Exception e) {
+            // Manejo de la excepción aquí
+            if (e.getMessage().contains("ya está registrado")) {
+                JOptionPane.showMessageDialog(null, e.getMessage(), "ID Duplicado", JOptionPane.ERROR_MESSAGE);
+            } else {
+                JOptionPane.showMessageDialog(null, "Error al guardar en la BD: " + e.getMessage(), "Error en la BD", JOptionPane.ERROR_MESSAGE);
+            }
+        }
     } else {
         JOptionPane.showMessageDialog(this, "Por favor, ingrese todos los datos.");
     }
             
     }//GEN-LAST:event_btnRegistrarActionPerformed
 
-    private void btnEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarActionPerformed
-    String nombre = txtNomFabricante.getText();
-
-    if (!nombre.isEmpty()) {
-        // Llamar al método para eliminar el fabricante
-        opDeleteFabricante("Fabricante", nombre);
-        
-        // Mostrar mensaje de confirmación
-        JOptionPane.showMessageDialog(this, "Fabricante eliminado correctamente.");
-        
-        // Limpiar los campos de texto
-        txtNomFabricante.setText("");
-        txtContacto.setText("");
-        
-        // Actualizar la tabla
-        actualizarTabla();
-    } else {
-        // Mostrar mensaje de error si el nombre está vacío
-        JOptionPane.showMessageDialog(this, "Por favor, ingrese el nombre del fabricante a eliminar.");
-    }
-    }//GEN-LAST:event_btnEliminarActionPerformed
-
     private void btnActualizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnActualizarActionPerformed
-      String nombre = txtNomFabricante.getText();
-    String contacto = txtContacto.getText();
+      String nombre = txtNomFabricante1.getText();
+    String contacto = txtContacto1.getText();
 
     if (!nombre.isEmpty() && !contacto.isEmpty()) {
         Fabricante fabricanteActualizado = new Fabricante();
@@ -508,12 +631,6 @@ public class InterfazFabricante extends javax.swing.JFrame {
     }
     }//GEN-LAST:event_btnActualizarActionPerformed
 
-    private void btnNewFabricanteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNewFabricanteActionPerformed
-    btnRegistrar.setEnabled(true);
-    txtNomFabricante.setText("");
-    txtContacto.setText("");
-    }//GEN-LAST:event_btnNewFabricanteActionPerformed
-
     private void tableFabricanteMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tableFabricanteMouseClicked
     if(!tableFabricante.isEnabled()){
 
@@ -526,7 +643,6 @@ public class InterfazFabricante extends javax.swing.JFrame {
             btnEliminar.setEnabled(true);
             txtNomFabricante.setText("");
             txtContacto.setText("");
-            btnNewFabricante.setEnabled(false);
 
            
             txtNomFabricante.setText(tableFabricante.getValueAt(tableFabricante.getSelectedRow(),0).toString());
@@ -536,6 +652,10 @@ public class InterfazFabricante extends javax.swing.JFrame {
         }
         
     }//GEN-LAST:event_tableFabricanteMouseClicked
+
+    private void btnLimpiarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLimpiarActionPerformed
+    Limpiar();
+    }//GEN-LAST:event_btnLimpiarActionPerformed
 
     /**
      * @param args the command line arguments
@@ -578,7 +698,9 @@ public class InterfazFabricante extends javax.swing.JFrame {
     private javax.swing.JButton btnActualizar;
     private javax.swing.JTextField btnBusqueda;
     private javax.swing.JButton btnEliminar;
-    private javax.swing.JButton btnNewFabricante;
+    private javax.swing.JButton btnLimpiar;
+    private javax.swing.JButton btnLimpiar1;
+    private javax.swing.JButton btnLimpiar2;
     private javax.swing.JButton btnRegistrar;
     private javax.swing.JButton btnRegresar;
     private javax.swing.JComboBox<String> cmbAtributo;
@@ -587,9 +709,20 @@ public class InterfazFabricante extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel7;
+    private javax.swing.JLabel jLabel8;
     private javax.swing.JPanel jPanel1;
+    private javax.swing.JPanel jPanel2;
+    private javax.swing.JPanel jPanel3;
+    private javax.swing.JTabbedPane jTabbedPane1;
     private javax.swing.JTable tableFabricante;
     private javax.swing.JTextField txtContacto;
+    private javax.swing.JTextField txtContacto1;
+    private javax.swing.JTextField txtContacto2;
     private javax.swing.JTextField txtNomFabricante;
+    private javax.swing.JTextField txtNomFabricante1;
+    private javax.swing.JTextField txtNomFabricante2;
+    private javax.swing.JLabel w;
     // End of variables declaration//GEN-END:variables
 }
