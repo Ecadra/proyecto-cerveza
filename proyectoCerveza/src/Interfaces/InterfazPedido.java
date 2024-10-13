@@ -15,6 +15,7 @@ import CRUD.crudGeneralCEM;
 import proyectoCerveza.Expendio;
 import proyectoCerveza.Presentacion;
 
+
 import java.util.List;
 
 /**
@@ -23,16 +24,37 @@ import java.util.List;
  */
 public class InterfazPedido extends javax.swing.JFrame {
     
-    DefaultTableModel model; //Definición del DTM
+    private crudGeneralCEM operacionesCRUD = new crudGeneralCEM();
     java.sql.Date fechaOrden = null;
     java.sql.Date fechaDespacho = null;
-    Pedido pedido = new Pedido();
     
     public InterfazPedido() throws Exception {
         initComponents();
         this.setLocationRelativeTo(null);
-        model = (DefaultTableModel) tblPedido.getModel();
-        //CrearTabla();
+        cargarExpendios();
+        cargarPresentaciones();
+        tblPedido.setModel(operacionesCRUD.opBuscar("Pedido", "", ""));
+    }
+    
+    private void cargarExpendios(){
+        List<Expendio> listaExpendios = operacionesCRUD.opReadObjetos("Expendio", "", "");
+        for(Expendio expendio : listaExpendios){
+            cmb_Expendio.addItem(expendio.getExp_nombre());
+        }
+    }
+    
+    private void cargarPresentaciones(){
+        List<Presentacion> listaPresentaciones = operacionesCRUD.opReadObjetos("Presentacion", "", "");
+        for(Presentacion presentacion : listaPresentaciones){
+            cmb_Presentacion.addItem(presentacion.getPre_env().getTipo_envase());
+        }
+    }
+    
+    public void mensajeAdvertencia(String mensaje, String titulo){
+        JOptionPane.showMessageDialog(null,mensaje,titulo,0);
+    }
+    public void mensajeInformativo(String mensaje, String titulo){
+        JOptionPane.showInternalMessageDialog(null, mensaje, titulo, JOptionPane.INFORMATION_MESSAGE);
     }
     
     public void limpiarPedido(){
@@ -46,6 +68,30 @@ public class InterfazPedido extends javax.swing.JFrame {
         dateFechaOrden.setDate(null);
         dateFechaDespacho.setDate(null);
         
+    }
+    
+    public boolean validarDatos(){
+        // Validación del código de la cerveza
+        if (txtCodigo.getText().equals("") || 
+                txtCodigo.getText().equals("Ingrese el codigo del pedido")) {
+            mensajeAdvertencia("El código es inválido.\n"
+                    + "Favor de verificar que:\n"
+                    + "-> No contenga acentos\n"
+                    + "-> No contenga caracteres especiales\n"
+                    + "-> Haya registrado correctamente el código del pedido\n", "Código inválido");
+            return false;
+        }
+        // Validación de la cantidad de cervezas dentro del pedido
+        if (txtCantidad.getText().equals("") || 
+                txtCantidad.getText().equals("Ingrese la cantidad")) {
+            mensajeAdvertencia("La cantidad del pedido.\n"
+                    + "Favor de verificar que:\n"
+                    + "-> Sea un dato numérico\n"
+                    + "-> No contenga caracteres especiales\n"
+                    + "-> Haya registrado correctamente la cantidad\n", "Cantidad inválida");
+            return false;
+        }
+        return true;
     }
     
     
