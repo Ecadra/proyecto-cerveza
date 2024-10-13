@@ -17,6 +17,11 @@ import proyectoCerveza.Expendio;
 import proyectoCerveza.Fabricante;
 import proyectoCerveza.Inventario;
 import proyectoCerveza.Marca;
+import proyectoCerveza.Pedido;
+import proyectoCerveza.Grano;
+import proyectoCerveza.Envase;
+import proyectoCerveza.Receta;
+import proyectoCerveza.Presentacion;
 
 /**
  *
@@ -29,11 +34,11 @@ public class crudGeneralCEM {
         //Cesar    
         //EntityManagerFactory emf = Persistence.createEntityManagerFactory("D:\\Documentos HDD\\Proyecto Neatbeans\\Librerias\\objectdb-2.9.0\\db\\cervezadb.odb");
         //Sebas   
-        //EntityManagerFactory emf = Persistence.createEntityManagerFactory("C:\\Users\\ulseg\\Downloads\\NetBeansProjects\\objectdb-2.9.0\\db\\cervezaodb.odb");
+        EntityManagerFactory emf = Persistence.createEntityManagerFactory("C:\\Users\\ulseg\\Downloads\\NetBeansProjects\\objectdb-2.9.0\\db\\cervezaodb.odb");
         //Xim    
         //EntityManagerFactory emf= Persistence.createEntityManagerFactory("C:\\\\objectdb-2.9.0\\\\db\\\\cervezadb.odb");
         //Edwin
-        EntityManagerFactory emf = Persistence.createEntityManagerFactory("/home/edwin-993/cervezaodb/cervezadb.odb");
+        //EntityManagerFactory emf = Persistence.createEntityManagerFactory("/home/edwin-993/cervezaodb/cervezadb.odb");
         EntityManager em = emf.createEntityManager();
 
         switch (entidad) {//Switch para crear los 3 objetos (Cerveza, Marca y Expendio)
@@ -89,6 +94,73 @@ public class crudGeneralCEM {
                 em.close();
                 emf.close();
                 break;
+            case "Pedido":
+                Pedido pedidoNuevo = (Pedido) objeto;
+                
+                //Se crea si existe un expendio que cumpla con lo requerido
+                Expendio expendio = em.find(Expendio.class, pedidoNuevo.getPed_exp().getId_expendio());
+                
+                pedidoNuevo.formPed_exp(expendio);
+                expendio.formExp_ped(pedidoNuevo);
+
+                em.getTransaction().begin();
+                em.persist(pedidoNuevo);
+                em.persist(expendio);
+                em.getTransaction().commit();
+
+                em.close();
+                emf.close();
+                break;
+            case "Receta":
+                Receta recetaNuevo = (Receta) objeto;
+                
+                //Se crea si existe un grano
+                Grano grano = em.find(Grano.class, recetaNuevo.getRec_gra().getGra_nombre());
+                
+                recetaNuevo.formRec_gra(grano);
+                grano.formGra_rec(recetaNuevo);
+
+                em.getTransaction().begin();
+                em.persist(recetaNuevo);
+                em.persist(grano);
+                em.getTransaction().commit();
+
+                em.close();
+                emf.close();
+                break;
+            case "Grano":
+                Grano granoNuevo = (Grano) objeto;
+                //Devuelve solo el primer elemento de la lista
+                Receta receta = em.find(Receta.class, granoNuevo.getGra_rec().get(0).getId_receta());
+
+                granoNuevo.formGra_rec(receta);
+                receta.formRec_gra(granoNuevo);
+
+                em.getTransaction().begin();
+                em.persist(receta);
+                em.persist(granoNuevo);
+                em.getTransaction().commit();
+                
+                em.close();
+                emf.close();
+                break;
+            case "Envase":
+                Envase envaseNuevo = (Envase) objeto;
+                //Devuelve solo el primer elemento de la lista
+                Presentacion presentacion = em.find(Presentacion.class, envaseNuevo.getEnv_pre().get(0).getPre_cod());
+
+                envaseNuevo.formEnv_pre(presentacion);
+                presentacion.formPre_env(envaseNuevo);
+
+                em.getTransaction().begin();
+                em.persist(presentacion);
+                em.persist(envaseNuevo);
+                em.getTransaction().commit();
+                
+                em.close();
+                emf.close();
+                break;
+
         }
         //JOptionPane.showMessageDialog(null, "Se ha vuelto persistente la cerveza:\n" + objeto.toString());
     }
@@ -97,11 +169,11 @@ public class crudGeneralCEM {
         //Cesar    
         //EntityManagerFactory emf = Persistence.createEntityManagerFactory("D:\\Documentos HDD\\Proyecto Neatbeans\\Librerias\\objectdb-2.9.0\\db\\cervezadb.odb");
         //Sebas   
-        //EntityManagerFactory emf = Persistence.createEntityManagerFactory("C:\\Users\\ulseg\\Downloads\\NetBeansProjects\\objectdb-2.9.0\\db\\cervezaodb.odb");
+        EntityManagerFactory emf = Persistence.createEntityManagerFactory("C:\\Users\\ulseg\\Downloads\\NetBeansProjects\\objectdb-2.9.0\\db\\cervezaodb.odb");
         //Xim    
         //EntityManagerFactory emf= Persistence.createEntityManagerFactory("C:\\\\objectdb-2.9.0\\\\db\\\\cervezadb.odb");
         //Edwin
-        EntityManagerFactory emf = Persistence.createEntityManagerFactory("/home/edwin-993/cervezaodb/cervezadb.odb");
+        //EntityManagerFactory emf = Persistence.createEntityManagerFactory("/home/edwin-993/cervezaodb/cervezadb.odb");
         EntityManager em = emf.createEntityManager();
         switch (entidad) {
             case "Cerveza":
@@ -116,7 +188,7 @@ public class crudGeneralCEM {
                 
                 //En caso de que se encuentre la cerveza se notifica por consola y se actualizan los datos de la nuevosDatosCer (Excluendo las relaciones del objeto)
                 System.out.println("Se ha encontrado la cerveza a actualizar.\n"
-                        + "Datos anteriores:  \n" + nuevosDatosCer);
+                        + "Datos nuevosx:  \n" + nuevosDatosCer);
                 cerActualizar.setCer_graduacion(nuevosDatosCer.getCer_graduacion());
                 cerActualizar.setCer_nombre(nuevosDatosCer.getCer_nombre());
                 //Se compromete la transaccion
@@ -149,7 +221,7 @@ public class crudGeneralCEM {
                 expActualizar = em.find(Expendio.class, nuevosDatosExp.getExp_nombre());
 
                 System.out.println("Se ha encontrado la marca a actualizar. \n"
-                        + "Datos anteriores: \n" + nuevosDatosExp);
+                        + "Datos nuevos: \n" + nuevosDatosExp);
 
                 expActualizar.setExp_nombre(nuevosDatosExp.getExp_nombre());
 
@@ -157,6 +229,121 @@ public class crudGeneralCEM {
                 em.close();
                 emf.close();
             break;
+            case "Pedido":
+                Pedido nuevosDatosPed = (Pedido) objeto;
+                Pedido pedActualizar;
+
+                em.getTransaction().begin();
+                // Busca el pedido en la base de datos utilizando el código del pedido
+                pedActualizar = em.find(Pedido.class, nuevosDatosPed.getPed_codigo());
+
+                // Verifica si el pedido fue encontrado
+                if (pedActualizar != null) {
+                    // Muestra los datos del pedido antes de la actualización
+                    System.out.println("Se ha encontrado el pedido a actualizar."
+                            + " \nDatos anteriores: \n" + pedActualizar);
+
+                    // Actualiza los campos del pedido con los nuevos valores
+                    pedActualizar.setPed_cantidad(nuevosDatosPed.getPed_cantidad());
+                    pedActualizar.setPed_forden(nuevosDatosPed.getPed_forden());
+                    pedActualizar.setPed_fdespacho(nuevosDatosPed.getPed_fdespacho());
+                    pedActualizar.setPed_total(nuevosDatosPed.getPed_total());
+                    pedActualizar.setPed_subtotal(nuevosDatosPed.getPed_subtotal());
+                    pedActualizar.setPed_iva(nuevosDatosPed.getPed_iva());
+
+                    // Muestra el pedido modificado
+                    System.out.println("Pedido modificado: \n" + pedActualizar);
+
+                    // Confirma la transacción
+                    em.getTransaction().commit();
+
+                    // Mensaje de confirmación
+                    System.out.println("El pedido ha sido actualizado.");
+                } else {
+                    // Si no se encuentra el pedido, muestra un mensaje de error
+                    System.out.println("No se encontró ningún pedido con el código: " + nuevosDatosPed.getPed_codigo());
+                    em.getTransaction().rollback();  // Reversión de la transacción si no se encuentra
+                }
+
+                // Cierra la conexión a la base de datos
+                em.close();
+                emf.close();
+                break;
+            case "Receta":
+                Receta nuevosDatosRec = (Receta) objeto;
+                Receta recActualizar;
+
+                // Inicia la transacción
+                em.getTransaction().begin();
+
+                // Busca la receta en la base de datos utilizando el ID de la receta
+                recActualizar = em.find(Receta.class, nuevosDatosRec.getId_receta());
+
+                // Verifica si la receta fue encontrada
+                if (recActualizar != null) {
+                    // Muestra los datos de la receta antes de la actualización
+                    System.out.println("Se ha encontrado la receta a actualizar. \nDatos anteriores: \n" + recActualizar);
+
+                    // Actualiza los campos de la receta con los nuevos valores
+                    recActualizar.setRec_cantidad(nuevosDatosRec.getRec_cantidad());
+
+                    // Muestra la receta modificada
+                    System.out.println("Receta modificada: \n" + recActualizar);
+
+                    em.getTransaction().commit();
+                    System.out.println("La receta ha sido actualizada.");
+                } else {
+                    // Si no se encuentra la receta, muestra un mensaje de error
+                    System.out.println("No se encontró ninguna receta con el ID: " + nuevosDatosRec.getId_receta());
+                    em.getTransaction().rollback();  // Reversión de la transacción si no se encuentra
+                }
+
+                // Cierra la conexión a la base de datos
+                em.close();
+                emf.close();
+                break;
+            case "Grano":
+                Grano nuevosDatosGra = (Grano) objeto;
+                Grano graActualizar;
+
+                em.getTransaction().begin();
+
+                // Busca el grano en la base de datos utilizando el nombre del grano como identificador
+                graActualizar = em.find(Grano.class, nuevosDatosGra.getGra_nombre());
+
+                if (graActualizar != null) {
+                    // Actualiza los campos del grano con los nuevos valores
+                    graActualizar.setGra_nombre(nuevosDatosGra.getGra_nombre());
+                    graActualizar.setGra_procedencia(nuevosDatosGra.getGra_procedencia());
+                } else {
+                    em.getTransaction().rollback();
+                }
+
+                em.getTransaction().commit();
+                em.close();
+                emf.close();
+                break;
+            case "Envase":
+                Envase nuevosDatosEnv = (Envase) objeto;
+                Envase envActualizar;
+
+                em.getTransaction().begin();
+
+                // Busca el grano en la base de datos utilizando el nombre del grano como identificador
+                envActualizar = em.find(Envase.class, nuevosDatosEnv.getTipo_envase());
+
+                if (envActualizar != null) {
+                    // Actualiza los campos del grano con los nuevos valores
+                    envActualizar.setTipo_envase(nuevosDatosEnv.getTipo_envase());
+                    envActualizar.setCapacidad_ml(nuevosDatosEnv.getEnvase_capacidad());
+                } else {
+                    em.getTransaction().rollback();
+                }
+
+                em.getTransaction().commit();
+                em.close();
+                emf.close();
+                break;
         }
 
     }
@@ -165,11 +352,11 @@ public class crudGeneralCEM {
         //Cesar    
         //EntityManagerFactory emf = Persistence.createEntityManagerFactory("D:\\Documentos HDD\\Proyecto Neatbeans\\Librerias\\objectdb-2.9.0\\db\\cervezadb.odb");
         //Sebas   
-        //EntityManagerFactory emf = Persistence.createEntityManagerFactory("C:\\Users\\ulseg\\Downloads\\NetBeansProjects\\objectdb-2.9.0\\db\\cervezaodb.odb");
+        EntityManagerFactory emf = Persistence.createEntityManagerFactory("C:\\Users\\ulseg\\Downloads\\NetBeansProjects\\objectdb-2.9.0\\db\\cervezaodb.odb");
         //Xim    
         //EntityManagerFactory emf= Persistence.createEntityManagerFactory("C:\\\\objectdb-2.9.0\\\\db\\\\cervezadb.odb");
         //Edwin
-        EntityManagerFactory emf = Persistence.createEntityManagerFactory("/home/edwin-993/cervezaodb/cervezadb.odb");
+        //EntityManagerFactory emf = Persistence.createEntityManagerFactory("/home/edwin-993/cervezaodb/cervezadb.odb");
         EntityManager em = emf.createEntityManager();
         //Dependiendo de la entidad
         switch (ent) {
@@ -235,13 +422,73 @@ public class crudGeneralCEM {
                 em.close();
                 emf.close();
                 return resultadosInventario;
+            case "Pedido":
+                // Se declara una consulta tipada de la clase Pedido, inicialmente vacía
+                TypedQuery<Pedido> consultaPedido = null;
+                // Se declara una lista para almacenar los resultados de la consulta
+                List<Pedido> resultadosPedido = new ArrayList<Pedido>();
+
+                // Si no se ha especificado ningún criterio de búsqueda, se seleccionan todos los pedidos
+                consultaPedido = criterio.equals("")
+                    ? em.createQuery("SELECT p FROM Pedido p", Pedido.class)  // Consulta para obtener todos los pedidos
+                    : em.createQuery("SELECT p FROM Pedido p WHERE p." + field.toLowerCase() + " LIKE '%" + criterio + "%'", Pedido.class);  
+                    // Si se especifica un criterio, filtra los resultados según el campo y el criterio proporcionados
+
+                // Se obtienen los resultados de la consulta y se almacenan en la lista
+                resultadosPedido = consultaPedido.getResultList();
+
+                // Se imprime en consola el número de pedidos recuperados
+                System.out.println("Se han recuperado satisfactoriamente " + resultadosPedido.size() + " Pedidos");
+
+                // Se cierra la conexión con la base de datos
+                em.close();
+                emf.close();
+
+                // Se retorna la lista de pedidos encontrados
+                return resultadosPedido;
+
+            case "Receta":
+                //Se recuperan los objetos Inventario desde la base de datos
+                TypedQuery<Receta> consultaReceta = null;
+                List<Receta> resultadosReceta = new ArrayList<Receta>();
+                consultaReceta = criterio.equals("")
+                        ? em.createQuery("SELECT r FROM Receta r", Receta.class)
+                        : em.createQuery("SELECT r FROM Receta r WHERE r." + field.toLowerCase() + " LIKE '%" + criterio + "%'", Receta.class);
+                resultadosReceta = consultaReceta.getResultList();
+                System.out.println("Se han recuperado satisfactoriamente " + resultadosReceta.size() + " Recetas");
+                em.close();
+                emf.close();
+                return resultadosReceta;
+            case "Grano":
+                //Se recuperan los objetos Inventario desde la base de datos
+                TypedQuery<Grano> consultaGrano = null;
+                List<Grano> resultadosGrano = new ArrayList<Grano>();
+                consultaGrano = criterio.equals("")
+                        ? em.createQuery("SELECT g FROM Grano g", Grano.class)
+                        : em.createQuery("SELECT g FROM Grano g WHERE g." + field.toLowerCase() + " LIKE '%" + criterio + "%'", Grano.class);
+                resultadosGrano = consultaGrano.getResultList();
+                System.out.println("Se han recuperado satisfactoriamente " + resultadosGrano.size() + " Granos");
+                em.close();
+                emf.close();
+                return resultadosGrano;
+            case "Envase":
+                //Se recuperan los objetos Inventario desde la base de datos
+                TypedQuery<Envase> consultaEnvase = null;
+                List<Envase> resultadosEnvase = new ArrayList<Envase>();
+                consultaEnvase = criterio.equals("")
+                        ? em.createQuery("SELECT e FROM Envase e", Envase.class)
+                        : em.createQuery("SELECT e FROM Envase e WHERE e." + field.toLowerCase() + " LIKE '%" + criterio + "%'", Envase.class);
+                resultadosEnvase = consultaEnvase.getResultList();
+                System.out.println("Se han recuperado satisfactoriamente " + resultadosEnvase.size() + " Envases");
+                em.close();
+                emf.close();
+                return resultadosEnvase;            
             default:
                 JOptionPane.showMessageDialog(null,
                         "La clase que se intenta buscar no se encuentra registrada en este metodo",
                         "Error en crudCerveza -> opReadObjetos()",
                         JOptionPane.ERROR_MESSAGE);
                 break;
-
         }
         em.close();
         emf.close();
@@ -299,6 +546,80 @@ public class crudGeneralCEM {
                     rows.addElement(nuevaFila);
                 }
                 break;
+            case "Pedido":
+                Pedido pedido;
+                columnNames.addElement("Código del pedido");
+                columnNames.addElement("Expendio");
+                columnNames.addElement("Presentacion");
+                columnNames.addElement("Cantidad del pedido");
+                columnNames.addElement("Fecha de orden");
+                columnNames.addElement("Fecha de despacho");
+                columnNames.addElement("Total");
+                columnNames.addElement("Subtotal");
+                columnNames.addElement("IVA");
+                
+                Iterator itPed = resultados.iterator();
+                while (itPed.hasNext()) {
+                    pedido = (Pedido) itPed.next();
+                    Vector nuevaFila = new Vector();
+                    nuevaFila.addElement(pedido.getPed_codigo());
+                    nuevaFila.addElement(pedido.getPed_exp().getExp_nombre());
+                    nuevaFila.addElement(pedido.getPed_pre().getPre_env().getTipo_envase());
+                    nuevaFila.addElement(pedido.getPed_cantidad());
+                    nuevaFila.addElement(pedido.getPed_forden());
+                    nuevaFila.addElement(pedido.getPed_fdespacho());
+                    nuevaFila.addElement(pedido.getPed_total());
+                    nuevaFila.addElement(pedido.getPed_subtotal());
+                    nuevaFila.addElement(pedido.getPed_iva());
+                    
+                    rows.addElement(nuevaFila);
+                }
+                break;
+            case "Receta":
+                Receta receta;
+                columnNames.addElement("Grano");
+                columnNames.addElement("Cantidad de la receta");
+                
+                Iterator itRec = resultados.iterator();
+                while (itRec.hasNext()) {
+                    receta = (Receta) itRec.next();
+                    Vector nuevaFila = new Vector();
+                    nuevaFila.addElement(receta.getRec_gra().getGra_nombre());
+                    nuevaFila.addElement(receta.getRec_cantidad());
+                    
+                    rows.addElement(nuevaFila);
+                }
+                break;
+            case "Grano":
+                Grano grano;
+                columnNames.addElement("Grano");
+                columnNames.addElement("Procedencia");
+                
+                Iterator itGra = resultados.iterator();
+                while (itGra.hasNext()) {
+                    grano = (Grano) itGra.next();
+                    Vector nuevaFila = new Vector();
+                    nuevaFila.addElement(grano.getGra_nombre());
+                    nuevaFila.addElement(grano.getGra_procedencia());
+                    
+                    rows.addElement(nuevaFila);
+                }
+                break;
+            case "Envase":
+                Envase envase;
+                columnNames.addElement("Envase");
+                columnNames.addElement("Capacidad en ml");
+                
+                Iterator itEnv = resultados.iterator();
+                while (itEnv.hasNext()) {
+                    envase = (Envase) itEnv.next();
+                    Vector nuevaFila = new Vector();
+                    nuevaFila.addElement(envase.getTipo_envase());
+                    nuevaFila.addElement(envase.getEnvase_capacidad());
+                    
+                    rows.addElement(nuevaFila);
+                }
+                break;
         }//Termina switch de entidad
         return new DefaultTableModel(rows, columnNames);
     }
@@ -346,6 +667,82 @@ public class crudGeneralCEM {
             List<Marca> resultados = opReadObjetos(ent, field, criterio);
             tm = listToTM(resultados, ent);
         }
+        if (ent.equals("Pedido")) {
+            List<Pedido> resultadosPedido;
+            switch(field){
+                case "Codigo":
+                    resultadosPedido = opReadObjetos(ent, "ped_codigo", criterio);
+                    tm = listToTM(resultadosPedido, ent);
+                    break;
+                case "Cantidad":
+                    resultadosPedido = opReadObjetos(ent, "ped_cantidad", criterio);
+                    tm = listToTM(resultadosPedido, ent);
+                    break;
+                case "Fecha de orden":
+                    resultadosPedido = opReadObjetos(ent, "ped_forden", criterio);
+                    tm = listToTM(resultadosPedido, ent);
+                    break;
+                case "Fecha de despacho":
+                    resultadosPedido = opReadObjetos(ent, "ped_fdespacho", criterio);
+                    tm = listToTM(resultadosPedido, ent);
+                    break;
+                case "Total":
+                    resultadosPedido = opReadObjetos(ent, "ped_total", criterio);
+                    tm = listToTM(resultadosPedido, ent);
+                    break;
+                case "Subtotal":
+                    resultadosPedido = opReadObjetos(ent, "ped_subtotal", criterio);
+                    tm = listToTM(resultadosPedido, ent);
+                    break;
+                case "IVA":
+                    resultadosPedido = opReadObjetos(ent, "ped_iva", criterio);
+                    tm = listToTM(resultadosPedido, ent);
+                    break;
+                default:
+                    resultadosPedido = opReadObjetos(ent, field, criterio);
+                    tm = listToTM(resultadosPedido, ent);
+                    break;
+            }
+        }
+        if (ent.equals("Receta")) {
+            List<Receta> resultados = opReadObjetos(ent, field, criterio);
+            tm = listToTM(resultados, ent);
+        }
+        if(ent.equals("Grano")){
+            List<Grano> resultadosGrano;
+            switch(field){
+                case "Nombre grano":
+                    resultadosGrano = opReadObjetos(ent, "gra_nombre", criterio);
+                    tm = listToTM(resultadosGrano, ent);
+                    break;
+                case "Procedencia":
+                    resultadosGrano = opReadObjetos(ent, "gra_procedencia", criterio);
+                    tm = listToTM(resultadosGrano, ent);
+                    break;
+                default:
+                    resultadosGrano = opReadObjetos(ent, field, criterio);
+                    tm = listToTM(resultadosGrano, ent);
+                    break;
+            }
+        }
+        if(ent.equals("Envase")){
+            List<Envase> resultadosEnvase;
+            switch(field){
+                case "Tipo de envase":
+                    resultadosEnvase = opReadObjetos(ent, "tipo_envase", criterio);
+                    tm = listToTM(resultadosEnvase, ent);
+                    break;
+                case "Capacidad":
+                    resultadosEnvase = opReadObjetos(ent, "capacidad_ml", criterio);
+                    tm = listToTM(resultadosEnvase, ent);
+                    break;
+                default:
+                    resultadosEnvase = opReadObjetos(ent, field, criterio);
+                    tm = listToTM(resultadosEnvase, ent);
+                    break;
+            }
+        }
+        
         return tm;
     }
 
@@ -354,13 +751,13 @@ public class crudGeneralCEM {
         //Cesar    
         //EntityManagerFactory emf = Persistence.createEntityManagerFactory("D:\\Documentos HDD\\Proyecto Neatbeans\\Librerias\\objectdb-2.9.0\\db\\cervezadb.odb");
         //Sebas   
-        //EntityManagerFactory emf = Persistence.createEntityManagerFactory("C:\\Users\\ulseg\\Downloads\\NetBeansProjects\\objectdb-2.9.0\\db\\cervezaodb.odb");
+        EntityManagerFactory emf = Persistence.createEntityManagerFactory("C:\\Users\\ulseg\\Downloads\\NetBeansProjects\\objectdb-2.9.0\\db\\cervezaodb.odb");
         //Xim    
         //EntityManagerFactory emf= Persistence.createEntityManagerFactory("C:\\\\objectdb-2.9.0\\\\db\\\\cervezadb.odb");
         //Edwin
-        EntityManagerFactory emf = Persistence.createEntityManagerFactory("/home/edwin-993/cervezaodb/cervezadb.odb");
+        //EntityManagerFactory emf = Persistence.createEntityManagerFactory("/home/edwin-993/cervezaodb/cervezadb.odb");
         EntityManager em = emf.createEntityManager();
-
+        int id;
         switch (entidad) {
             case "Cerveza":
                 objeto = em.find(Cerveza.class, criterio);
@@ -383,8 +780,29 @@ public class crudGeneralCEM {
                 emf.close();
                 return objeto;
             case"Inventario":
-                int id = Integer.parseInt(criterio);
+                id = Integer.parseInt(criterio);
                 objeto = em.find(Inventario.class,id); //Marca se busca mediante el nombreí
+                em.close();
+                emf.close();
+                return objeto;
+            case"Pedido":
+                id = Integer.parseInt(criterio);
+                objeto = em.find(Pedido.class,id); //Pedido se busca mediante el codigo
+                em.close();
+                emf.close();
+                return objeto;
+            case"Receta":
+                objeto = em.find(Receta.class,criterio); //Receta se busca mediante la cantidad
+                em.close();
+                emf.close();
+                return objeto;
+            case"Grano":
+                objeto = em.find(Inventario.class,criterio); //Grano se busca mediante el nombre
+                em.close();
+                emf.close();
+                return objeto;
+            case"Envase":
+                objeto = em.find(Inventario.class,criterio); //Envase se busca mediante el tipo
                 em.close();
                 emf.close();
                 return objeto;
@@ -406,11 +824,11 @@ public class crudGeneralCEM {
         //Cesar    
         //EntityManagerFactory emf = Persistence.createEntityManagerFactory("D:\\Documentos HDD\\Proyecto Neatbeans\\Librerias\\objectdb-2.9.0\\db\\cervezadb.odb");
         //Sebas   
-        //EntityManagerFactory emf = Persistence.createEntityManagerFactory("C:\\Users\\ulseg\\Downloads\\NetBeansProjects\\objectdb-2.9.0\\db\\cervezaodb.odb");
+        EntityManagerFactory emf = Persistence.createEntityManagerFactory("C:\\Users\\ulseg\\Downloads\\NetBeansProjects\\objectdb-2.9.0\\db\\cervezaodb.odb");
         //Xim    
         //EntityManagerFactory emf= Persistence.createEntityManagerFactory("C:\\\\objectdb-2.9.0\\\\db\\\\cervezadb.odb");
         //Edwin
-        EntityManagerFactory emf = Persistence.createEntityManagerFactory("/home/edwin-993/cervezaodb/cervezadb.odb");
+        //EntityManagerFactory emf = Persistence.createEntityManagerFactory("/home/edwin-993/cervezaodb/cervezadb.odb");
         EntityManager em = emf.createEntityManager();
         em.getTransaction().begin();
         switch (entidad) {
@@ -426,6 +844,22 @@ public class crudGeneralCEM {
                 objeto = em.find(Marca.class, criterio);
                 em.remove(objeto);
                 break;
+            case "Pedido":
+                objeto = em.find(Pedido.class, criterio);
+                em.remove(objeto);
+                break;
+            case "Receta":
+                objeto = em.find(Receta.class, criterio);
+                em.remove(objeto);
+                break;
+            case "Grano":
+                objeto = em.find(Grano.class, criterio);
+                em.remove(objeto);
+                break;
+            case "Envase":
+                objeto = em.find(Envase.class, criterio);
+                em.remove(objeto);
+                break;
             default:
                 JOptionPane.showMessageDialog(null, "El objeto que se desea eliminar no se encuentra registrado en este método",
                         "Error en crudCerveza -> opDelete", JOptionPane.ERROR_MESSAGE);
@@ -437,11 +871,11 @@ public class crudGeneralCEM {
         //Cesar    
         //EntityManagerFactory emf = Persistence.createEntityManagerFactory("D:\\Documentos HDD\\Proyecto Neatbeans\\Librerias\\objectdb-2.9.0\\db\\cervezadb.odb");
         //Sebas   
-        //EntityManagerFactory emf = Persistence.createEntityManagerFactory("C:\\Users\\ulseg\\Downloads\\NetBeansProjects\\objectdb-2.9.0\\db\\cervezaodb.odb");
+        EntityManagerFactory emf = Persistence.createEntityManagerFactory("C:\\Users\\ulseg\\Downloads\\NetBeansProjects\\objectdb-2.9.0\\db\\cervezaodb.odb");
         //Xim    
         //EntityManagerFactory emf= Persistence.createEntityManagerFactory("C:\\\\objectdb-2.9.0\\\\db\\\\cervezadb.odb");
         //Edwin
-        EntityManagerFactory emf = Persistence.createEntityManagerFactory("/home/edwin-993/cervezaodb/cervezadb.odb");
+        //EntityManagerFactory emf = Persistence.createEntityManagerFactory("/home/edwin-993/cervezaodb/cervezadb.odb");
         EntityManager em = emf.createEntityManager();
         switch (entidad) {
             case "Cerveza":
@@ -494,11 +928,11 @@ public class crudGeneralCEM {
         //Cesar    
         //EntityManagerFactory emf = Persistence.createEntityManagerFactory("D:\\Documentos HDD\\Proyecto Neatbeans\\Librerias\\objectdb-2.9.0\\db\\cervezadb.odb");
         //Sebas   
-        //EntityManagerFactory emf = Persistence.createEntityManagerFactory("C:\\Users\\ulseg\\Downloads\\NetBeansProjects\\objectdb-2.9.0\\db\\cervezaodb.odb");
+        EntityManagerFactory emf = Persistence.createEntityManagerFactory("C:\\Users\\ulseg\\Downloads\\NetBeansProjects\\objectdb-2.9.0\\db\\cervezaodb.odb");
         //Xim    
         //EntityManagerFactory emf= Persistence.createEntityManagerFactory("C:\\\\objectdb-2.9.0\\\\db\\\\cervezadb.odb");
         //Edwin
-        EntityManagerFactory emf = Persistence.createEntityManagerFactory("/home/edwin-993/cervezaodb/cervezadb.odb");
+        //EntityManagerFactory emf = Persistence.createEntityManagerFactory("/home/edwin-993/cervezaodb/cervezadb.odb");
         EntityManager em = emf.createEntityManager();
         switch (entidad) {
             case "Marca":
