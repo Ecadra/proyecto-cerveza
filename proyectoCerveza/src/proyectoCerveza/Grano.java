@@ -1,8 +1,8 @@
 
 package proyectoCerveza;
 import java.io.Serializable;
-import javax.persistence.*;
 import java.util.*;
+import javax.persistence.*;
 
 
 /**
@@ -68,7 +68,7 @@ public class Grano implements Serializable{
     }
 
     public void setGra_procedencia(String gra_procedencia) {
-        this.gra_nombre = gra_procedencia;
+        this.gra_procedencia = gra_procedencia;
     }
 
     public List<Receta> getGra_rec() {
