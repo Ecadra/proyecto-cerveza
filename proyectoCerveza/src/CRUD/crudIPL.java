@@ -22,7 +22,15 @@ import proyectoCerveza.Presentacion;
 public class crudIPL {
     
     public void opCreate(String entidad, Object obj){
-        EntityManagerFactory emf= Persistence.createEntityManagerFactory("D:\\Documentos HDD\\Proyecto Neatbeans\\Librerias\\objectdb-2.9.0\\db\\cervezadb.odb");
+        //Se crea la conexion a la base de datos (Si no existe, se crea)
+        //Cesar    
+        EntityManagerFactory emf = Persistence.createEntityManagerFactory("D:\\Documentos HDD\\Proyecto Neatbeans\\Librerias\\objectdb-2.9.0\\db\\cervezadb.odb");
+        //Sebas   
+        //EntityManagerFactory emf = Persistence.createEntityManagerFactory("C:\\Users\\ulseg\\Downloads\\NetBeansProjects\\objectdb-2.9.0\\db\\cervezaodb.odb");
+        //Xim    
+        //EntityManagerFactory emf= Persistence.createEntityManagerFactory("C:\\\\objectdb-2.9.0\\\\db\\\\cervezadb.odb");
+        //Edwin
+        //EntityManagerFactory emf = Persistence.createEntityManagerFactory("/home/edwin-993/cervezaodb/cervezadb.odb")
         EntityManager em = emf.createEntityManager();
         
         
@@ -107,8 +115,16 @@ public class crudIPL {
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////7
    
     public List opRead(String ent, String field, String crit){
-       EntityManagerFactory emf= Persistence.createEntityManagerFactory("D:\\Documentos HDD\\Proyecto Neatbeans\\Librerias\\objectdb-2.9.0\\db\\cervezadb.odb");
-       EntityManager em = emf.createEntityManager();
+       //Se crea la conexion a la base de datos (Si no existe, se crea)
+        //Cesar    
+        EntityManagerFactory emf = Persistence.createEntityManagerFactory("D:\\Documentos HDD\\Proyecto Neatbeans\\Librerias\\objectdb-2.9.0\\db\\cervezadb.odb");
+        //Sebas   
+        //EntityManagerFactory emf = Persistence.createEntityManagerFactory("C:\\Users\\ulseg\\Downloads\\NetBeansProjects\\objectdb-2.9.0\\db\\cervezaodb.odb");
+        //Xim    
+        //EntityManagerFactory emf= Persistence.createEntityManagerFactory("C:\\\\objectdb-2.9.0\\\\db\\\\cervezadb.odb");
+        //Edwin
+        //EntityManagerFactory emf = Persistence.createEntityManagerFactory("/home/edwin-993/cervezaodb/cervezadb.odb")
+        EntityManager em = emf.createEntityManager();
        
        switch(ent){
            case "Presentacion":
@@ -156,9 +172,25 @@ public class crudIPL {
                System.out.print("\nSe han recuperado "+resultInv.size()+ " Inventarios");
                em.close();
                emf.close();
-               return resultInv;   
-           default:
-               JOptionPane.showMessageDialog(null, "Este metodo no abarca la clase que desea buscar");      
+               return resultInv;
+               
+           case "Envase":
+               TypedQuery<Envase>queryEnv=null;
+               List<Envase>resultEnv=null;
+               
+               if(crit.equals("")){
+                   queryEnv=em.createQuery("SELECT c FROM Envase c", Envase.class);
+               }else{
+                   queryEnv=em.createQuery("SELECT c FROM Envase WHERE c."+field+" LIKE "+crit+" % ", Envase.class);
+               }
+               resultEnv=queryEnv.getResultList();
+               System.out.print("\nSe han recuperado "+resultEnv.size()+ " Inventarios");
+               em.close();
+               emf.close();
+               return resultEnv;
+          default:
+               JOptionPane.showMessageDialog(null, "Este metodo no abarca la clase que desea buscar");
+            break;
        }
        
         em.close();
@@ -231,7 +263,25 @@ public class crudIPL {
                    nuevaFila.addElement(inventario.getInv_exp().getId_expendio());
                    rows.addElement(nuevaFila);   
                }
-            break;    
+            break; 
+            
+            case "Envase":
+                Envase envase;
+                
+                columnNames.addElement("Tipo de envase");
+                columnNames.addElement("Capacidad en ml");
+                
+                Iterator itEnv= resultX.iterator();
+                while(itEnv.hasNext()){
+                    envase = (Envase)itEnv.next();
+                    Vector nuevaFila = new Vector();
+
+                    nuevaFila.addElement(envase.getTipo_envase());
+                    nuevaFila.addElement(envase.getEnvase_capacidad());
+                    rows.addElement(nuevaFila);
+                }
+                
+            break;
        }//Fin del switch
        return new DefaultTableModel(rows,columnNames);
    }
@@ -275,22 +325,56 @@ public class crudIPL {
                    results=opRead(ent,"cantidad",crit);
                    tm=listToTM(results,ent);
                break;
+               default:
+                   results=opRead(ent,field,crit);
+                   tm=listToTM(results, ent);
+               break;
            }//Fin del switch
        }//Fin de if lote
        
        if(ent.equals("Presentacion")){//Inicio de if presentacion
+           
            List<Presentacion>results=opRead(ent,field,crit);
            tm=listToTM(results,ent);
   
        }//Fin de if presentacion
+       
+       if(ent.equals("Envase")){//Envase
+           List<Envase>results;
+           
+           switch(field){//switch
+               case "Tipo de envase":
+                   results=opRead(ent,"tipo_envase",crit);
+                   tm=listToTM(results,ent);
+               break;
+               case "Capacidad":
+                   results=opRead(ent,"capacidad_ml",crit);
+                   tm=listToTM(results,ent);
+               break;
+               default:
+                   results=opRead(ent,field,crit);
+                   tm=listToTM(results, ent);
+               break;
+               
+           }//switch fin
+           
+       }//Fin de envase
        
        return tm;
    }
    
    public void opDelte(String ent, String crit){
        Object obj=null;
-       EntityManagerFactory emf= Persistence.createEntityManagerFactory("D:\\Documentos HDD\\Proyecto Neatbeans\\Librerias\\objectdb-2.9.0\\db\\cervezadb.odb");
-       EntityManager em = emf.createEntityManager();
+        //Se crea la conexion a la base de datos (Si no existe, se crea)
+        //Cesar    
+        EntityManagerFactory emf = Persistence.createEntityManagerFactory("D:\\Documentos HDD\\Proyecto Neatbeans\\Librerias\\objectdb-2.9.0\\db\\cervezadb.odb");
+        //Sebas   
+        //EntityManagerFactory emf = Persistence.createEntityManagerFactory("C:\\Users\\ulseg\\Downloads\\NetBeansProjects\\objectdb-2.9.0\\db\\cervezaodb.odb");
+        //Xim    
+        //EntityManagerFactory emf= Persistence.createEntityManagerFactory("C:\\\\objectdb-2.9.0\\\\db\\\\cervezadb.odb");
+        //Edwin
+        //EntityManagerFactory emf = Persistence.createEntityManagerFactory("/home/edwin-993/cervezaodb/cervezadb.odb")
+        EntityManager em = emf.createEntityManager();
        em.getTransaction().begin();
        
        switch(ent){
@@ -318,12 +402,20 @@ public class crudIPL {
        Object obj;
        System.out.print("\nLa entidad a buscar dentro de opBuscar es: "+ent);
        System.out.print("\nEl criterio de busqueda dentro de opBuscar es: "+crit);
-        EntityManagerFactory emf= Persistence.createEntityManagerFactory("D:\\Documentos HDD\\Proyecto Neatbeans\\Librerias\\objectdb-2.9.0\\db\\cervezadb.odb");
-       EntityManager em = emf.createEntityManager();
+        //Se crea la conexion a la base de datos (Si no existe, se crea)
+        //Cesar    
+        EntityManagerFactory emf = Persistence.createEntityManagerFactory("D:\\Documentos HDD\\Proyecto Neatbeans\\Librerias\\objectdb-2.9.0\\db\\cervezadb.odb");
+        //Sebas   
+        //EntityManagerFactory emf = Persistence.createEntityManagerFactory("C:\\Users\\ulseg\\Downloads\\NetBeansProjects\\objectdb-2.9.0\\db\\cervezaodb.odb");
+        //Xim    
+        //EntityManagerFactory emf= Persistence.createEntityManagerFactory("C:\\\\objectdb-2.9.0\\\\db\\\\cervezadb.odb");
+        //Edwin
+        //EntityManagerFactory emf = Persistence.createEntityManagerFactory("/home/edwin-993/cervezaodb/cervezadb.odb")
+        EntityManager em = emf.createEntityManager();
        
        switch(ent){
            case "Lote":
-               obj= em.find(Lote.class, crit);
+               obj= em.find(Lote.class,Integer.parseInt(crit));
                em.close();
                emf.close();
                return obj;
@@ -339,14 +431,35 @@ public class crudIPL {
                em.close();
                emf.close();
                return obj;
-           
+               
+           case "Cerveza":
+               
+               obj=em.find(Cerveza.class, nameToID("Cerveza",crit));
+               em.close();
+               emf.close();
+               return obj;
+               
+           case "Envase":
+               
+               obj=em.find(Envase.class, crit);
+               em.close();
+               emf.close();
+               return obj;
        }
        return null;
    }
    
    public int nameToID(String entidad, String nombreEntidad){
-       EntityManagerFactory emf= Persistence.createEntityManagerFactory("D:\\Documentos HDD\\Proyecto Neatbeans\\Librerias\\objectdb-2.9.0\\db\\cervezadb.odb");
-       EntityManager em = emf.createEntityManager();
+       //Se crea la conexion a la base de datos (Si no existe, se crea)
+        //Cesar    
+        EntityManagerFactory emf = Persistence.createEntityManagerFactory("D:\\Documentos HDD\\Proyecto Neatbeans\\Librerias\\objectdb-2.9.0\\db\\cervezadb.odb");
+        //Sebas   
+        //EntityManagerFactory emf = Persistence.createEntityManagerFactory("C:\\Users\\ulseg\\Downloads\\NetBeansProjects\\objectdb-2.9.0\\db\\cervezaodb.odb");
+        //Xim    
+        //EntityManagerFactory emf= Persistence.createEntityManagerFactory("C:\\\\objectdb-2.9.0\\\\db\\\\cervezadb.odb");
+        //Edwin
+        //EntityManagerFactory emf = Persistence.createEntityManagerFactory("/home/edwin-993/cervezaodb/cervezadb.odb")
+        EntityManager em = emf.createEntityManager();
        
        switch(entidad){
            case "Expendio":
@@ -361,6 +474,19 @@ public class crudIPL {
                 em.close();
                 emf.close();
                 return resultadoExpendio.get(0);
+                
+           case "Cerveza":
+               TypedQuery<Integer>queryCerveza;
+               List<Integer>resultadoCerveza;
+               
+               queryCerveza=em.createQuery("SELECT c.id_cerveza FROM Cerveza c WHERE c.cer_nombre= '"+nombreEntidad+"'", Integer.class);
+               resultadoCerveza=queryCerveza.getResultList();
+               
+                System.out.println("\nSe ha recuperado satisfactoriamente el ID de la cerveza " + nombreEntidad);
+                
+                em.close();
+                emf.close();
+                return resultadoCerveza.get(0);
                 
        }
        return -1;
