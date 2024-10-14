@@ -378,18 +378,15 @@ public class InterfazReceta extends javax.swing.JFrame {
     private void btnRegistrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRegistrarActionPerformed
        if(validarDatos()) {
             try {
-               
+                int id = operacionesCRUD.opMaxID("Receta") + 1;
+                Receta nuevaReceta = new Receta(id, txtCantidad.getText());
+                Grano granoNuevo = (Grano)operacionesCRUD.opBuscarObjeto("Grano", cmbGrano.getSelectedItem().toString());
+                System.out.println("Grano recuperado mediante opBuscarObjeto :\n" + granoNuevo.toString());
 
-                    // Continuar con la lógica del registro
-                    int id = operacionesCRUD.opMaxID("Receta") + 1;
-                    Receta nuevaReceta = new Receta(id, txtCantidad.getText());
-                    Grano grano = (Grano)operacionesCRUD.opBuscarObjeto("Grano", cmbGrano.getSelectedItem().toString());
-                    System.out.println("Grano recuperado mediante opBuscarObjeto :\n" + grano.toString());
+                nuevaReceta.formRec_gra(granoNuevo);
+                operacionesCRUD.opPersistObjeto("Receta", nuevaReceta);
 
-                    nuevaReceta.formRec_gra(grano);
-                    operacionesCRUD.opPersistObjeto("Receta", nuevaReceta);
-
-                    System.out.println("Receta registrada exitosamente.");
+                System.out.println("Receta registrada exitosamente.");
                 
             }catch (Exception err) {
                 err.printStackTrace(); // Muestra el error completo en la consola para diagnóstico

@@ -771,8 +771,8 @@ public class crudGeneralCEM {
                 emf.close();
                 return objeto;
             case "Expendio":
-                objeto = em.find(Expendio.class, nameToID("Expendio", criterio));
-                //objeto = em.find(Expendio.class, criterio);
+                //objeto = em.find(Expendio.class, nameToID("Expendio", criterio));
+                objeto = em.find(Expendio.class, criterio);
                 em.close();
                 emf.close();
                 return objeto;
