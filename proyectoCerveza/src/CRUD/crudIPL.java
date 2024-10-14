@@ -156,9 +156,25 @@ public class crudIPL {
                System.out.print("\nSe han recuperado "+resultInv.size()+ " Inventarios");
                em.close();
                emf.close();
-               return resultInv;   
-           default:
-               JOptionPane.showMessageDialog(null, "Este metodo no abarca la clase que desea buscar");      
+               return resultInv;
+               
+           case "Envase":
+               TypedQuery<Envase>queryEnv=null;
+               List<Envase>resultEnv=null;
+               
+               if(crit.equals("")){
+                   queryEnv=em.createQuery("SELECT c FROM Envase c", Envase.class);
+               }else{
+                   queryEnv=em.createQuery("SELECT c FROM Envase WHERE c."+field+" LIKE "+crit+" % ", Envase.class);
+               }
+               resultEnv=queryEnv.getResultList();
+               System.out.print("\nSe han recuperado "+resultEnv.size()+ " Inventarios");
+               em.close();
+               emf.close();
+               return resultEnv;
+          default:
+               JOptionPane.showMessageDialog(null, "Este metodo no abarca la clase que desea buscar");
+            break;
        }
        
         em.close();
@@ -231,7 +247,25 @@ public class crudIPL {
                    nuevaFila.addElement(inventario.getInv_exp().getId_expendio());
                    rows.addElement(nuevaFila);   
                }
-            break;    
+            break; 
+            
+            case "Envase":
+                Envase envase;
+                
+                columnNames.addElement("Tipo de envase");
+                columnNames.addElement("Capacidad en ml");
+                
+                Iterator itEnv= resultX.iterator();
+                while(itEnv.hasNext()){
+                    envase = (Envase)itEnv.next();
+                    Vector nuevaFila = new Vector();
+
+                    nuevaFila.addElement(envase.getTipo_envase());
+                    nuevaFila.addElement(envase.getEnvase_capacidad());
+                    rows.addElement(nuevaFila);
+                }
+                
+            break;
        }//Fin del switch
        return new DefaultTableModel(rows,columnNames);
    }
@@ -283,10 +317,32 @@ public class crudIPL {
        }//Fin de if lote
        
        if(ent.equals("Presentacion")){//Inicio de if presentacion
+           
            List<Presentacion>results=opRead(ent,field,crit);
            tm=listToTM(results,ent);
   
        }//Fin de if presentacion
+       
+       if(ent.equals("Envase")){//Envase
+           List<Envase>results;
+           
+           switch(field){//switch
+               case "Tipo de envase":
+                   results=opRead(ent,"tipo_envase",crit);
+                   tm=listToTM(results,ent);
+               break;
+               case "Capacidad":
+                   results=opRead(ent,"capacidad_ml",crit);
+                   tm=listToTM(results,ent);
+               break;
+               default:
+                   results=opRead(ent,field,crit);
+                   tm=listToTM(results, ent);
+               break;
+               
+           }//switch fin
+           
+       }//Fin de envase
        
        return tm;
    }
@@ -345,11 +401,18 @@ public class crudIPL {
                return obj;
                
            case "Cerveza":
+               
                obj=em.find(Cerveza.class, nameToID("Cerveza",crit));
                em.close();
                emf.close();
                return obj;
-           
+               
+           case "Envase":
+               
+               obj=em.find(Envase.class, crit);
+               em.close();
+               emf.close();
+               return obj;
        }
        return null;
    }
