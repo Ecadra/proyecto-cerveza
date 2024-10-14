@@ -22,7 +22,15 @@ import proyectoCerveza.Presentacion;
 public class crudIPL {
     
     public void opCreate(String entidad, Object obj){
-        EntityManagerFactory emf= Persistence.createEntityManagerFactory("D:\\Documentos HDD\\Proyecto Neatbeans\\Librerias\\objectdb-2.9.0\\db\\cervezadb.odb");
+        //Se crea la conexion a la base de datos (Si no existe, se crea)
+        //Cesar    
+        EntityManagerFactory emf = Persistence.createEntityManagerFactory("D:\\Documentos HDD\\Proyecto Neatbeans\\Librerias\\objectdb-2.9.0\\db\\cervezadb.odb");
+        //Sebas   
+        //EntityManagerFactory emf = Persistence.createEntityManagerFactory("C:\\Users\\ulseg\\Downloads\\NetBeansProjects\\objectdb-2.9.0\\db\\cervezaodb.odb");
+        //Xim    
+        //EntityManagerFactory emf= Persistence.createEntityManagerFactory("C:\\\\objectdb-2.9.0\\\\db\\\\cervezadb.odb");
+        //Edwin
+        //EntityManagerFactory emf = Persistence.createEntityManagerFactory("/home/edwin-993/cervezaodb/cervezadb.odb")
         EntityManager em = emf.createEntityManager();
         
         
@@ -107,8 +115,16 @@ public class crudIPL {
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////7
    
     public List opRead(String ent, String field, String crit){
-       EntityManagerFactory emf= Persistence.createEntityManagerFactory("D:\\Documentos HDD\\Proyecto Neatbeans\\Librerias\\objectdb-2.9.0\\db\\cervezadb.odb");
-       EntityManager em = emf.createEntityManager();
+       //Se crea la conexion a la base de datos (Si no existe, se crea)
+        //Cesar    
+        EntityManagerFactory emf = Persistence.createEntityManagerFactory("D:\\Documentos HDD\\Proyecto Neatbeans\\Librerias\\objectdb-2.9.0\\db\\cervezadb.odb");
+        //Sebas   
+        //EntityManagerFactory emf = Persistence.createEntityManagerFactory("C:\\Users\\ulseg\\Downloads\\NetBeansProjects\\objectdb-2.9.0\\db\\cervezaodb.odb");
+        //Xim    
+        //EntityManagerFactory emf= Persistence.createEntityManagerFactory("C:\\\\objectdb-2.9.0\\\\db\\\\cervezadb.odb");
+        //Edwin
+        //EntityManagerFactory emf = Persistence.createEntityManagerFactory("/home/edwin-993/cervezaodb/cervezadb.odb")
+        EntityManager em = emf.createEntityManager();
        
        switch(ent){
            case "Presentacion":
@@ -349,8 +365,16 @@ public class crudIPL {
    
    public void opDelte(String ent, String crit){
        Object obj=null;
-       EntityManagerFactory emf= Persistence.createEntityManagerFactory("D:\\Documentos HDD\\Proyecto Neatbeans\\Librerias\\objectdb-2.9.0\\db\\cervezadb.odb");
-       EntityManager em = emf.createEntityManager();
+        //Se crea la conexion a la base de datos (Si no existe, se crea)
+        //Cesar    
+        EntityManagerFactory emf = Persistence.createEntityManagerFactory("D:\\Documentos HDD\\Proyecto Neatbeans\\Librerias\\objectdb-2.9.0\\db\\cervezadb.odb");
+        //Sebas   
+        //EntityManagerFactory emf = Persistence.createEntityManagerFactory("C:\\Users\\ulseg\\Downloads\\NetBeansProjects\\objectdb-2.9.0\\db\\cervezaodb.odb");
+        //Xim    
+        //EntityManagerFactory emf= Persistence.createEntityManagerFactory("C:\\\\objectdb-2.9.0\\\\db\\\\cervezadb.odb");
+        //Edwin
+        //EntityManagerFactory emf = Persistence.createEntityManagerFactory("/home/edwin-993/cervezaodb/cervezadb.odb")
+        EntityManager em = emf.createEntityManager();
        em.getTransaction().begin();
        
        switch(ent){
@@ -378,8 +402,16 @@ public class crudIPL {
        Object obj;
        System.out.print("\nLa entidad a buscar dentro de opBuscar es: "+ent);
        System.out.print("\nEl criterio de busqueda dentro de opBuscar es: "+crit);
-        EntityManagerFactory emf= Persistence.createEntityManagerFactory("D:\\Documentos HDD\\Proyecto Neatbeans\\Librerias\\objectdb-2.9.0\\db\\cervezadb.odb");
-       EntityManager em = emf.createEntityManager();
+        //Se crea la conexion a la base de datos (Si no existe, se crea)
+        //Cesar    
+        EntityManagerFactory emf = Persistence.createEntityManagerFactory("D:\\Documentos HDD\\Proyecto Neatbeans\\Librerias\\objectdb-2.9.0\\db\\cervezadb.odb");
+        //Sebas   
+        //EntityManagerFactory emf = Persistence.createEntityManagerFactory("C:\\Users\\ulseg\\Downloads\\NetBeansProjects\\objectdb-2.9.0\\db\\cervezaodb.odb");
+        //Xim    
+        //EntityManagerFactory emf= Persistence.createEntityManagerFactory("C:\\\\objectdb-2.9.0\\\\db\\\\cervezadb.odb");
+        //Edwin
+        //EntityManagerFactory emf = Persistence.createEntityManagerFactory("/home/edwin-993/cervezaodb/cervezadb.odb")
+        EntityManager em = emf.createEntityManager();
        
        switch(ent){
            case "Lote":
@@ -418,8 +450,16 @@ public class crudIPL {
    }
    
    public int nameToID(String entidad, String nombreEntidad){
-       EntityManagerFactory emf= Persistence.createEntityManagerFactory("D:\\Documentos HDD\\Proyecto Neatbeans\\Librerias\\objectdb-2.9.0\\db\\cervezadb.odb");
-       EntityManager em = emf.createEntityManager();
+       //Se crea la conexion a la base de datos (Si no existe, se crea)
+        //Cesar    
+        EntityManagerFactory emf = Persistence.createEntityManagerFactory("D:\\Documentos HDD\\Proyecto Neatbeans\\Librerias\\objectdb-2.9.0\\db\\cervezadb.odb");
+        //Sebas   
+        //EntityManagerFactory emf = Persistence.createEntityManagerFactory("C:\\Users\\ulseg\\Downloads\\NetBeansProjects\\objectdb-2.9.0\\db\\cervezaodb.odb");
+        //Xim    
+        //EntityManagerFactory emf= Persistence.createEntityManagerFactory("C:\\\\objectdb-2.9.0\\\\db\\\\cervezadb.odb");
+        //Edwin
+        //EntityManagerFactory emf = Persistence.createEntityManagerFactory("/home/edwin-993/cervezaodb/cervezadb.odb")
+        EntityManager em = emf.createEntityManager();
        
        switch(entidad){
            case "Expendio":
