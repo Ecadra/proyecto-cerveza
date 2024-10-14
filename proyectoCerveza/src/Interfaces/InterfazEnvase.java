@@ -22,19 +22,56 @@ import java.util.List;
  */
 public class InterfazEnvase extends javax.swing.JFrame {
     
-    DefaultTableModel model; //Definición del DTM
-    //java.sql.Date fechaOrden = null;
-    //java.sql.Date fechaDespacho = null;
-    
+    crudGeneralCEM operacionesCRUD = new crudGeneralCEM();
     public InterfazEnvase() throws Exception {
         initComponents();
         this.setLocationRelativeTo(null);
+        tblEnvase.setModel(operacionesCRUD.opBuscar("Envase", "", ""));
+
     }
     
-    public void limpiarPedido(){
+    public void limpiarEnvase(){
         txtTipoEnvase.setText("");
         txtCapacidad.setText("");
-
+    }
+    
+    public void activarEnvase(boolean activado){
+        btnRegistrar.setEnabled(activado);
+        txtTipoEnvase.setEnabled(activado);
+        txtCapacidad.setEnabled(activado);
+        txtBusquedaEnvase.setEnabled(!activado);
+    }
+    
+    public void mensajeAdvertencia(String mensaje, String titulo){
+        JOptionPane.showMessageDialog(null,mensaje,titulo,0);
+    }
+    public void mensajeInformativo(String mensaje, String titulo){
+        JOptionPane.showInternalMessageDialog(null, mensaje, titulo, JOptionPane.INFORMATION_MESSAGE);
+    }
+    
+    
+    public boolean validarDatos(){
+        // Validación del código de la cerveza
+        if (txtTipoEnvase.getText().equals("") || 
+                txtTipoEnvase.getText().equals("Ingrese el tipo de envase")) {
+            mensajeAdvertencia("El envase es inválido.\n"
+                    + "Favor de verificar que:\n"
+                    + "-> No contenga acentos\n"
+                    + "-> No contenga caracteres especiales\n"
+                    + "-> Haya registrado correctamente el envase\n", "Envase inválido");
+            return false;
+        }
+        if (txtCapacidad.getText().equals("") || 
+                txtCapacidad.getText().equals("Ingrese la capacidad en ml")) {
+            mensajeAdvertencia("Capacidad invalida.\n"
+                    + "Favor de verificar que:\n"
+                    + "-> No contenga acentos\n"
+                    + "-> No contenga caracteres especiales\n"
+                    + "-> Haya registrado correctamente la capacidad\n", "Capacidad invalida");
+            return false;
+        }
+       
+        return true;
     }
     
     
@@ -70,11 +107,6 @@ public class InterfazEnvase extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setResizable(false);
-        addWindowListener(new java.awt.event.WindowAdapter() {
-            public void windowOpened(java.awt.event.WindowEvent evt) {
-                formWindowOpened(evt);
-            }
-        });
 
         pnlDatosEnvase.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)), "Datos Envase"));
         pnlDatosEnvase.setEnabled(false);
@@ -148,9 +180,8 @@ public class InterfazEnvase extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 21, Short.MAX_VALUE)
                         .addGroup(pnlDatosEnvaseLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(btn_Eliminar, javax.swing.GroupLayout.DEFAULT_SIZE, 100, Short.MAX_VALUE)
-                            .addGroup(pnlDatosEnvaseLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                .addComponent(btnRegistrar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(btnActualizar, javax.swing.GroupLayout.DEFAULT_SIZE, 100, Short.MAX_VALUE)))
+                            .addComponent(btnRegistrar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(btnActualizar, javax.swing.GroupLayout.DEFAULT_SIZE, 100, Short.MAX_VALUE))
                         .addContainerGap(27, Short.MAX_VALUE))))
         );
         pnlDatosEnvaseLayout.setVerticalGroup(
@@ -271,7 +302,7 @@ public class InterfazEnvase extends javax.swing.JFrame {
                         .addGap(27, 27, 27)
                         .addComponent(btnNewEnvase))
                     .addComponent(pnlDatosEnvase, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(pnlRegistrros, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
+                    .addComponent(pnlRegistrros, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 479, Short.MAX_VALUE))
                 .addContainerGap(15, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
@@ -293,19 +324,14 @@ public class InterfazEnvase extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
-    
-        
-    }//GEN-LAST:event_formWindowOpened
-
     private void btnCancelarEnvaseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarEnvaseActionPerformed
         btnNewEnvase.setEnabled(true);
         tblEnvase.clearSelection(); 
     }//GEN-LAST:event_btnCancelarEnvaseActionPerformed
 
     private void btnNewEnvaseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNewEnvaseActionPerformed
-        
-        
+        limpiarEnvase();
+        activarEnvase(true);
     }//GEN-LAST:event_btnNewEnvaseActionPerformed
 
     private void txtBusquedaEnvaseKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtBusquedaEnvaseKeyReleased
@@ -327,7 +353,7 @@ public class InterfazEnvase extends javax.swing.JFrame {
     }//GEN-LAST:event_btnInicioActionPerformed
 
     private void btnLimpiarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLimpiarActionPerformed
-        limpiarPedido();
+        limpiarEnvase();
     }//GEN-LAST:event_btnLimpiarActionPerformed
 
     private void btn_EliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_EliminarActionPerformed
@@ -335,6 +361,38 @@ public class InterfazEnvase extends javax.swing.JFrame {
     }//GEN-LAST:event_btn_EliminarActionPerformed
 
     private void btnRegistrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRegistrarActionPerformed
+        if (validarDatos()) {
+            try {
+                // Obtener el valor ingresado como capacidad
+                int capacidad = Integer.parseInt(txtCapacidad.getText());
+
+                // Verificar si el valor de capacidad excede el límite de un short
+                if (capacidad > Short.MAX_VALUE || capacidad < Short.MIN_VALUE) {
+                    JOptionPane.showMessageDialog(null, "La capacidad introducida excede el límite de cualquier envase. Intente de nuevo.",
+                            "Error de capacidad",
+                            JOptionPane.ERROR_MESSAGE);
+                } else {
+                    // Continuar si la capacidad es válida
+                    int id = operacionesCRUD.opMaxID("Envase") + 1;
+                    Envase nuevoEnvase = new Envase(id, txtTipoEnvase.getText(), (short) capacidad);
+
+                    operacionesCRUD.opPersistObjeto("Envase", nuevoEnvase);
+                    System.out.println("Envase registrado exitosamente.");
+                }
+
+            } catch (NumberFormatException err) {
+                err.printStackTrace(); // Muestra el error completo en la consola para diagnóstico
+                JOptionPane.showMessageDialog(null, "Los datos introducidos no son válidos",
+                        "Error al registrar el envase",
+                        JOptionPane.ERROR_MESSAGE);
+            }
+
+        } else {
+            mensajeAdvertencia("Registro no realizado", "Error de captura de datos");
+        }
+
+        limpiarEnvase();
+        activarEnvase(false);
 
     }//GEN-LAST:event_btnRegistrarActionPerformed
 

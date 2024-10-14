@@ -9,9 +9,6 @@
     <SyntheticProperty name="formSizePolicy" type="int" value="1"/>
     <SyntheticProperty name="generateCenter" type="boolean" value="false"/>
   </SyntheticProperties>
-  <Events>
-    <EventHandler event="windowOpened" listener="java.awt.event.WindowListener" parameters="java.awt.event.WindowEvent" handler="formWindowOpened"/>
-  </Events>
   <AuxValues>
     <AuxValue name="FormSettings_autoResourcing" type="java.lang.Integer" value="0"/>
     <AuxValue name="FormSettings_autoSetComponentName" type="java.lang.Boolean" value="false"/>
@@ -37,7 +34,7 @@
                       <Component id="btnNewEnvase" min="-2" max="-2" attributes="0"/>
                   </Group>
                   <Component id="pnlDatosEnvase" alignment="0" max="32767" attributes="0"/>
-                  <Component id="pnlRegistrros" alignment="0" pref="0" max="32767" attributes="0"/>
+                  <Component id="pnlRegistrros" alignment="0" pref="479" max="32767" attributes="0"/>
               </Group>
               <EmptySpace pref="15" max="32767" attributes="0"/>
           </Group>
@@ -100,10 +97,8 @@
                           <EmptySpace pref="21" max="32767" attributes="0"/>
                           <Group type="103" groupAlignment="0" max="-2" attributes="0">
                               <Component id="btn_Eliminar" pref="100" max="32767" attributes="0"/>
-                              <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                                  <Component id="btnRegistrar" max="32767" attributes="0"/>
-                                  <Component id="btnActualizar" pref="100" max="32767" attributes="0"/>
-                              </Group>
+                              <Component id="btnRegistrar" max="32767" attributes="0"/>
+                              <Component id="btnActualizar" pref="100" max="32767" attributes="0"/>
                           </Group>
                           <EmptySpace pref="27" max="32767" attributes="0"/>
                       </Group>

@@ -9,9 +9,6 @@
     <SyntheticProperty name="formSizePolicy" type="int" value="1"/>
     <SyntheticProperty name="generateCenter" type="boolean" value="false"/>
   </SyntheticProperties>
-  <Events>
-    <EventHandler event="windowOpened" listener="java.awt.event.WindowListener" parameters="java.awt.event.WindowEvent" handler="formWindowOpened"/>
-  </Events>
   <AuxValues>
     <AuxValue name="FormSettings_autoResourcing" type="java.lang.Integer" value="0"/>
     <AuxValue name="FormSettings_autoSetComponentName" type="java.lang.Boolean" value="false"/>
@@ -29,18 +26,24 @@
       <Group type="103" groupAlignment="0" attributes="0">
           <Group type="102" alignment="0" attributes="0">
               <EmptySpace max="-2" attributes="0"/>
-              <Group type="103" groupAlignment="1" max="-2" attributes="0">
-                  <Component id="btnInicio" alignment="0" min="-2" max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="0" attributes="0">
                   <Group type="102" attributes="0">
-                      <Component id="btnCancelarReceta" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                      <Component id="btnNewReceta" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace min="-2" pref="15" max="-2" attributes="0"/>
+                      <Component id="btnInicio" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace pref="460" max="32767" attributes="0"/>
                   </Group>
-                  <Component id="pnlDatosReceta" alignment="0" max="32767" attributes="0"/>
-                  <Component id="pnlRegistrros" alignment="0" pref="484" max="32767" attributes="0"/>
+                  <Group type="102" alignment="1" attributes="0">
+                      <Group type="103" groupAlignment="1" attributes="0">
+                          <Component id="pnlRegistrros" alignment="0" pref="489" max="32767" attributes="0"/>
+                          <Component id="pnlDatosReceta" alignment="0" max="32767" attributes="0"/>
+                          <Group type="102" alignment="1" attributes="0">
+                              <Component id="btnCancelarReceta" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                              <Component id="btnNewReceta" min="-2" max="-2" attributes="0"/>
+                          </Group>
+                      </Group>
+                      <EmptySpace min="-2" pref="93" max="-2" attributes="0"/>
+                  </Group>
               </Group>
-              <EmptySpace pref="10" max="32767" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
@@ -50,15 +53,15 @@
               <EmptySpace min="-2" pref="12" max="-2" attributes="0"/>
               <Component id="btnInicio" min="-2" max="-2" attributes="0"/>
               <EmptySpace type="unrelated" max="-2" attributes="0"/>
-              <Component id="pnlDatosReceta" min="-2" max="-2" attributes="0"/>
-              <EmptySpace min="-2" pref="26" max="-2" attributes="0"/>
+              <Component id="pnlDatosReceta" min="-2" pref="150" max="-2" attributes="0"/>
+              <EmptySpace type="separate" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
                   <Component id="btnCancelarReceta" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="btnNewReceta" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
-              <EmptySpace type="unrelated" max="-2" attributes="0"/>
+              <EmptySpace max="-2" attributes="0"/>
               <Component id="pnlRegistrros" min="-2" max="-2" attributes="0"/>
-              <EmptySpace pref="22" max="32767" attributes="0"/>
+              <EmptySpace max="32767" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
@@ -85,28 +88,28 @@
                   <EmptySpace min="-2" pref="27" max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="0" attributes="0">
                       <Group type="102" attributes="0">
-                          <Component id="btnLimpiar" min="-2" max="-2" attributes="0"/>
-                          <EmptySpace max="32767" attributes="0"/>
-                      </Group>
-                      <Group type="102" attributes="0">
                           <Group type="103" groupAlignment="1" attributes="0">
                               <Component id="lblTipo" alignment="1" min="-2" max="-2" attributes="0"/>
                               <Component id="lblCapacidad" min="-2" max="-2" attributes="0"/>
                           </Group>
                           <EmptySpace type="separate" max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                              <Component id="txtProcedencia" pref="178" max="32767" attributes="0"/>
+                              <Component id="txtCantidad" pref="178" max="32767" attributes="0"/>
                               <Component id="cmbGrano" max="32767" attributes="0"/>
                           </Group>
-                          <EmptySpace type="separate" max="32767" attributes="0"/>
-                          <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                              <Component id="btn_Eliminar" pref="100" max="32767" attributes="0"/>
-                              <Component id="btnRegistrar" max="32767" attributes="0"/>
-                              <Component id="btnActualizar" pref="100" max="32767" attributes="0"/>
-                          </Group>
-                          <EmptySpace pref="83" max="32767" attributes="0"/>
+                      </Group>
+                      <Group type="102" attributes="0">
+                          <EmptySpace min="6" pref="6" max="-2" attributes="0"/>
+                          <Component id="btnLimpiar" min="-2" max="-2" attributes="0"/>
                       </Group>
                   </Group>
+                  <EmptySpace type="separate" pref="59" max="32767" attributes="0"/>
+                  <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                      <Component id="btn_Eliminar" max="32767" attributes="0"/>
+                      <Component id="btnRegistrar" max="32767" attributes="0"/>
+                      <Component id="btnActualizar" pref="100" max="32767" attributes="0"/>
+                  </Group>
+                  <EmptySpace pref="47" max="32767" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>
@@ -130,9 +133,9 @@
                   <EmptySpace type="separate" max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="3" attributes="0">
                       <Component id="lblCapacidad" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="txtProcedencia" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="txtCantidad" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>
-                  <EmptySpace type="separate" max="-2" attributes="0"/>
+                  <EmptySpace type="unrelated" max="-2" attributes="0"/>
                   <Component id="btnLimpiar" min="-2" max="-2" attributes="0"/>
                   <EmptySpace max="32767" attributes="0"/>
               </Group>
@@ -181,13 +184,14 @@
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnLimpiarActionPerformed"/>
           </Events>
         </Component>
-        <Component class="javax.swing.JTextField" name="txtProcedencia">
+        <Component class="javax.swing.JTextField" name="txtCantidad">
           <Properties>
             <Property name="horizontalAlignment" type="int" value="0"/>
             <Property name="text" type="java.lang.String" value="Ingrese la cantidad"/>
+            <Property name="enabled" type="boolean" value="false"/>
           </Properties>
           <Events>
-            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="txtProcedenciaActionPerformed"/>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="txtCantidadActionPerformed"/>
           </Events>
         </Component>
         <Component class="javax.swing.JLabel" name="lblCapacidad">
@@ -201,7 +205,11 @@
             <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
               <StringArray count="0"/>
             </Property>
+            <Property name="enabled" type="boolean" value="false"/>
           </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="cmbGranoActionPerformed"/>
+          </Events>
           <AuxValues>
             <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;String&gt;"/>
           </AuxValues>
@@ -248,7 +256,7 @@
                   <EmptySpace type="separate" max="-2" attributes="0"/>
                   <Component id="lblAtributo" min="-2" max="-2" attributes="0"/>
                   <EmptySpace type="separate" max="-2" attributes="0"/>
-                  <Component id="cmbAtributos" min="-2" max="-2" attributes="0"/>
+                  <Component id="cmbAtributo" min="-2" max="-2" attributes="0"/>
                   <EmptySpace max="32767" attributes="0"/>
               </Group>
               <Group type="102" alignment="1" attributes="0">
@@ -265,7 +273,7 @@
                   <Group type="103" groupAlignment="3" attributes="0">
                       <Component id="txtBusquedaReceta" alignment="3" min="-2" max="-2" attributes="0"/>
                       <Component id="lblAtributo" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="cmbAtributos" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="cmbAtributo" alignment="3" min="-2" max="-2" attributes="0"/>
                       <Component id="lblBusqueda" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>
                   <EmptySpace type="unrelated" max="-2" attributes="0"/>
@@ -291,7 +299,7 @@
             <Property name="text" type="java.lang.String" value="Atributo:"/>
           </Properties>
         </Component>
-        <Component class="javax.swing.JComboBox" name="cmbAtributos">
+        <Component class="javax.swing.JComboBox" name="cmbAtributo">
           <Properties>
             <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
               <StringArray count="1">
@@ -310,7 +318,7 @@
 
           <Layout class="org.netbeans.modules.form.compat2.layouts.support.JScrollPaneSupportLayout"/>
           <SubComponents>
-            <Component class="javax.swing.JTable" name="tblGrano">
+            <Component class="javax.swing.JTable" name="tblReceta">
               <Properties>
                 <Property name="model" type="javax.swing.table.TableModel" editor="org.netbeans.modules.form.editors2.TableModelEditor">
                   <Table columnCount="2" rowCount="4">

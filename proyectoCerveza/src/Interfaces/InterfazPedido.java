@@ -12,11 +12,15 @@ import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import proyectoCerveza.Pedido;
 import CRUD.crudGeneralCEM;
+import CRUD.crudIPL;
+import java.text.SimpleDateFormat;
 import proyectoCerveza.Expendio;
 import proyectoCerveza.Presentacion;
+import proyectoCerveza.Inventario;
 
 
 import java.util.List;
+import javax.swing.table.DefaultTableCellRenderer;
 
 /**
  *
@@ -25,14 +29,17 @@ import java.util.List;
 public class InterfazPedido extends javax.swing.JFrame {
     
     private crudGeneralCEM operacionesCRUD = new crudGeneralCEM();
-    java.sql.Date fechaOrden = null;
-    java.sql.Date fechaDespacho = null;
+    private crudIPL operacionesPresentacionInv = new crudIPL();
+    
     
     public InterfazPedido() throws Exception {
         initComponents();
         this.setLocationRelativeTo(null);
         cargarExpendios();
         cargarPresentaciones();
+        txtCodigo.setText((operacionesCRUD.opMaxID("Pedido")+1)+"");
+        Date fechaOrden = dateFechaOrden.getDate();
+        Date fechaDespacho = dateFechaDespacho.getDate();
         tblPedido.setModel(operacionesCRUD.opBuscar("Pedido", "", ""));
     }
     
@@ -44,10 +51,16 @@ public class InterfazPedido extends javax.swing.JFrame {
     }
     
     private void cargarPresentaciones(){
-        List<Presentacion> listaPresentaciones = operacionesCRUD.opReadObjetos("Presentacion", "", "");
+        List<Presentacion> listaPresentaciones = operacionesPresentacionInv.opRead("Presentacion", "", "");
         for(Presentacion presentacion : listaPresentaciones){
-            cmb_Presentacion.addItem(presentacion.getPre_env().getTipo_envase());
+            cmb_Presentacion.addItem(presentacion.getPre_cer().getCer_nombre()
+                    +  " " + presentacion.getPre_env().getTipo_envase() + " - " + 
+                    presentacion.getPre_env().getEnvase_capacidad() + " ml");
         }
+    }
+
+    private void actualizarTabla(){
+        tblPedido.setModel(operacionesCRUD.opBuscar("Pedido", (String)cmbAtributoPedido.getSelectedItem(), txtBusquedaPedido.getText()));
     }
     
     public void mensajeAdvertencia(String mensaje, String titulo){
@@ -58,8 +71,8 @@ public class InterfazPedido extends javax.swing.JFrame {
     }
     
     public void limpiarPedido(){
-        cmb_Expendio.setSelectedIndex(0);
-        cmb_Presentacion.setSelectedIndex(0);
+        cmb_Expendio.setSelectedIndex(-1);
+        cmb_Presentacion.setSelectedIndex(-1);
         txtCodigo.setText("");
         txtCantidad.setText("");
         txtTotal.setText("");
@@ -67,7 +80,30 @@ public class InterfazPedido extends javax.swing.JFrame {
         txtIVA.setText("");
         dateFechaOrden.setDate(null);
         dateFechaDespacho.setDate(null);
-        
+    }
+    
+    public void activarPedido(boolean activado){
+        btnRegistrar.setEnabled(activado);
+        cmb_Expendio.setEnabled(activado);
+        cmb_Presentacion.setEnabled(activado);
+        txtCodigo.setEnabled(activado);
+        txtCantidad.setEnabled(activado);
+        dateFechaOrden.setEnabled(activado);
+        dateFechaDespacho.setEnabled(activado);
+        txtSubtotal.setEnabled(activado);
+        txtBusquedaPedido.setEnabled(!activado);
+    }
+    
+    class DateCellRenderer extends DefaultTableCellRenderer {
+        private SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
+
+        @Override
+        protected void setValue(Object value) {
+            if (value instanceof Date) {
+                value = formatter.format((Date) value); // Formatear la fecha
+            }
+            super.setValue(value); // Asignar el valor formateado a la celda
+        }
     }
     
     public boolean validarDatos(){
@@ -89,6 +125,16 @@ public class InterfazPedido extends javax.swing.JFrame {
                     + "-> Sea un dato numérico\n"
                     + "-> No contenga caracteres especiales\n"
                     + "-> Haya registrado correctamente la cantidad\n", "Cantidad inválida");
+            return false;
+        }
+        
+        if (txtSubtotal.getText().equals("") || 
+                txtSubtotal.getText().equals("Ingrese el subtotal")) {
+            mensajeAdvertencia("El subtotal del pedido.\n"
+                    + "Favor de verificar que:\n"
+                    + "-> Sea un dato numérico\n"
+                    + "-> No contenga caracteres especiales\n"
+                    + "-> Haya registrado correctamente la cantidad\n", "Subtotal inválido");
             return false;
         }
         return true;
@@ -141,11 +187,6 @@ public class InterfazPedido extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setResizable(false);
-        addWindowListener(new java.awt.event.WindowAdapter() {
-            public void windowOpened(java.awt.event.WindowEvent evt) {
-                formWindowOpened(evt);
-            }
-        });
 
         pnlDatosPedido.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)), "Datos Pedido"));
         pnlDatosPedido.setEnabled(false);
@@ -158,6 +199,8 @@ public class InterfazPedido extends javax.swing.JFrame {
 
         lblFechaOrden.setText("Fecha Orden:");
         lblFechaOrden.setEnabled(false);
+
+        dateFechaOrden.setEnabled(false);
 
         btnActualizar.setText("Actualizar");
         btnActualizar.setEnabled(false);
@@ -193,6 +236,9 @@ public class InterfazPedido extends javax.swing.JFrame {
         lblFechaDespacho.setText("Fecha Despacho:");
         lblFechaDespacho.setEnabled(false);
 
+        dateFechaDespacho.setEnabled(false);
+
+        cmb_Expendio.setEnabled(false);
         cmb_Expendio.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 cmb_ExpendioActionPerformed(evt);
@@ -202,14 +248,23 @@ public class InterfazPedido extends javax.swing.JFrame {
         lbl_Cantidad1.setText("Presentación:");
         lbl_Cantidad1.setEnabled(false);
 
+        cmb_Presentacion.setEnabled(false);
+        cmb_Presentacion.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cmb_PresentacionActionPerformed(evt);
+            }
+        });
+
         txtCodigo.setHorizontalAlignment(javax.swing.JTextField.CENTER);
         txtCodigo.setText("Ingrese el codigo del pedido");
+        txtCodigo.setEnabled(false);
 
         lblCantidad.setText("Cantidad cerveza:");
         lblCantidad.setEnabled(false);
 
         txtCantidad.setHorizontalAlignment(javax.swing.JTextField.CENTER);
         txtCantidad.setText("Ingrese la cantidad");
+        txtCantidad.setEnabled(false);
 
         lblTotal.setText("Total:");
         lblTotal.setEnabled(false);
@@ -222,6 +277,16 @@ public class InterfazPedido extends javax.swing.JFrame {
 
         txtSubtotal.setHorizontalAlignment(javax.swing.JTextField.CENTER);
         txtSubtotal.setEnabled(false);
+        txtSubtotal.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtSubtotalActionPerformed(evt);
+            }
+        });
+        txtSubtotal.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                txtSubtotalKeyReleased(evt);
+            }
+        });
 
         txtIVA.setHorizontalAlignment(javax.swing.JTextField.CENTER);
         txtIVA.setEnabled(false);
@@ -273,7 +338,7 @@ public class InterfazPedido extends javax.swing.JFrame {
                         .addGap(344, 344, 344)
                         .addGroup(pnlDatosPedidoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(btn_Eliminar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(btnActualizar, javax.swing.GroupLayout.DEFAULT_SIZE, 157, Short.MAX_VALUE)
+                            .addComponent(btnActualizar, javax.swing.GroupLayout.DEFAULT_SIZE, 192, Short.MAX_VALUE)
                             .addComponent(btnRegistrar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(btnLimpiar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                         .addGap(23, 23, 23))))
@@ -354,17 +419,19 @@ public class InterfazPedido extends javax.swing.JFrame {
 
         lblAtributoPedido.setText("Atributo:");
 
-        cmbAtributoPedido.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Código", "Cantidad", "Fecha de orden", "Fecha de despacho", "Total", "Subtotal", "IVA", " " }));
+        cmbAtributoPedido.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Codigo", "Cantidad", "Fecha de orden", "Fecha de despacho", "Total", "Subtotal", "IVA", " " }));
+        cmbAtributoPedido.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cmbAtributoPedidoActionPerformed(evt);
+            }
+        });
 
         tblPedido.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null}
+
             },
             new String [] {
-                "Código", "Cantidad", "Fecha Orden", "Fecha Despacho", "Total", "Subtotal", "IVA"
+                "Title 1", "Title 2", "Title 3", "Title 4", "Title 5", "Title 6", "Title 7", "Title 8"
             }
         ));
         jScrollPane1.setViewportView(tblPedido);
@@ -381,11 +448,11 @@ public class InterfazPedido extends javax.swing.JFrame {
                 .addGap(27, 27, 27)
                 .addComponent(lblAtributoPedido)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(cmbAtributoPedido, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(cmbAtributoPedido, 0, 350, Short.MAX_VALUE)
                 .addGap(148, 148, 148))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlRegistrosLayout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 901, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addGroup(pnlRegistrosLayout.createSequentialGroup()
+                .addGap(12, 12, 12)
+                .addComponent(jScrollPane1)
                 .addContainerGap())
         );
         pnlRegistrosLayout.setVerticalGroup(
@@ -414,7 +481,7 @@ public class InterfazPedido extends javax.swing.JFrame {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(663, Short.MAX_VALUE)
+                .addContainerGap(698, Short.MAX_VALUE)
                 .addComponent(btnCancelarPedido)
                 .addGap(27, 27, 27)
                 .addComponent(btnNewPedido)
@@ -422,7 +489,7 @@ public class InterfazPedido extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(pnlRegistros, javax.swing.GroupLayout.PREFERRED_SIZE, 912, Short.MAX_VALUE)
+                    .addComponent(pnlRegistros, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(pnlDatosPedido, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(btnInicio)
@@ -449,18 +516,58 @@ public class InterfazPedido extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnRegistrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRegistrarActionPerformed
-      
-              
+        if(validarDatos()){//SI LOS DATOS REGISTRADOS SON VALIDOS
+            try {
+                // Obtener la fecha del jdate como Date
+                Date fechaOrden = dateFechaOrden.getDate();
+                Date fechaDespacho = dateFechaDespacho.getDate();
+                // Formatear la fecha como String
+                SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+                String fechaOrdenS = sdf.format(fechaOrden);
+                String fechaDespachoS = sdf.format(fechaDespacho);
+
+                // Crear la nueva venta usando el String de fecha
+                Pedido nuevoPedido = new Pedido(
+                    Integer.parseInt(txtCodigo.getText()),
+                        Short.parseShort(txtCantidad.getText()),
+                        fechaOrdenS,
+                        fechaDespachoS,
+                        Float.parseFloat(txtTotal.getText()),
+                        Float.parseFloat(txtSubtotal.getText()),
+                        Float.parseFloat(txtIVA.getText())             
+                );
+
+                
+                Expendio expendioSeleccionado = (Expendio) operacionesCRUD.opBuscarObjeto("Expendio", cmb_Expendio.getSelectedItem().toString());
+                if (expendioSeleccionado == null) {
+                    JOptionPane.showMessageDialog(null, "No se pudo encontrar el expendio seleccionado.", "Error", JOptionPane.ERROR_MESSAGE);
+                    return; // Salir del método si no se encuentra el expendio
+                }else{
+                    System.out.println("Expendio recuperado mediante opBuscarObjeto :\n" + expendioSeleccionado.toString());
+
+                }   
+//                Presentacion presentacionSeleccionada = (Presentacion) operacionesPresentacionInv.opBuscarObjeto("Presentacion", cmb_Presentacion.getSelectedItem().toString());
+//                System.out.println("Presentacion recuperada mediante opBuscarObjeto :\n" + presentacionSeleccionada.toString());
+
+                nuevoPedido.formPed_exp(expendioSeleccionado);
+//                nuevoPedido.formPed_pre(presentacionSeleccionada);
+                operacionesCRUD.opPersistObjeto("Pedido", nuevoPedido);
+
+            } catch (NumberFormatException err) {
+                JOptionPane.showMessageDialog(null, "Los datos introducidos no son válidos",
+                        "Error al registrar el pedido",
+                        JOptionPane.ERROR_MESSAGE);
+            }
+        }else{
+            mensajeAdvertencia("Registro no realizado","Error de captura de datos");
+        }
+        limpiarPedido();
+        activarPedido(false);
     }//GEN-LAST:event_btnRegistrarActionPerformed
 
     private void btnLimpiarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLimpiarActionPerformed
         limpiarPedido();
     }//GEN-LAST:event_btnLimpiarActionPerformed
-
-    private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
-    
-        
-    }//GEN-LAST:event_formWindowOpened
 
     private void btn_EliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_EliminarActionPerformed
     
@@ -478,13 +585,13 @@ public class InterfazPedido extends javax.swing.JFrame {
     }//GEN-LAST:event_btnCancelarPedidoActionPerformed
 
     private void btnNewPedidoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNewPedidoActionPerformed
-        
-        
+        activarPedido(true);
+        limpiarPedido();
+        txtCodigo.setText((operacionesCRUD.opMaxID("Pedido")+1)+"");
     }//GEN-LAST:event_btnNewPedidoActionPerformed
 
     private void txtBusquedaPedidoKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtBusquedaPedidoKeyReleased
-    
-        
+        actualizarTabla();
     }//GEN-LAST:event_txtBusquedaPedidoKeyReleased
 
     private void btnInicioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnInicioActionPerformed
@@ -503,6 +610,42 @@ public class InterfazPedido extends javax.swing.JFrame {
     private void cmb_ExpendioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmb_ExpendioActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_cmb_ExpendioActionPerformed
+
+    private void cmb_PresentacionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmb_PresentacionActionPerformed
+       
+    }//GEN-LAST:event_cmb_PresentacionActionPerformed
+
+    private void txtSubtotalActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtSubtotalActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtSubtotalActionPerformed
+
+    private void txtSubtotalKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtSubtotalKeyReleased
+   
+        try {
+            // Obtener el valor ingresado en txtSubtotal y convertirlo a número
+            float subtotal = Float.parseFloat(txtSubtotal.getText());
+
+            // Calcular el IVA (16% del subtotal)
+            float iva = subtotal * 0.16f;
+
+            // Calcular el total (subtotal + iva)
+            float total = subtotal + iva;
+
+            // Establecer los valores calculados en los campos correspondientes
+            txtIVA.setText(String.format("%.2f", iva)); // Mostrar IVA con 2 decimales
+            txtTotal.setText(String.format("%.2f", total)); // Mostrar Total con 2 decimales
+        } catch (NumberFormatException ex) {
+            // En caso de que no sea un número válido, mostrar mensaje de error y limpiar los campos
+            JOptionPane.showMessageDialog(null, "Por favor, ingrese un valor numérico válido.", "Error", JOptionPane.ERROR_MESSAGE);
+            txtSubtotal.setText("");
+            txtIVA.setText("");
+            txtTotal.setText("");
+        }
+    }//GEN-LAST:event_txtSubtotalKeyReleased
+
+    private void cmbAtributoPedidoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmbAtributoPedidoActionPerformed
+        actualizarTabla();
+    }//GEN-LAST:event_cmbAtributoPedidoActionPerformed
 
     /**
      * @param args the command line arguments

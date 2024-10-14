@@ -10,6 +10,7 @@ import java.util.*;
 public class Envase implements Serializable{
     private static final long serialVersionUID = 1L;
     @Id
+    private int id_envase;
     private String tipo_envase;
     private short capacidad_ml;
     @OneToMany
@@ -17,11 +18,13 @@ public class Envase implements Serializable{
     private List<Presentacion> env_pre = new ArrayList<Presentacion>();
 
     public Envase(){
+        this.id_envase = -1;
         this.tipo_envase = "";
         this.capacidad_ml = 0;
     }
 
-    public Envase(String envase, short capacidad) {
+    public Envase(int id, String envase, short capacidad) {
+        this.id_envase = id;
         this.tipo_envase = envase;
         this.capacidad_ml = capacidad;
     }
@@ -40,6 +43,14 @@ public class Envase implements Serializable{
     
     public void dropEnv_pre(Presentacion p1) {
         this.env_pre.remove(p1);
+    }
+
+    public int getId_envase() {
+        return id_envase;
+    }
+
+    public void setId_envase(int id_envase) {
+        this.id_envase = id_envase;
     }
    
     public String getTipo_envase() {
