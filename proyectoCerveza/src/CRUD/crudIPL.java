@@ -275,6 +275,10 @@ public class crudIPL {
                    results=opRead(ent,"cantidad",crit);
                    tm=listToTM(results,ent);
                break;
+               default:
+                   results=opRead(ent,field,crit);
+                   tm=listToTM(results, ent);
+               break;
            }//Fin del switch
        }//Fin de if lote
        
@@ -323,7 +327,7 @@ public class crudIPL {
        
        switch(ent){
            case "Lote":
-               obj= em.find(Lote.class, crit);
+               obj= em.find(Lote.class,Integer.parseInt(crit));
                em.close();
                emf.close();
                return obj;
@@ -336,6 +340,12 @@ public class crudIPL {
                
            case "Expendio":
                obj=em.find(Expendio.class, nameToID("Expendio",crit));
+               em.close();
+               emf.close();
+               return obj;
+               
+           case "Cerveza":
+               obj=em.find(Cerveza.class, nameToID("Cerveza",crit));
                em.close();
                emf.close();
                return obj;
@@ -361,6 +371,19 @@ public class crudIPL {
                 em.close();
                 emf.close();
                 return resultadoExpendio.get(0);
+                
+           case "Cerveza":
+               TypedQuery<Integer>queryCerveza;
+               List<Integer>resultadoCerveza;
+               
+               queryCerveza=em.createQuery("SELECT c.id_cerveza FROM Cerveza c WHERE c.cer_nombre= '"+nombreEntidad+"'", Integer.class);
+               resultadoCerveza=queryCerveza.getResultList();
+               
+                System.out.println("\nSe ha recuperado satisfactoriamente el ID de la cerveza " + nombreEntidad);
+                
+                em.close();
+                emf.close();
+                return resultadoCerveza.get(0);
                 
        }
        return -1;
