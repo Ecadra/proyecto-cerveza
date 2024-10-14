@@ -363,12 +363,12 @@ public class crudGeneralCEM {
 
         switch (entidad) {
             case "Cerveza":
-                objeto = em.find(Cerveza.class, criterio);
+                objeto = em.find(Cerveza.class, Integer.parseInt(criterio));
                 em.close();
                 emf.close();
                 return objeto;
             case "Expendio":
-                objeto = em.find(Expendio.class, criterio);
+                objeto = em.find(Expendio.class, Integer.parseInt(criterio));
                 em.close();
                 emf.close();
                 return objeto;
