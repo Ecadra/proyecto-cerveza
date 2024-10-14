@@ -29,9 +29,9 @@ public class Test {
         //create a new database if it doesn´t exist yet:
         //Cesar    
         //EntityManagerFactory emf = Persistence.createEntityManagerFactory("/home/edwin-993/cervezaodb/cervezadb.odb");
-        EntityManagerFactory emf = Persistence.createEntityManagerFactory("D:\\Documentos HDD\\Proyecto Neatbeans\\Librerias\\objectdb-2.9.0\\db\\cervezadb.odb");
+        //EntityManagerFactory emf = Persistence.createEntityManagerFactory("D:\\Documentos HDD\\Proyecto Neatbeans\\Librerias\\objectdb-2.9.0\\db\\cervezadb.odb");
         //Sebas   
-        //EntityManagerFactory emf = Persistence.createEntityManagerFactory("C:\\Users\\ulseg\\Downloads\\NetBeansProjects\\objectdb-2.9.0\\db\\cervezaodb.odb");
+        EntityManagerFactory emf = Persistence.createEntityManagerFactory("C:\\Users\\ulseg\\Downloads\\NetBeansProjects\\objectdb-2.9.0\\db\\cervezaodb.odb");
         //Xim     
         //EntityManagerFactory emf= Persistence.createEntityManagerFactory("C:\\\\objectdb-2.9.0\\\\db\\\\cervezadb.odb");
         EntityManager em = emf.createEntityManager();
@@ -66,9 +66,9 @@ public class Test {
         Sede se2 = new Sede("Cervecería Hidalgo", dir2);
         Sede se3 = new Sede("Cervecería Pachus", dir3);
         
-        Envase en1 = new Envase("Lata", (short)300);
-        Envase en2 = new Envase("Botella", (short)350);
-        Envase en3 = new Envase("Barril", (short)20000);
+        Envase en1 = new Envase(1, "Lata", (short)300);
+        Envase en2 = new Envase(2, "Botella", (short)350);
+        Envase en3 = new Envase(3, "Barril", (short)20000);
 
        //Venta 
         Venta ve1 = new Venta(1,460,"11/10/2024",2347.50f);
@@ -79,9 +79,9 @@ public class Test {
         Marca m2 = new Marca(2, "Victoria");
         Marca m3 = new Marca(3, "Corona");
         
-        Grano g1 = new Grano("Arroz Yamadanishiki", "Japon");
-        Grano g2 = new Grano("Avena malteada", "Reino Unido");
-        Grano g3 = new Grano("Cebada 2-row","EUA");
+        Grano g1 = new Grano(1,"Arroz Yamadanishiki", "Japon");
+        Grano g2 = new Grano(2,"Avena malteada", "Reino Unido");
+        Grano g3 = new Grano(3,"Cebada 2-row","EUA");
         
         Pedido pe1 = new Pedido(1, (short)200, "12/11/2022", "20/11/2022", 1200.0f, 600.0f, 300.0f);
         Pedido pe2 = new Pedido(2, (short)150, "15/10/2023", "25/10/2023", 800.0f, 600.0f, 200.0f);

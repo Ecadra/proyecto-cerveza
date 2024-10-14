@@ -22,19 +22,56 @@ import java.util.List;
  */
 public class InterfazGrano extends javax.swing.JFrame {
     
-    DefaultTableModel model; //Definición del DTM
-    //java.sql.Date fechaOrden = null;
-    //java.sql.Date fechaDespacho = null;
+    private crudGeneralCEM operacionesCRUD = new crudGeneralCEM();
     
     public InterfazGrano() throws Exception {
         initComponents();
         this.setLocationRelativeTo(null);
+        tblGrano.setModel(operacionesCRUD.opBuscar("Grano", "", ""));
     }
     
-    public void limpiarPedido(){
+    public void limpiarGrano(){
         txtGrano.setText("");
         txtProcedencia.setText("");
-
+    }
+    
+    public void activarGrano(boolean activado){
+        btnRegistrar.setEnabled(activado);
+        txtGrano.setEnabled(activado);
+        txtProcedencia.setEnabled(activado);
+        txtBusquedaGrano.setEnabled(!activado);
+    }
+    
+    public void mensajeAdvertencia(String mensaje, String titulo){
+        JOptionPane.showMessageDialog(null,mensaje,titulo,0);
+    }
+    public void mensajeInformativo(String mensaje, String titulo){
+        JOptionPane.showInternalMessageDialog(null, mensaje, titulo, JOptionPane.INFORMATION_MESSAGE);
+    }
+    
+    
+    public boolean validarDatos(){
+        // Validación del código de la cerveza
+        if (txtGrano.getText().equals("") || 
+                txtGrano.getText().equals("Ingrese el grano")) {
+            mensajeAdvertencia("El grano es inválido.\n"
+                    + "Favor de verificar que:\n"
+                    + "-> No contenga acentos\n"
+                    + "-> No contenga caracteres especiales\n"
+                    + "-> Haya registrado correctamente el grano\n", "Grano inválido");
+            return false;
+        }
+        if (txtProcedencia.getText().equals("") || 
+                txtGrano.getText().equals("Ingrese la procedencia")) {
+            mensajeAdvertencia("Procedencia invalida.\n"
+                    + "Favor de verificar que:\n"
+                    + "-> No contenga acentos\n"
+                    + "-> No contenga caracteres especiales\n"
+                    + "-> Haya registrado correctamente la procedencia\n", "Procedencia invalida");
+            return false;
+        }
+       
+        return true;
     }
     
     
@@ -61,7 +98,7 @@ public class InterfazGrano extends javax.swing.JFrame {
         btnNewEnvase = new javax.swing.JButton();
         pnlRegistrros = new javax.swing.JPanel();
         lblBusqueda = new javax.swing.JLabel();
-        txtBusquedaEnvase = new javax.swing.JTextField();
+        txtBusquedaGrano = new javax.swing.JTextField();
         lblAtributo = new javax.swing.JLabel();
         cmbAtributos = new javax.swing.JComboBox<>();
         jScrollPane1 = new javax.swing.JScrollPane();
@@ -70,11 +107,6 @@ public class InterfazGrano extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setResizable(false);
-        addWindowListener(new java.awt.event.WindowAdapter() {
-            public void windowOpened(java.awt.event.WindowEvent evt) {
-                formWindowOpened(evt);
-            }
-        });
 
         pnlDatosEnvase.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)), "Datos Grano"));
         pnlDatosEnvase.setEnabled(false);
@@ -115,9 +147,11 @@ public class InterfazGrano extends javax.swing.JFrame {
 
         txtGrano.setHorizontalAlignment(javax.swing.JTextField.CENTER);
         txtGrano.setText("Ingrese el nombre del grano");
+        txtGrano.setEnabled(false);
 
         txtProcedencia.setHorizontalAlignment(javax.swing.JTextField.CENTER);
         txtProcedencia.setText("Ingrese la procedencia del grano");
+        txtProcedencia.setEnabled(false);
         txtProcedencia.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 txtProcedenciaActionPerformed(evt);
@@ -194,9 +228,9 @@ public class InterfazGrano extends javax.swing.JFrame {
 
         lblBusqueda.setText("Búsqueda");
 
-        txtBusquedaEnvase.addKeyListener(new java.awt.event.KeyAdapter() {
+        txtBusquedaGrano.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyReleased(java.awt.event.KeyEvent evt) {
-                txtBusquedaEnvaseKeyReleased(evt);
+                txtBusquedaGranoKeyReleased(evt);
             }
         });
 
@@ -225,7 +259,7 @@ public class InterfazGrano extends javax.swing.JFrame {
                 .addContainerGap()
                 .addComponent(lblBusqueda)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(txtBusquedaEnvase, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(txtBusquedaGrano, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(lblAtributo)
                 .addGap(18, 18, 18)
@@ -241,7 +275,7 @@ public class InterfazGrano extends javax.swing.JFrame {
             .addGroup(pnlRegistrrosLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(pnlRegistrrosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(txtBusquedaEnvase, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtBusquedaGrano, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(lblAtributo)
                     .addComponent(cmbAtributos, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(lblBusqueda))
@@ -292,25 +326,21 @@ public class InterfazGrano extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
-    
-        
-    }//GEN-LAST:event_formWindowOpened
-
     private void btnCancelarEnvaseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarEnvaseActionPerformed
         btnNewEnvase.setEnabled(true);
         tblGrano.clearSelection(); 
     }//GEN-LAST:event_btnCancelarEnvaseActionPerformed
 
     private void btnNewEnvaseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNewEnvaseActionPerformed
-        
+        limpiarGrano();
+        activarGrano(true);
         
     }//GEN-LAST:event_btnNewEnvaseActionPerformed
 
-    private void txtBusquedaEnvaseKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtBusquedaEnvaseKeyReleased
+    private void txtBusquedaGranoKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtBusquedaGranoKeyReleased
     
         
-    }//GEN-LAST:event_txtBusquedaEnvaseKeyReleased
+    }//GEN-LAST:event_txtBusquedaGranoKeyReleased
 
     private void btnInicioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnInicioActionPerformed
     try{
@@ -326,7 +356,7 @@ public class InterfazGrano extends javax.swing.JFrame {
     }//GEN-LAST:event_btnInicioActionPerformed
 
     private void btnLimpiarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLimpiarActionPerformed
-        limpiarPedido();
+        limpiarGrano();
     }//GEN-LAST:event_btnLimpiarActionPerformed
 
     private void btn_EliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_EliminarActionPerformed
@@ -334,7 +364,28 @@ public class InterfazGrano extends javax.swing.JFrame {
     }//GEN-LAST:event_btn_EliminarActionPerformed
 
     private void btnRegistrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRegistrarActionPerformed
+        if(validarDatos()) {
+            try {
+                // Verificar si el grano fue encontrado
+                int id = operacionesCRUD.opMaxID("Grano") + 1;
+                Grano nuevoGrano = new Grano(id, txtGrano.getText(), txtProcedencia.getText());
 
+                operacionesCRUD.opPersistObjeto("Grano", nuevoGrano);
+                System.out.println("Grano registrado exitosamente.");
+
+            }catch (Exception err) {
+                err.printStackTrace(); // Muestra el error completo en la consola para diagnóstico
+                JOptionPane.showMessageDialog(null, "Los datos introducidos no son válidos",
+                        "Error al registrar la receta",
+                        JOptionPane.ERROR_MESSAGE);
+            }
+
+        } else {
+            mensajeAdvertencia("Registro no realizado", "Error de captura de datos");
+        }
+
+        limpiarGrano();
+        activarGrano(false);
     }//GEN-LAST:event_btnRegistrarActionPerformed
 
     private void btnActualizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnActualizarActionPerformed
@@ -416,7 +467,7 @@ public class InterfazGrano extends javax.swing.JFrame {
     private javax.swing.JPanel pnlDatosEnvase;
     private javax.swing.JPanel pnlRegistrros;
     private javax.swing.JTable tblGrano;
-    private javax.swing.JTextField txtBusquedaEnvase;
+    private javax.swing.JTextField txtBusquedaGrano;
     private javax.swing.JTextField txtGrano;
     private javax.swing.JTextField txtProcedencia;
     // End of variables declaration//GEN-END:variables

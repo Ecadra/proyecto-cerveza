@@ -14,6 +14,7 @@ public class Grano implements Serializable{
     private static final long serialVersionUID = 1L;
 
     @Id
+    private int id_grano;
     private String gra_nombre;
     private String gra_procedencia;
             
@@ -23,11 +24,13 @@ public class Grano implements Serializable{
 
             
     public Grano(){
+        this.id_grano = -1;
         this.gra_nombre = "";
         this.gra_procedencia = "";
     }
     
-    public Grano(String nom, String proc){
+    public Grano(int id, String nom, String proc){
+        this.id_grano = id;
         this.gra_nombre = nom;
         this.gra_procedencia = proc;
     }
@@ -53,6 +56,14 @@ public class Grano implements Serializable{
     
     public void dropGra_rec(Receta rec1) {
         this.gra_rec.remove(rec1);
+    }
+
+    public int getId_grano() {
+        return id_grano;
+    }
+
+    public void setId_grano(int id_grano) {
+        this.id_grano = id_grano;
     }
 
     public String getGra_nombre() {

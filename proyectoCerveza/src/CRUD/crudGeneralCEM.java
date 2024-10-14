@@ -115,7 +115,7 @@ public class crudGeneralCEM {
                 Receta recetaNuevo = (Receta) objeto;
                 
                 //Se crea si existe un grano
-                Grano grano = em.find(Grano.class, recetaNuevo.getRec_gra().getGra_nombre());
+                Grano grano = em.find(Grano.class, recetaNuevo.getRec_gra().getId_grano());
                 
                 recetaNuevo.formRec_gra(grano);
                 grano.formGra_rec(recetaNuevo);
@@ -131,13 +131,13 @@ public class crudGeneralCEM {
             case "Grano":
                 Grano granoNuevo = (Grano) objeto;
                 //Devuelve solo el primer elemento de la lista
-                Receta receta = em.find(Receta.class, granoNuevo.getGra_rec().get(0).getId_receta());
+                //Receta receta = em.find(Receta.class, granoNuevo.getGra_rec().get(0).getId_receta());
 
-                granoNuevo.formGra_rec(receta);
-                receta.formRec_gra(granoNuevo);
+                //granoNuevo.formGra_rec(receta);
+                //receta.formRec_gra(granoNuevo);
 
                 em.getTransaction().begin();
-                em.persist(receta);
+                //em.persist(receta);
                 em.persist(granoNuevo);
                 em.getTransaction().commit();
                 
@@ -147,13 +147,12 @@ public class crudGeneralCEM {
             case "Envase":
                 Envase envaseNuevo = (Envase) objeto;
                 //Devuelve solo el primer elemento de la lista
-                Presentacion presentacion = em.find(Presentacion.class, envaseNuevo.getEnv_pre().get(0).getPre_cod());
+                //Presentacion presentacion = em.find(Presentacion.class, envaseNuevo.getEnv_pre().get(0).getPre_cod());
 
-                envaseNuevo.formEnv_pre(presentacion);
-                presentacion.formPre_env(envaseNuevo);
+                //envaseNuevo.formEnv_pre(presentacion);
+                //presentacion.formPre_env(envaseNuevo);
 
                 em.getTransaction().begin();
-                em.persist(presentacion);
                 em.persist(envaseNuevo);
                 em.getTransaction().commit();
                 
@@ -309,7 +308,7 @@ public class crudGeneralCEM {
                 em.getTransaction().begin();
 
                 // Busca el grano en la base de datos utilizando el nombre del grano como identificador
-                graActualizar = em.find(Grano.class, nuevosDatosGra.getGra_nombre());
+                graActualizar = em.find(Grano.class, nuevosDatosGra.getId_grano());
 
                 if (graActualizar != null) {
                     // Actualiza los campos del grano con los nuevos valores
@@ -330,7 +329,7 @@ public class crudGeneralCEM {
                 em.getTransaction().begin();
 
                 // Busca el grano en la base de datos utilizando el nombre del grano como identificador
-                envActualizar = em.find(Envase.class, nuevosDatosEnv.getTipo_envase());
+                envActualizar = em.find(Envase.class, nuevosDatosEnv.getId_envase());
 
                 if (envActualizar != null) {
                     // Actualiza los campos del grano con los nuevos valores
@@ -467,7 +466,7 @@ public class crudGeneralCEM {
                         ? em.createQuery("SELECT g FROM Grano g", Grano.class)
                         : em.createQuery("SELECT g FROM Grano g WHERE g." + field.toLowerCase() + " LIKE '%" + criterio + "%'", Grano.class);
                 resultadosGrano = consultaGrano.getResultList();
-                System.out.println("Se han recuperado satisfactoriamente " + resultadosGrano.size() + " Granos");
+                System.out.println("Se han recuperado satisfactoriamente " + resultadosGrano.size() + " granos");
                 em.close();
                 emf.close();
                 return resultadosGrano;
@@ -551,6 +550,7 @@ public class crudGeneralCEM {
                 columnNames.addElement("Código del pedido");
                 columnNames.addElement("Expendio");
                 columnNames.addElement("Presentacion");
+                columnNames.addElement("Capacidad");
                 columnNames.addElement("Cantidad del pedido");
                 columnNames.addElement("Fecha de orden");
                 columnNames.addElement("Fecha de despacho");
@@ -565,6 +565,7 @@ public class crudGeneralCEM {
                     nuevaFila.addElement(pedido.getPed_codigo());
                     nuevaFila.addElement(pedido.getPed_exp().getExp_nombre());
                     nuevaFila.addElement(pedido.getPed_pre().getPre_env().getTipo_envase());
+                    nuevaFila.addElement(pedido.getPed_pre().getPre_env().getEnvase_capacidad());
                     nuevaFila.addElement(pedido.getPed_cantidad());
                     nuevaFila.addElement(pedido.getPed_forden());
                     nuevaFila.addElement(pedido.getPed_fdespacho());
@@ -671,6 +672,7 @@ public class crudGeneralCEM {
             List<Pedido> resultadosPedido;
             switch(field){
                 case "Codigo":
+                    //int conversion = Integer.parseInt(criterio);
                     resultadosPedido = opReadObjetos(ent, "ped_codigo", criterio);
                     tm = listToTM(resultadosPedido, ent);
                     break;
@@ -711,6 +713,10 @@ public class crudGeneralCEM {
         if(ent.equals("Grano")){
             List<Grano> resultadosGrano;
             switch(field){
+                case "ID Grano":
+                    resultadosGrano = opReadObjetos(ent, "id_grano", criterio);
+                    tm = listToTM(resultadosGrano, ent);
+                    break;
                 case "Nombre grano":
                     resultadosGrano = opReadObjetos(ent, "gra_nombre", criterio);
                     tm = listToTM(resultadosGrano, ent);
@@ -765,6 +771,8 @@ public class crudGeneralCEM {
                 emf.close();
                 return objeto;
             case "Expendio":
+                //objeto = em.find(Expendio.class, nameToID("Expendio", criterio));
+             
                 objeto = em.find(Expendio.class, Integer.parseInt(criterio));
                 em.close();
                 emf.close();
@@ -797,12 +805,12 @@ public class crudGeneralCEM {
                 emf.close();
                 return objeto;
             case"Grano":
-                objeto = em.find(Inventario.class,criterio); //Grano se busca mediante el nombre
+                objeto = em.find(Grano.class, criterio);
                 em.close();
                 emf.close();
                 return objeto;
             case"Envase":
-                objeto = em.find(Inventario.class,criterio); //Envase se busca mediante el tipo
+                objeto = em.find(Envase.class,criterio); //Envase se busca mediante el tipo
                 em.close();
                 emf.close();
                 return objeto;
@@ -917,6 +925,58 @@ public class crudGeneralCEM {
                 em.close();
                 emf.close();
                 return resultadosMarca.get(0);
+            case "Pedido":
+                //Se recuperan los objetos Pedido desde la base de datos
+                TypedQuery<Integer> consultaPedido = null; //Objeto para la consulta
+                List<Integer> resultadosPedido = new ArrayList<Integer>();//Lista para los resultados
+
+                consultaPedido = em.createQuery("SELECT MAX(c.ped_codigo) FROM Pedido c", Integer.class);
+                resultadosPedido = consultaPedido.getResultList();
+
+                System.out.println("Se han recuperado satisfactoriamente " + resultadosPedido.size() + " pedidos");
+
+                em.close();
+                emf.close();
+                return resultadosPedido.get(0);
+            case "Receta":
+                //Se recuperan los objetos Receta desde la base de datos
+                TypedQuery<Integer> consultaReceta = null; //Objeto para la consulta
+                List<Integer> resultadosReceta = new ArrayList<Integer>();//Lista para los resultados
+
+                consultaPedido = em.createQuery("SELECT MAX(c.id_receta) FROM Receta c", Integer.class);
+                resultadosPedido = consultaPedido.getResultList();
+
+                System.out.println("Se han recuperado satisfactoriamente " + resultadosPedido.size() + " recetas");
+
+                em.close();
+                emf.close();
+                return resultadosReceta.get(0);
+            case "Grano":
+                //Se recuperan los objetos Receta desde la base de datos
+                TypedQuery<Integer> consultaGrano = null; //Objeto para la consulta
+                List<Integer> resultadosGrano = new ArrayList<Integer>();//Lista para los resultados
+
+                consultaGrano = em.createQuery("SELECT MAX(c.id_grano) FROM Grano c", Integer.class);
+                resultadosGrano = consultaGrano.getResultList();
+
+                System.out.println("Se han recuperado satisfactoriamente " + resultadosGrano.size() + " granos");
+
+                em.close();
+                emf.close();
+                return resultadosGrano.get(0);
+            case "Envase":
+                //Se recuperan los objetos Receta desde la base de datos
+                TypedQuery<Integer> consultaEnvase = null; //Objeto para la consulta
+                List<Integer> resultadosEnvase = new ArrayList<Integer>();//Lista para los resultados
+
+                consultaEnvase = em.createQuery("SELECT MAX(c.id_envase) FROM Envase c", Integer.class);
+                resultadosEnvase = consultaEnvase.getResultList();
+
+                System.out.println("Se han recuperado satisfactoriamente " + resultadosEnvase.size() + " envases");
+
+                em.close();
+                emf.close();
+                return resultadosEnvase.get(0);
             default:
                 JOptionPane.showMessageDialog(null, "El objeto a recuperar no se encuentra definido dentro de este método\n",
                         "Error en crudGeneralCEM -> opMaxID", JOptionPane.ERROR_MESSAGE);
@@ -974,6 +1034,19 @@ public class crudGeneralCEM {
                 em.close();
                 emf.close();
                 return resultadosExpendio.get(0);
+            case "Grano":
+                //Se recuperan los objetos Expendio desde la base de datos
+                TypedQuery<Integer> consultaGrano= null; //Objeto para la consulta
+                List<Integer> resultadosGrano = new ArrayList<Integer>();//Lista para los resultados
+
+                consultaGrano = em.createQuery("SELECT g.id_grano FROM Grano g WHERE g.gra_nombre = '" + nombreEntidad + "'", Integer.class);
+                resultadosGrano = consultaGrano.getResultList();
+
+                System.out.println("Se ha recuperado satisfactoriamente el ID del Grano " + nombreEntidad);
+
+                em.close();
+                emf.close();
+                return resultadosGrano.get(0);
         }
         return -1;
     }
