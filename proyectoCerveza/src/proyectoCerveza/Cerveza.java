@@ -109,9 +109,17 @@ public class Cerveza implements Serializable {
     public Marca getCer_mar() {
         return cer_mar;
     }
+    
+    public void setCer_mar(Marca cer_mar){
+        this.cer_mar = cer_mar;
+    }
 
     public void formCer_mar(Marca cer_mar) {
         this.cer_mar = cer_mar;
+    }
+    
+    public void dropCer_mar(){
+        this.cer_mar = null;
     }
 
     public List<Receta> getCer_rec() {

@@ -111,14 +111,48 @@ public class crudGeneralCEM {
                 //Inicia la transaccion con la base de datos
                 em.getTransaction().begin();
                 
-                //Se busca la nuevosDatosCer a actualizar mediante el ID
+                //Se busca la cerveza a actualizar en la base de datos mediante el id
                 cerActualizar = em.find(Cerveza.class, nuevosDatosCer.getId_cerveza());
-                
                 //En caso de que se encuentre la cerveza se notifica por consola y se actualizan los datos de la nuevosDatosCer (Excluendo las relaciones del objeto)
                 System.out.println("Se ha encontrado la cerveza a actualizar.\n"
-                        + "Datos anteriores:  \n" + nuevosDatosCer);
-                cerActualizar.setCer_graduacion(nuevosDatosCer.getCer_graduacion());
-                cerActualizar.setCer_nombre(nuevosDatosCer.getCer_nombre());
+                        + "Datos anteriores:  \n" + cerActualizar.toString()+
+                        "Nuevos datos: \n" + nuevosDatosCer.toString());
+                
+                //Actualizacion de las relaciones si se ha cambiado la marca
+                //Se recupera la (antigua)marca desde la base de datos
+                Marca marcaBD = em.find(Marca.class, cerActualizar.getCer_mar().getId_marca()); 
+                System.out.println("Marca anteriormente relacionada: " + marcaBD.toString());
+                //Se recupera la (nueva)marca desde la base de datos
+                Marca marcaSeleccionada = em.find(Marca.class, nuevosDatosCer.getCer_mar().getId_marca());
+                System.out.println("Marca seleccionada en la interfaz: " + marcaSeleccionada.toString());
+                
+                if(marcaBD.getId_marca() != marcaSeleccionada.getId_marca()){ //Si se realizaron cambios en la relacion de la cerveza
+                    System.out.println("Se han detectado cambios en la relacion... Actualizando en la base de datos");
+                    //Se borra la relacion bidireccionalmente (tomando en cuenta la cerveza antigua)
+                    marcaBD.dropMar_cer(cerActualizar);
+                    cerActualizar.dropCer_mar();
+                    
+                    //Se actualiza la relacion con los nuevos datos de la interfaz
+                    cerActualizar.formCer_mar(marcaSeleccionada);
+                    marcaSeleccionada.formMar_cer(cerActualizar);
+                    
+                    //Se actualizan los datos de la cerveza de la base de datos, con los datos recuperados de la interfaz
+                    cerActualizar.setCer_graduacion(nuevosDatosCer.getCer_graduacion());
+                    cerActualizar.setCer_nombre(nuevosDatosCer.getCer_nombre());
+                    
+                    //Se guardan los cambios de todos los objetos modificados
+                    em.persist(cerActualizar);
+                    em.persist(marcaBD);
+                    em.persist(marcaSeleccionada);
+                }else{//En caso de que no se hayan realizado cambios en la relacion de Cerveza con Marca
+                    System.out.println("No se han detectado cambios en la relacion... Actualizando solo los datos de Cerveza");
+                    //Se actualizan los datos de la cerveza de la base de datos, con los datos recuperados de la interfaz
+                    cerActualizar.setCer_graduacion(nuevosDatosCer.getCer_graduacion());
+                    cerActualizar.setCer_nombre(nuevosDatosCer.getCer_nombre());
+                    em.persist(cerActualizar);
+                }
+               
+               
                 //Se compromete la transaccion
                 em.getTransaction().commit();
                 //Se cierran las conexiones a la base de datos

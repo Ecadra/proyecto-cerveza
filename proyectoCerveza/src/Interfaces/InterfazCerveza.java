@@ -89,6 +89,11 @@ public class InterfazCerveza extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         tbdFunciones.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        tbdFunciones.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tbdFuncionesMouseClicked(evt);
+            }
+        });
 
         jPanel2.setBorder(javax.swing.BorderFactory.createTitledBorder("Datos de la cerveza"));
 
@@ -105,6 +110,7 @@ public class InterfazCerveza extends javax.swing.JFrame {
 
         txtId.setEditable(false);
         txtId.setText("Identificador");
+        txtId.setEnabled(false);
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -135,15 +141,13 @@ public class InterfazCerveza extends javax.swing.JFrame {
                     .addComponent(jLabel10)
                     .addComponent(txtId, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addComponent(txtNombre, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(txtGraduacion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addComponent(jLabel1)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jLabel2)))
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(txtNombre, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel1))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(txtGraduacion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel2))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel3)
@@ -208,6 +212,7 @@ public class InterfazCerveza extends javax.swing.JFrame {
 
         txtId1.setEditable(false);
         txtId1.setText("Identificador");
+        txtId1.setEnabled(false);
         txtId1.setMinimumSize(new java.awt.Dimension(154, 24));
         txtId1.setPreferredSize(new java.awt.Dimension(154, 24));
 
@@ -230,7 +235,7 @@ public class InterfazCerveza extends javax.swing.JFrame {
                         .addComponent(cmbMarca1, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addComponent(txtGraduacion1, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(txtId1, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(104, 104, 104))
+                .addContainerGap(98, Short.MAX_VALUE))
         );
 
         jPanel4Layout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {cmbMarca1, jLabel4, jLabel5, jLabel6, txtGraduacion1, txtId1, txtNombre1});
@@ -271,13 +276,13 @@ public class InterfazCerveza extends javax.swing.JFrame {
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel3Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(btnEditar)
-                .addGap(146, 146, 146)
-                .addComponent(btnLimpiar1)
-                .addContainerGap())
-            .addGroup(jPanel3Layout.createSequentialGroup()
-                .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, Short.MAX_VALUE))
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel3Layout.createSequentialGroup()
+                        .addComponent(btnEditar)
+                        .addGap(146, 146, 146)
+                        .addComponent(btnLimpiar1))
+                    .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(18, Short.MAX_VALUE))
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -299,17 +304,22 @@ public class InterfazCerveza extends javax.swing.JFrame {
         jLabel7.setText("Nombre:");
 
         txtNombre2.setEditable(false);
+        txtNombre2.setEnabled(false);
 
         jLabel8.setText("Graduación:");
 
         txtGraduacion2.setEditable(false);
+        txtGraduacion2.setEnabled(false);
 
         jLabel9.setText("Marca:");
+
+        cmbMarca2.setEnabled(false);
 
         jLabel12.setText("Identificador:");
 
         txtId2.setEditable(false);
         txtId2.setText("Identificador");
+        txtId2.setEnabled(false);
 
         javax.swing.GroupLayout jPanel6Layout = new javax.swing.GroupLayout(jPanel6);
         jPanel6.setLayout(jPanel6Layout);
@@ -400,6 +410,11 @@ public class InterfazCerveza extends javax.swing.JFrame {
                 "Title 1", "Title 2", "Title 3", "Title 4"
             }
         ));
+        tblRegistros.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tblRegistrosMouseClicked(evt);
+            }
+        });
         jScrollPane1.setViewportView(tblRegistros);
 
         jLabel13.setLabelFor(cmbFiltro);
@@ -539,16 +554,78 @@ public class InterfazCerveza extends javax.swing.JFrame {
         //Se crea el objeto con los datos nuevos
         if(validacionEditar()){
             try{
-                Cerveza nuevosDatosCer = new Cerveza(Integer.parseInt(txtId1.getText()),
-                    txtNombre1.getText(),
-                    Float.parseFloat(txtGraduacion1.getText()));
-                operacionesCRUD.opUpdateObjeto("Cerveza", nuevosDatosCer);
+                //Se incializa un objeto cerveza con los datos de la interfaz, excluyendo la relacion
+                Cerveza cerveza = new Cerveza();
+                cerveza.setId_cerveza(Integer.parseInt(txtId1.getText()));
+                cerveza.setCer_nombre(txtNombre1.getText());
+                cerveza.setCer_graduacion(Float.parseFloat(txtGraduacion1.getText()));
+
+                //Se inicializa un objeto con el nombre de la tabla
+                Marca marca = new Marca();
+                marca.setMar_nombre((String)cmbMarca1.getSelectedItem());
+                System.out.println("Actualizacion: Nombre de la marca: " + marca.getMar_nombre());
+                marca.setId_marca(operacionesCRUD.nameToID("Marca", marca.getMar_nombre()));
+                System.out.println("Actualizacion: ID de la marca: " + marca.getId_marca());
+
+                cerveza.formCer_mar(marca);
+
+                operacionesCRUD.opUpdateObjeto("Cerveza", cerveza);
             }catch(NumberFormatException err){
                 JOptionPane.showMessageDialog(null, "Los datos introducidos no son validos",
+                        "Error en InterfazCerveza -> btnEditarActionPerformed",JOptionPane.ERROR_MESSAGE);
+            }catch(ClassCastException err){
+                JOptionPane.showMessageDialog(null, "Existe un error en la logica de clases, revisar atentamente",
+                        "Error en InterfazCerveza -> btnEditarActionPerformed",JOptionPane.ERROR_MESSAGE);
+            }catch(NullPointerException err){
+            JOptionPane.showMessageDialog(null, "El indice de la lista de marcas se ha salido de los limites\n"
+                    + "Probablemente la lista de marcas no esta cargando adecuadamente",
                         "Error en InterfazCerveza -> btnEditarActionPerformed",JOptionPane.ERROR_MESSAGE);
             }
         }
     }//GEN-LAST:event_btnEditarActionPerformed
+
+    private void tblRegistrosMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblRegistrosMouseClicked
+        // TODO add your handling code here:
+        int fila = tblRegistros.getSelectedRow();
+        //Se recuperan los datos de la cerveza en los campos correspondientes
+        txtId1.setText(operacionesCRUD.nameToID("Cerveza", tblRegistros.getValueAt(fila, 0).toString()) + "");
+        txtNombre1.setText(tblRegistros.getValueAt(fila, 0).toString());
+        txtGraduacion1.setText(tblRegistros.getValueAt(fila, 1).toString());
+        cmbMarca1.setSelectedItem(tblRegistros.getValueAt(fila, 2));
+    }//GEN-LAST:event_tblRegistrosMouseClicked
+//    private boolean confirmCambioPanel(){
+//        int tabSelected = tbdFunciones.getSelectedIndex();
+//        int fila = tblRegistros.getSelectedRow();
+//        boolean confirmacion;
+//        switch(tabSelected){
+//            case 0:
+//                if(fila>-1){
+//                    if(JOptionPane.showConfirmDialog(null, "Se han detectado registros, cambiar de panel causara que se pierdan los cambios no guardados\n"
+//                            + "Está usted seguro de que desea continuar con el cambio de panel?",
+//                            "Advertencia de perdida de datos",JOptionPane.YES_NO_OPTION) == JOptionPane.NO_OPTION){
+//                        confirmacion = true;
+//                    }else{
+//                        confirmacion = false;
+//                    }
+//                }
+//            case 1:
+//            case 2:
+//                if(fila>-1){
+//                    if(JOptionPane.showConfirmDialog(null, "Se han detectado registros, cambiar de panel causara que se pierdan los cambios no guardados\n"
+//                            + "Está usted seguro de que desea continuar con el cambio de panel?",
+//                            "Advertencia de perdida de datos",JOptionPane.YES_NO_OPTION) == JOptionPane.NO_OPTION){
+//                        confirmacion = true;
+//                    }else{
+//                        confirmacion = false;
+//                    }
+//                }
+//                
+//        }
+//    }
+    private void tbdFuncionesMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tbdFuncionesMouseClicked
+        // TODO add your handling code here:
+        
+    }//GEN-LAST:event_tbdFuncionesMouseClicked
 
     /**
      * @param args the command line arguments
