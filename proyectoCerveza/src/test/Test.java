@@ -49,9 +49,9 @@ public class Test {
         Inventario i2 = new Inventario(2,70.f,150,true);
         Inventario i3 = new Inventario(3,80.5f,300,true);
 
-        Fabricante fab1 = new Fabricante("Modelo", "5556789212");
-        Fabricante fab2 = new Fabricante("Corona", "5557809221");
-        Fabricante fab3 = new Fabricante("Heineken", "5523409221");
+        Fabricante fab1 = new Fabricante(1,"Modelo", "5556789212");
+        Fabricante fab2 = new Fabricante(2,"Corona", "5557809221");
+        Fabricante fab3 = new Fabricante(3,"Heineken", "5523409221");
 
         Direccion dir1 = new Direccion("Avenida Siempre Viva", 742, 3, "Springfield", 12345, "Illinois");
         Direccion dir2 = new Direccion("Calle Falsa", 123, 0, "Shelbyville", 54321, "Kentucky");
@@ -65,9 +65,9 @@ public class Test {
         Cerveza c2 = new Cerveza(2, "Oscura", 10.5f);
         Cerveza c3 = new Cerveza(3, "Malta", 11.5f);
 
-        Sede se1 = new Sede("Cerveceria Artesanal", dir1);
-        Sede se2 = new Sede("Cervecería Hidalgo", dir2);
-        Sede se3 = new Sede("Cervecería Pachus", dir3);
+        Sede se1 = new Sede(1,"Cerveceria Artesanal", dir1);
+        Sede se2 = new Sede(2,"Cervecería Hidalgo", dir2);
+        Sede se3 = new Sede(3,"Cervecería Pachus", dir3);
         
         Envase en1 = new Envase(1, "Lata", 300);
         Envase en2 = new Envase(2, "Botella", 350);
