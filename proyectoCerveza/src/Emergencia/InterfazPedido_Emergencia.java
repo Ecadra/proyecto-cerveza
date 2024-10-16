@@ -257,7 +257,7 @@ public class InterfazPedido_Emergencia extends javax.swing.JFrame {
     }
     private void btnInsertarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnInsertarActionPerformed
 
-        Pedido pedido = new Pedido(Integer.parseInt(txtCodigo.getText()),(Short)spnCantidad.getValue(),
+        Pedido pedido = new Pedido(Integer.parseInt(txtCodigo.getText()),(int)spnCantidad.getValue(),
         jdcOrden.getDate(),jdcDespacho.getDate(),Float.parseFloat(txtTotal.getText()),
         Float.parseFloat(txtSubtotal.getText()),Float.parseFloat(txtIVA.getText()));
         

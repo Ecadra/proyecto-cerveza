@@ -80,6 +80,10 @@ public class Lote implements Serializable {
     public Date getLote_fechaCaducidad() {
         return lote_fechaCaducidad;
     }
+
+    public Cerveza getLote_cer() {
+        return lote_cer;
+    }
     
     
 }

@@ -12,9 +12,10 @@ import javax.persistence.*;
 @Entity
 public class Pedido implements Serializable{
 
+    private static final long serialVersionUID = 1L;
     @Id
     private int ped_codigo;
-    private short ped_cantidad;
+    private int ped_cantidad;
     @Temporal(TemporalType.DATE)
     private Date ped_forden;
     @Temporal(TemporalType.DATE)
@@ -34,17 +35,17 @@ public class Pedido implements Serializable{
 
     
     public Pedido() {
-        this.ped_codigo = 0;               // int -> valor inicial 0
-        this.ped_cantidad = 0;             // short -> valor inicial 0
+        this.ped_codigo = -1;               // int -> valor inicial -1
+        this.ped_cantidad = -1;             // int -> valor inicial -1
         this.ped_forden = null;            // Date -> valor inicial null
         this.ped_fdespacho = null;         // Date -> valor inicial null
-        this.ped_total = 0.0f;             // float -> valor inicial 0.0
-        this.ped_subtotal = 0.0f;          // float -> valor inicial 0.0
-        this.ped_iva = 0.0f;               // float -> valor inicial 0.0
+        this.ped_total = -1.0f;             // float -> valor inicial -1.0
+        this.ped_subtotal = -1.0f;          // float -> valor inicial -1.0
+        this.ped_iva = -1.0f;               // float -> valor inicial -1.0
     }
 
     
-    public Pedido(int ped_codigo, short ped_cantidad, String ped_fordenstr, String ped_fdespachostr, float ped_total,
+    public Pedido(int ped_codigo, int ped_cantidad, String ped_fordenstr, String ped_fdespachostr, float ped_total,
             float ped_subtotal, float ped_iva) {
         this.ped_codigo = ped_codigo;
         this.ped_cantidad = ped_cantidad;
@@ -61,7 +62,7 @@ public class Pedido implements Serializable{
         this.ped_subtotal = ped_subtotal;
         this.ped_iva = ped_iva;
     }
-    public Pedido(int ped_codigo, short ped_cantidad, Date ped_fordenstr, Date ped_fdespachostr, float ped_total,
+    public Pedido(int ped_codigo, int ped_cantidad, Date ped_fordenstr, Date ped_fdespachostr, float ped_total,
             float ped_subtotal, float ped_iva) {
         this.ped_codigo = ped_codigo;
         this.ped_forden = ped_fordenstr;
@@ -112,11 +113,11 @@ public class Pedido implements Serializable{
         this.ped_codigo = ped_codigo;
     }
 
-    public short getPed_cantidad() {
+    public int getPed_cantidad() {
         return ped_cantidad;
     }
 
-    public void setPed_cantidad(short ped_cantidad) {
+    public void setPed_cantidad(int ped_cantidad) {
         this.ped_cantidad = ped_cantidad;
     }
 

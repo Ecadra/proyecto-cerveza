@@ -17,23 +17,28 @@ import proyectoCerveza.Expendio;
 import proyectoCerveza.Fabricante;
 import proyectoCerveza.Inventario;
 import proyectoCerveza.Marca;
+import proyectoCerveza.Pedido;
+import proyectoCerveza.Grano;
+import proyectoCerveza.Envase;
+import proyectoCerveza.Receta;
+import proyectoCerveza.Presentacion;
 
 /**
  *
  * @author edwin-993
  */
 public class crudGeneralCEM {
+    
+    //Cesar
+    //public String ruta = "D:\\Documentos HDD\\Proyecto Neatbeans\\Librerias\\objectdb-2.9.0\\db\\cervezadb.odb";
+    //Sebas
+    public String ruta = "C:\\Users\\ulseg\\Downloads\\NetBeansProjects\\objectdb-2.9.0\\db\\cervezaodb.odb";
+    //Xim
+    //public String ruta = "C:\\\\objectdb-2.9.0\\\\db\\\\cervezadb.odb";
+    //Edwin
 
     public void opPersistObjeto(String entidad, Object objeto) {
-        //Se crea la conexion a la base de datos (Si no existe, se crea)
-        //Cesar    
-        //EntityManagerFactory emf = Persistence.createEntityManagerFactory("D:\\Documentos HDD\\Proyecto Neatbeans\\Librerias\\objectdb-2.9.0\\db\\cervezadb.odb");
-        //Sebas   
-        //EntityManagerFactory emf = Persistence.createEntityManagerFactory("C:\\Users\\ulseg\\Downloads\\NetBeansProjects\\objectdb-2.9.0\\db\\cervezaodb.odb");
-        //Xim    
-        //EntityManagerFactory emf= Persistence.createEntityManagerFactory("C:\\\\objectdb-2.9.0\\\\db\\\\cervezadb.odb");
-        //Edwin
-        EntityManagerFactory emf = Persistence.createEntityManagerFactory("/home/edwin-993/cervezaodb/cervezadb.odb");
+        EntityManagerFactory emf = Persistence.createEntityManagerFactory(ruta);
         EntityManager em = emf.createEntityManager();
 
         switch (entidad) {//Switch para crear los 3 objetos (Cerveza, Marca y Expendio)
@@ -94,14 +99,7 @@ public class crudGeneralCEM {
     }
 
     public void opUpdateObjeto(String entidad, Object objeto) {
-        //Cesar    
-        //EntityManagerFactory emf = Persistence.createEntityManagerFactory("D:\\Documentos HDD\\Proyecto Neatbeans\\Librerias\\objectdb-2.9.0\\db\\cervezadb.odb");
-        //Sebas   
-        //EntityManagerFactory emf = Persistence.createEntityManagerFactory("C:\\Users\\ulseg\\Downloads\\NetBeansProjects\\objectdb-2.9.0\\db\\cervezaodb.odb");
-        //Xim    
-        //EntityManagerFactory emf= Persistence.createEntityManagerFactory("C:\\\\objectdb-2.9.0\\\\db\\\\cervezadb.odb");
-        //Edwin
-        EntityManagerFactory emf = Persistence.createEntityManagerFactory("/home/edwin-993/cervezaodb/cervezadb.odb");
+        EntityManagerFactory emf = Persistence.createEntityManagerFactory(ruta);
         EntityManager em = emf.createEntityManager();
         switch (entidad) {
             case "Cerveza":
@@ -152,7 +150,6 @@ public class crudGeneralCEM {
                     em.persist(cerActualizar);
                 }
                
-               
                 //Se compromete la transaccion
                 em.getTransaction().commit();
                 //Se cierran las conexiones a la base de datos
@@ -183,7 +180,7 @@ public class crudGeneralCEM {
                 expActualizar = em.find(Expendio.class, nuevosDatosExp.getExp_nombre());
 
                 System.out.println("Se ha encontrado la marca a actualizar. \n"
-                        + "Datos anteriores: \n" + nuevosDatosExp);
+                        + "Datos nuevos: \n" + nuevosDatosExp);
 
                 expActualizar.setExp_nombre(nuevosDatosExp.getExp_nombre());
 
@@ -196,14 +193,7 @@ public class crudGeneralCEM {
     }
 
     public List opReadObjetos(String ent, String field, String criterio) {
-        //Cesar    
-        //EntityManagerFactory emf = Persistence.createEntityManagerFactory("D:\\Documentos HDD\\Proyecto Neatbeans\\Librerias\\objectdb-2.9.0\\db\\cervezadb.odb");
-        //Sebas   
-        //EntityManagerFactory emf = Persistence.createEntityManagerFactory("C:\\Users\\ulseg\\Downloads\\NetBeansProjects\\objectdb-2.9.0\\db\\cervezaodb.odb");
-        //Xim    
-        //EntityManagerFactory emf= Persistence.createEntityManagerFactory("C:\\\\objectdb-2.9.0\\\\db\\\\cervezadb.odb");
-        //Edwin
-        EntityManagerFactory emf = Persistence.createEntityManagerFactory("/home/edwin-993/cervezaodb/cervezadb.odb");
+        EntityManagerFactory emf = Persistence.createEntityManagerFactory(ruta);
         EntityManager em = emf.createEntityManager();
         //Dependiendo de la entidad
         switch (ent) {
@@ -268,14 +258,13 @@ public class crudGeneralCEM {
                 System.out.println("Se han recuperado satisfactoriamente " + resultadosInventario.size() + " Inventarios");
                 em.close();
                 emf.close();
-                return resultadosInventario;
+                return resultadosInventario;         
             default:
                 JOptionPane.showMessageDialog(null,
                         "La clase que se intenta buscar no se encuentra registrada en este metodo",
                         "Error en crudCerveza -> opReadObjetos()",
                         JOptionPane.ERROR_MESSAGE);
                 break;
-
         }
         em.close();
         emf.close();
@@ -380,21 +369,15 @@ public class crudGeneralCEM {
             List<Marca> resultados = opReadObjetos(ent, field, criterio);
             tm = listToTM(resultados, ent);
         }
+        
         return tm;
     }
 
     public Object opBuscarObjeto(String entidad, String criterio) { //Funcion que busca un objeto específico de la entidad deseada
         Object objeto = null;
-        //Cesar    
-        //EntityManagerFactory emf = Persistence.createEntityManagerFactory("D:\\Documentos HDD\\Proyecto Neatbeans\\Librerias\\objectdb-2.9.0\\db\\cervezadb.odb");
-        //Sebas   
-        //EntityManagerFactory emf = Persistence.createEntityManagerFactory("C:\\Users\\ulseg\\Downloads\\NetBeansProjects\\objectdb-2.9.0\\db\\cervezaodb.odb");
-        //Xim    
-        //EntityManagerFactory emf= Persistence.createEntityManagerFactory("C:\\\\objectdb-2.9.0\\\\db\\\\cervezadb.odb");
-        //Edwin
-        EntityManagerFactory emf = Persistence.createEntityManagerFactory("/home/edwin-993/cervezaodb/cervezadb.odb");
+        EntityManagerFactory emf = Persistence.createEntityManagerFactory(ruta);
         EntityManager em = emf.createEntityManager();
-
+        int id;
         switch (entidad) {
             case "Cerveza":
                 objeto = em.find(Cerveza.class, Integer.parseInt(criterio));
@@ -402,6 +385,8 @@ public class crudGeneralCEM {
                 emf.close();
                 return objeto;
             case "Expendio":
+                //objeto = em.find(Expendio.class, nameToID("Expendio", criterio));
+             
                 objeto = em.find(Expendio.class, Integer.parseInt(criterio));
                 em.close();
                 emf.close();
@@ -417,7 +402,7 @@ public class crudGeneralCEM {
                 emf.close();
                 return objeto;
             case"Inventario":
-                int id = Integer.parseInt(criterio);
+                id = Integer.parseInt(criterio);
                 objeto = em.find(Inventario.class,id); //Marca se busca mediante el nombreí
                 em.close();
                 emf.close();
@@ -437,14 +422,7 @@ public class crudGeneralCEM {
 
     public void opDeleteObjeto(String entidad, String criterio) {//Funcion de CRUD para borrar una Cerveza
         Object objeto = null;
-        //Cesar    
-        //EntityManagerFactory emf = Persistence.createEntityManagerFactory("D:\\Documentos HDD\\Proyecto Neatbeans\\Librerias\\objectdb-2.9.0\\db\\cervezadb.odb");
-        //Sebas   
-        //EntityManagerFactory emf = Persistence.createEntityManagerFactory("C:\\Users\\ulseg\\Downloads\\NetBeansProjects\\objectdb-2.9.0\\db\\cervezaodb.odb");
-        //Xim    
-        //EntityManagerFactory emf= Persistence.createEntityManagerFactory("C:\\\\objectdb-2.9.0\\\\db\\\\cervezadb.odb");
-        //Edwin
-        EntityManagerFactory emf = Persistence.createEntityManagerFactory("/home/edwin-993/cervezaodb/cervezadb.odb");
+        EntityManagerFactory emf = Persistence.createEntityManagerFactory(ruta);
         EntityManager em = emf.createEntityManager();
         em.getTransaction().begin();
         switch (entidad) {
@@ -468,14 +446,7 @@ public class crudGeneralCEM {
     }
 
     public int opMaxID(String entidad) {
-        //Cesar    
-        //EntityManagerFactory emf = Persistence.createEntityManagerFactory("D:\\Documentos HDD\\Proyecto Neatbeans\\Librerias\\objectdb-2.9.0\\db\\cervezadb.odb");
-        //Sebas   
-        //EntityManagerFactory emf = Persistence.createEntityManagerFactory("C:\\Users\\ulseg\\Downloads\\NetBeansProjects\\objectdb-2.9.0\\db\\cervezaodb.odb");
-        //Xim    
-        //EntityManagerFactory emf= Persistence.createEntityManagerFactory("C:\\\\objectdb-2.9.0\\\\db\\\\cervezadb.odb");
-        //Edwin
-        EntityManagerFactory emf = Persistence.createEntityManagerFactory("/home/edwin-993/cervezaodb/cervezadb.odb");
+        EntityManagerFactory emf = Persistence.createEntityManagerFactory(ruta);
         EntityManager em = emf.createEntityManager();
         switch (entidad) {
             case "Cerveza":
@@ -525,15 +496,8 @@ public class crudGeneralCEM {
     }//Funcion que recupera el ultimo ID que hay de la entidad desead
 
     public int nameToID(String entidad, String nombreEntidad) { //Funcion auxiliar para poder buscar las marcas que se relacionan con Cerveza
-        //Cesar    
-        //EntityManagerFactory emf = Persistence.createEntityManagerFactory("D:\\Documentos HDD\\Proyecto Neatbeans\\Librerias\\objectdb-2.9.0\\db\\cervezadb.odb");
-        //Sebas   
-        //EntityManagerFactory emf = Persistence.createEntityManagerFactory("C:\\Users\\ulseg\\Downloads\\NetBeansProjects\\objectdb-2.9.0\\db\\cervezaodb.odb");
-        //Xim    
-        //EntityManagerFactory emf= Persistence.createEntityManagerFactory("C:\\\\objectdb-2.9.0\\\\db\\\\cervezadb.odb");
-        //Edwin
-        EntityManagerFactory emf = Persistence.createEntityManagerFactory("/home/edwin-993/cervezaodb/cervezadb.odb");
-        EntityManager em = emf.createEntityManager();
+        EntityManagerFactory emf = Persistence.createEntityManagerFactory(ruta);
+            EntityManager em = emf.createEntityManager();
         switch (entidad) {
             case "Marca":
                 //Se recuperan los objetos Marca desde la base de datos
@@ -565,7 +529,7 @@ public class crudGeneralCEM {
                 //Se recuperan los objetos Expendio desde la base de datos
                 TypedQuery<Integer> consultaExpendio = null; //Objeto para la consulta
                 List<Integer> resultadosExpendio = new ArrayList<Integer>();//Lista para los resultados
-
+                
                 consultaExpendio = em.createQuery("SELECT c.id_expendio FROM Expendio c WHERE c.exp_nombre = '" + nombreEntidad + "'", Integer.class);
                 resultadosExpendio = consultaExpendio.getResultList();
 
