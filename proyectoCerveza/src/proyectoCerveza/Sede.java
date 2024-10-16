@@ -16,6 +16,7 @@ public class Sede implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @Id
+    private int id_sede;
     private String se_nombre;
     
     @Embedded // Asumiendo que Direccion es una clase embebible
@@ -27,12 +28,14 @@ public class Sede implements Serializable {
     
     // Constructor por defecto
     public Sede() {
+        this.id_sede = 0;
         this.se_nombre = "null";
         this.se_direccion = null; // null en lugar de un string
     }
     
     // Constructor con parámetros
-    public Sede(String se_nom, Direccion dic) {
+    public Sede(int id, String se_nom, Direccion dic) {
+        this.id_sede = id;
         this.se_nombre = se_nom;
         this.se_direccion = dic;
     }
@@ -59,6 +62,14 @@ public class Sede implements Serializable {
 
     public void setSe_nombre(String se_nombre) {
         this.se_nombre = se_nombre;
+    }
+    
+    public int getId_sede(){
+        return id_sede;
+    }
+    
+    public void setId_sede(int id_sede){
+        this.id_sede = id_sede;
     }
 
     public Direccion getSe_direccion() {
