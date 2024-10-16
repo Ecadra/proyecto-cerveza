@@ -12,7 +12,7 @@ import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import proyectoCerveza.Envase;
 import proyectoCerveza.Presentacion;
-import CRUD.crudGeneralCEM;
+import CRUD.crudPREG;
 
 import java.util.List;
 
@@ -22,23 +22,28 @@ import java.util.List;
  */
 public class InterfazEnvase extends javax.swing.JFrame {
     
-    crudGeneralCEM operacionesCRUD = new crudGeneralCEM();
+    private crudPREG operacionesCRUD = new crudPREG();
     public InterfazEnvase() throws Exception {
         initComponents();
         this.setLocationRelativeTo(null);
-        tblEnvase.setModel(operacionesCRUD.opBuscar("Envase", "", ""));
+        actualizarTabla();
 
+    }
+    
+    private void actualizarTabla(){
+        tblEnvase.setModel(operacionesCRUD.opBuscar("Envase",
+                (String)cmbAtributos.getSelectedItem(), txtBusquedaEnvase.getText()));
     }
     
     public void limpiarEnvase(){
         txtTipoEnvase.setText("");
-        txtCapacidad.setText("");
+        spinnerCantidad.setValue(0);
     }
     
     public void activarEnvase(boolean activado){
         btnRegistrar.setEnabled(activado);
         txtTipoEnvase.setEnabled(activado);
-        txtCapacidad.setEnabled(activado);
+        spinnerCantidad.setEnabled(activado);
         txtBusquedaEnvase.setEnabled(!activado);
     }
     
@@ -61,8 +66,7 @@ public class InterfazEnvase extends javax.swing.JFrame {
                     + "-> Haya registrado correctamente el envase\n", "Envase inválido");
             return false;
         }
-        if (txtCapacidad.getText().equals("") || 
-                txtCapacidad.getText().equals("Ingrese la capacidad en ml")) {
+        if (spinnerCantidad.getValue().equals(0)) {
             mensajeAdvertencia("Capacidad invalida.\n"
                     + "Favor de verificar que:\n"
                     + "-> No contenga acentos\n"
@@ -92,8 +96,8 @@ public class InterfazEnvase extends javax.swing.JFrame {
         btn_Eliminar = new javax.swing.JButton();
         btnLimpiar = new javax.swing.JButton();
         txtTipoEnvase = new javax.swing.JTextField();
-        txtCapacidad = new javax.swing.JTextField();
         lblCapacidad = new javax.swing.JLabel();
+        spinnerCantidad = new javax.swing.JSpinner();
         btnCancelarEnvase = new javax.swing.JButton();
         btnNewEnvase = new javax.swing.JButton();
         pnlRegistrros = new javax.swing.JPanel();
@@ -148,16 +152,10 @@ public class InterfazEnvase extends javax.swing.JFrame {
         txtTipoEnvase.setHorizontalAlignment(javax.swing.JTextField.CENTER);
         txtTipoEnvase.setText("Ingrese el tipo de envase");
 
-        txtCapacidad.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        txtCapacidad.setText("Ingrese la capacidad del envase");
-        txtCapacidad.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtCapacidadActionPerformed(evt);
-            }
-        });
-
         lblCapacidad.setText("Capacidad en ml:");
         lblCapacidad.setEnabled(false);
+
+        spinnerCantidad.setModel(new javax.swing.SpinnerNumberModel(1, null, 100000, 1));
 
         javax.swing.GroupLayout pnlDatosEnvaseLayout = new javax.swing.GroupLayout(pnlDatosEnvase);
         pnlDatosEnvase.setLayout(pnlDatosEnvaseLayout);
@@ -174,15 +172,15 @@ public class InterfazEnvase extends javax.swing.JFrame {
                             .addComponent(lblTipo)
                             .addComponent(lblCapacidad))
                         .addGap(18, 18, 18)
-                        .addGroup(pnlDatosEnvaseLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(txtCapacidad)
-                            .addComponent(txtTipoEnvase, javax.swing.GroupLayout.PREFERRED_SIZE, 184, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 21, Short.MAX_VALUE)
+                        .addGroup(pnlDatosEnvaseLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(txtTipoEnvase, javax.swing.GroupLayout.PREFERRED_SIZE, 184, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(spinnerCantidad, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addGroup(pnlDatosEnvaseLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(btn_Eliminar, javax.swing.GroupLayout.DEFAULT_SIZE, 100, Short.MAX_VALUE)
                             .addComponent(btnRegistrar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(btnActualizar, javax.swing.GroupLayout.DEFAULT_SIZE, 100, Short.MAX_VALUE))
-                        .addContainerGap(27, Short.MAX_VALUE))))
+                        .addContainerGap(38, Short.MAX_VALUE))))
         );
         pnlDatosEnvaseLayout.setVerticalGroup(
             pnlDatosEnvaseLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -202,7 +200,7 @@ public class InterfazEnvase extends javax.swing.JFrame {
                 .addGap(18, 18, 18)
                 .addGroup(pnlDatosEnvaseLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lblCapacidad)
-                    .addComponent(txtCapacidad, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(spinnerCantidad, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addComponent(btnLimpiar)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
@@ -363,24 +361,13 @@ public class InterfazEnvase extends javax.swing.JFrame {
     private void btnRegistrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRegistrarActionPerformed
         if (validarDatos()) {
             try {
-                // Obtener el valor ingresado como capacidad
-                int capacidad = Integer.parseInt(txtCapacidad.getText());
+                int id = operacionesCRUD.opMaxID("Envase") + 1;
+                Envase nuevoEnvase = new Envase(id, txtTipoEnvase.getText(), (int) spinnerCantidad.getValue());
 
-                // Verificar si el valor de capacidad excede el límite de un short
-                if (capacidad > Short.MAX_VALUE || capacidad < Short.MIN_VALUE) {
-                    JOptionPane.showMessageDialog(null, "La capacidad introducida excede el límite de cualquier envase. Intente de nuevo.",
-                            "Error de capacidad",
-                            JOptionPane.ERROR_MESSAGE);
-                } else {
-                    // Continuar si la capacidad es válida
-                    int id = operacionesCRUD.opMaxID("Envase") + 1;
-                    Envase nuevoEnvase = new Envase(id, txtTipoEnvase.getText(), (short) capacidad);
+                operacionesCRUD.opPersistObjeto("Envase", nuevoEnvase);
+                System.out.println("Envase registrado exitosamente.");
 
-                    operacionesCRUD.opPersistObjeto("Envase", nuevoEnvase);
-                    System.out.println("Envase registrado exitosamente.");
-                }
-
-            } catch (NumberFormatException err) {
+            } catch (Exception err) {
                 err.printStackTrace(); // Muestra el error completo en la consola para diagnóstico
                 JOptionPane.showMessageDialog(null, "Los datos introducidos no son válidos",
                         "Error al registrar el envase",
@@ -390,19 +377,14 @@ public class InterfazEnvase extends javax.swing.JFrame {
         } else {
             mensajeAdvertencia("Registro no realizado", "Error de captura de datos");
         }
-
         limpiarEnvase();
         activarEnvase(false);
-
+        actualizarTabla();
     }//GEN-LAST:event_btnRegistrarActionPerformed
 
     private void btnActualizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnActualizarActionPerformed
 
     }//GEN-LAST:event_btnActualizarActionPerformed
-
-    private void txtCapacidadActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtCapacidadActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txtCapacidadActionPerformed
 
     /**
      * @param args the command line arguments
@@ -466,9 +448,9 @@ public class InterfazEnvase extends javax.swing.JFrame {
     private javax.swing.JLabel lblTipo;
     private javax.swing.JPanel pnlDatosEnvase;
     private javax.swing.JPanel pnlRegistrros;
+    private javax.swing.JSpinner spinnerCantidad;
     private javax.swing.JTable tblEnvase;
     private javax.swing.JTextField txtBusquedaEnvase;
-    private javax.swing.JTextField txtCapacidad;
     private javax.swing.JTextField txtTipoEnvase;
     // End of variables declaration//GEN-END:variables
 }

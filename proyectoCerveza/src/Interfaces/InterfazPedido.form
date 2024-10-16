@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 
-<Form version="1.3" maxVersion="1.9" type="org.netbeans.modules.form.forminfo.JFrameFormInfo">
+<Form version="1.5" maxVersion="1.9" type="org.netbeans.modules.form.forminfo.JFrameFormInfo">
   <Properties>
     <Property name="defaultCloseOperation" type="int" value="3"/>
     <Property name="resizable" type="boolean" value="false"/>
@@ -25,7 +25,7 @@
     <DimensionLayout dim="0">
       <Group type="103" groupAlignment="0" attributes="0">
           <Group type="102" alignment="1" attributes="0">
-              <EmptySpace pref="698" max="32767" attributes="0"/>
+              <EmptySpace pref="722" max="32767" attributes="0"/>
               <Component id="btnCancelarPedido" min="-2" max="-2" attributes="0"/>
               <EmptySpace min="-2" pref="27" max="-2" attributes="0"/>
               <Component id="btnNewPedido" min="-2" max="-2" attributes="0"/>
@@ -59,7 +59,7 @@
               </Group>
               <EmptySpace type="separate" max="-2" attributes="0"/>
               <Component id="pnlRegistros" min="-2" max="-2" attributes="0"/>
-              <EmptySpace pref="10" max="32767" attributes="0"/>
+              <EmptySpace max="32767" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
@@ -76,7 +76,6 @@
             </TitledBorder>
           </Border>
         </Property>
-        <Property name="enabled" type="boolean" value="false"/>
       </Properties>
 
       <Layout>
@@ -92,51 +91,45 @@
                       <Component id="lbl_Cantidad" alignment="1" min="-2" max="-2" attributes="0"/>
                   </Group>
                   <EmptySpace type="separate" max="-2" attributes="0"/>
-                  <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                      <Component id="cmb_Presentacion" max="32767" attributes="0"/>
-                      <Component id="dateFechaOrden" max="32767" attributes="0"/>
-                      <Component id="dateFechaDespacho" max="32767" attributes="0"/>
+                  <Group type="103" groupAlignment="1" max="-2" attributes="0">
+                      <Component id="dateFechaOrden" alignment="0" pref="344" max="32767" attributes="0"/>
+                      <Component id="cmb_Presentacion" alignment="0" max="32767" attributes="0"/>
                       <Component id="cmb_Expendio" alignment="0" max="32767" attributes="0"/>
-                      <Component id="txtCodigo" alignment="0" max="32767" attributes="0"/>
+                      <Component id="dateFechaDespacho" max="32767" attributes="0"/>
+                      <Component id="jLabel1" alignment="0" max="32767" attributes="0"/>
+                      <Component id="txtCodigo" alignment="0" min="-2" pref="188" max="-2" attributes="0"/>
                   </Group>
-                  <EmptySpace min="-2" pref="81" max="-2" attributes="0"/>
+                  <EmptySpace max="32767" attributes="0"/>
+                  <Group type="103" groupAlignment="1" attributes="0">
+                      <Group type="102" attributes="0">
+                          <Component id="lblCantidad" min="-2" max="-2" attributes="0"/>
+                          <EmptySpace type="separate" max="-2" attributes="0"/>
+                          <Component id="spinnerCantidad" min="-2" pref="160" max="-2" attributes="0"/>
+                      </Group>
+                      <Group type="102" alignment="1" attributes="0">
+                          <Component id="lblSubtotal" min="-2" max="-2" attributes="0"/>
+                          <EmptySpace type="separate" max="-2" attributes="0"/>
+                          <Component id="txtSubtotal" min="-2" pref="160" max="-2" attributes="0"/>
+                      </Group>
+                      <Group type="102" alignment="1" attributes="0">
+                          <Component id="lblTotal" min="-2" max="-2" attributes="0"/>
+                          <EmptySpace type="separate" max="-2" attributes="0"/>
+                          <Component id="txtTotal" min="-2" pref="160" max="-2" attributes="0"/>
+                      </Group>
+                      <Group type="102" alignment="1" attributes="0">
+                          <Component id="lblIVA" min="-2" max="-2" attributes="0"/>
+                          <EmptySpace type="separate" max="-2" attributes="0"/>
+                          <Component id="txtIVA" min="-2" pref="160" max="-2" attributes="0"/>
+                      </Group>
+                  </Group>
+                  <EmptySpace min="-2" pref="72" max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="0" attributes="0">
-                      <Group type="102" alignment="0" attributes="0">
-                          <Group type="103" groupAlignment="1" attributes="0">
-                              <Group type="102" attributes="0">
-                                  <Component id="lblIVA" min="-2" max="-2" attributes="0"/>
-                                  <EmptySpace type="separate" max="-2" attributes="0"/>
-                                  <Component id="txtIVA" min="-2" pref="160" max="-2" attributes="0"/>
-                              </Group>
-                              <Group type="102" attributes="0">
-                                  <Component id="lblCantidad" min="-2" max="-2" attributes="0"/>
-                                  <EmptySpace type="separate" max="-2" attributes="0"/>
-                                  <Component id="txtCantidad" min="-2" pref="160" max="-2" attributes="0"/>
-                              </Group>
-                              <Group type="102" alignment="1" attributes="0">
-                                  <Component id="lblSubtotal" min="-2" max="-2" attributes="0"/>
-                                  <EmptySpace type="separate" max="-2" attributes="0"/>
-                                  <Component id="txtSubtotal" min="-2" pref="160" max="-2" attributes="0"/>
-                              </Group>
-                              <Group type="102" alignment="1" attributes="0">
-                                  <Component id="lblTotal" min="-2" max="-2" attributes="0"/>
-                                  <EmptySpace type="separate" max="-2" attributes="0"/>
-                                  <Component id="txtTotal" min="-2" pref="160" max="-2" attributes="0"/>
-                              </Group>
-                          </Group>
-                          <EmptySpace max="32767" attributes="0"/>
-                      </Group>
-                      <Group type="102" alignment="0" attributes="0">
-                          <EmptySpace min="-2" pref="344" max="-2" attributes="0"/>
-                          <Group type="103" groupAlignment="0" attributes="0">
-                              <Component id="btn_Eliminar" max="32767" attributes="0"/>
-                              <Component id="btnActualizar" pref="192" max="32767" attributes="0"/>
-                              <Component id="btnRegistrar" alignment="0" max="32767" attributes="0"/>
-                              <Component id="btnLimpiar" alignment="0" max="32767" attributes="0"/>
-                          </Group>
-                          <EmptySpace min="-2" pref="23" max="-2" attributes="0"/>
-                      </Group>
+                      <Component id="btn_Eliminar" max="32767" attributes="0"/>
+                      <Component id="btnActualizar" max="32767" attributes="0"/>
+                      <Component id="btnRegistrar" alignment="0" max="32767" attributes="0"/>
+                      <Component id="btnLimpiar" alignment="0" max="32767" attributes="0"/>
                   </Group>
+                  <EmptySpace min="-2" pref="23" max="-2" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>
@@ -148,7 +141,7 @@
                       <Component id="cmb_Expendio" alignment="3" min="-2" max="-2" attributes="0"/>
                       <Component id="lbl_Cantidad" alignment="3" min="-2" max="-2" attributes="0"/>
                       <Component id="lblCantidad" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="txtCantidad" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="spinnerCantidad" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>
                   <EmptySpace max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="0" attributes="0">
@@ -163,43 +156,47 @@
                       </Group>
                       <Group type="102" attributes="0">
                           <EmptySpace min="-2" pref="11" max="-2" attributes="0"/>
-                          <Group type="103" groupAlignment="1" attributes="0">
-                              <Group type="102" alignment="1" attributes="0">
-                                  <Group type="103" groupAlignment="0" attributes="0">
-                                      <Component id="txtIVA" alignment="0" min="-2" max="-2" attributes="0"/>
-                                      <Component id="lblIVA" min="-2" max="-2" attributes="0"/>
-                                  </Group>
-                                  <EmptySpace min="-2" pref="19" max="-2" attributes="0"/>
-                              </Group>
-                              <Group type="102" alignment="1" attributes="0">
+                          <Group type="103" groupAlignment="3" attributes="0">
+                              <Component id="cmb_Presentacion" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="lbl_Cantidad1" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="lblTotal" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="txtTotal" alignment="3" min="-2" max="-2" attributes="0"/>
+                          </Group>
+                          <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                          <Group type="103" groupAlignment="0" attributes="0">
+                              <Group type="102" attributes="0">
                                   <Group type="103" groupAlignment="3" attributes="0">
-                                      <Component id="cmb_Presentacion" alignment="3" min="-2" max="-2" attributes="0"/>
-                                      <Component id="lbl_Cantidad1" alignment="3" min="-2" max="-2" attributes="0"/>
-                                      <Component id="lblTotal" alignment="3" min="-2" max="-2" attributes="0"/>
-                                      <Component id="txtTotal" alignment="3" min="-2" max="-2" attributes="0"/>
-                                  </Group>
-                                  <EmptySpace type="separate" max="-2" attributes="0"/>
-                                  <Group type="103" groupAlignment="3" attributes="0">
-                                      <Component id="lbl_Codigo" alignment="3" min="-2" max="-2" attributes="0"/>
-                                      <Component id="txtCodigo" alignment="3" min="-2" max="-2" attributes="0"/>
                                       <Component id="lblSubtotal" alignment="3" min="-2" max="-2" attributes="0"/>
                                       <Component id="txtSubtotal" alignment="3" min="-2" max="-2" attributes="0"/>
                                   </Group>
-                                  <EmptySpace type="separate" max="-2" attributes="0"/>
-                                  <Group type="103" groupAlignment="1" attributes="0">
-                                      <Component id="dateFechaOrden" min="-2" max="-2" attributes="0"/>
-                                      <Component id="lblFechaOrden" min="-2" max="-2" attributes="0"/>
+                                  <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                                  <Group type="103" groupAlignment="3" attributes="0">
+                                      <Component id="txtIVA" alignment="3" min="-2" max="-2" attributes="0"/>
+                                      <Component id="lblIVA" alignment="3" min="-2" max="-2" attributes="0"/>
                                   </Group>
-                                  <EmptySpace pref="19" max="32767" attributes="0"/>
+                              </Group>
+                              <Group type="102" alignment="0" attributes="0">
+                                  <Component id="jLabel1" min="-2" max="-2" attributes="0"/>
+                                  <EmptySpace min="-2" pref="14" max="-2" attributes="0"/>
+                                  <Group type="103" groupAlignment="3" attributes="0">
+                                      <Component id="txtCodigo" alignment="3" min="-2" max="-2" attributes="0"/>
+                                      <Component id="lbl_Codigo" alignment="3" min="-2" max="-2" attributes="0"/>
+                                  </Group>
                               </Group>
                           </Group>
+                          <EmptySpace pref="13" max="32767" attributes="0"/>
+                          <Group type="103" groupAlignment="0" attributes="0">
+                              <Component id="dateFechaOrden" min="-2" max="-2" attributes="0"/>
+                              <Component id="lblFechaOrden" min="-2" max="-2" attributes="0"/>
+                          </Group>
+                          <EmptySpace min="-2" pref="18" max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="1" attributes="0">
                               <Component id="dateFechaDespacho" min="-2" max="-2" attributes="0"/>
                               <Component id="lblFechaDespacho" min="-2" max="-2" attributes="0"/>
                           </Group>
                       </Group>
                   </Group>
-                  <EmptySpace type="separate" pref="14" max="32767" attributes="0"/>
+                  <EmptySpace type="separate" pref="44" max="32767" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>
@@ -208,19 +205,16 @@
         <Component class="javax.swing.JLabel" name="lbl_Codigo">
           <Properties>
             <Property name="text" type="java.lang.String" value="C&#xf3;digo:"/>
-            <Property name="enabled" type="boolean" value="false"/>
           </Properties>
         </Component>
         <Component class="javax.swing.JLabel" name="lbl_Cantidad">
           <Properties>
             <Property name="text" type="java.lang.String" value="Expendio:"/>
-            <Property name="enabled" type="boolean" value="false"/>
           </Properties>
         </Component>
         <Component class="javax.swing.JLabel" name="lblFechaOrden">
           <Properties>
             <Property name="text" type="java.lang.String" value="Fecha Orden:"/>
-            <Property name="enabled" type="boolean" value="false"/>
           </Properties>
         </Component>
         <Component class="com.toedter.calendar.JDateChooser" name="dateFechaOrden">
@@ -266,7 +260,6 @@
         <Component class="javax.swing.JLabel" name="lblFechaDespacho">
           <Properties>
             <Property name="text" type="java.lang.String" value="Fecha Despacho:"/>
-            <Property name="enabled" type="boolean" value="false"/>
           </Properties>
         </Component>
         <Component class="com.toedter.calendar.JDateChooser" name="dateFechaDespacho">
@@ -291,7 +284,6 @@
         <Component class="javax.swing.JLabel" name="lbl_Cantidad1">
           <Properties>
             <Property name="text" type="java.lang.String" value="Presentaci&#xf3;n:"/>
-            <Property name="enabled" type="boolean" value="false"/>
           </Properties>
         </Component>
         <Component class="javax.swing.JComboBox" name="cmb_Presentacion">
@@ -310,32 +302,24 @@
         </Component>
         <Component class="javax.swing.JTextField" name="txtCodigo">
           <Properties>
+            <Property name="editable" type="boolean" value="false"/>
             <Property name="horizontalAlignment" type="int" value="0"/>
-            <Property name="text" type="java.lang.String" value="Ingrese el codigo del pedido"/>
             <Property name="enabled" type="boolean" value="false"/>
           </Properties>
         </Component>
         <Component class="javax.swing.JLabel" name="lblCantidad">
           <Properties>
             <Property name="text" type="java.lang.String" value="Cantidad cerveza:"/>
-            <Property name="enabled" type="boolean" value="false"/>
-          </Properties>
-        </Component>
-        <Component class="javax.swing.JTextField" name="txtCantidad">
-          <Properties>
-            <Property name="horizontalAlignment" type="int" value="0"/>
-            <Property name="text" type="java.lang.String" value="Ingrese la cantidad"/>
-            <Property name="enabled" type="boolean" value="false"/>
           </Properties>
         </Component>
         <Component class="javax.swing.JLabel" name="lblTotal">
           <Properties>
             <Property name="text" type="java.lang.String" value="Total:"/>
-            <Property name="enabled" type="boolean" value="false"/>
           </Properties>
         </Component>
         <Component class="javax.swing.JTextField" name="txtTotal">
           <Properties>
+            <Property name="editable" type="boolean" value="false"/>
             <Property name="horizontalAlignment" type="int" value="0"/>
             <Property name="enabled" type="boolean" value="false"/>
           </Properties>
@@ -343,7 +327,6 @@
         <Component class="javax.swing.JLabel" name="lblSubtotal">
           <Properties>
             <Property name="text" type="java.lang.String" value="Subtotal:"/>
-            <Property name="enabled" type="boolean" value="false"/>
           </Properties>
         </Component>
         <Component class="javax.swing.JTextField" name="txtSubtotal">
@@ -358,6 +341,7 @@
         </Component>
         <Component class="javax.swing.JTextField" name="txtIVA">
           <Properties>
+            <Property name="editable" type="boolean" value="false"/>
             <Property name="horizontalAlignment" type="int" value="0"/>
             <Property name="enabled" type="boolean" value="false"/>
           </Properties>
@@ -365,7 +349,19 @@
         <Component class="javax.swing.JLabel" name="lblIVA">
           <Properties>
             <Property name="text" type="java.lang.String" value="IVA:"/>
+          </Properties>
+        </Component>
+        <Component class="javax.swing.JSpinner" name="spinnerCantidad">
+          <Properties>
+            <Property name="model" type="javax.swing.SpinnerModel" editor="org.netbeans.modules.form.editors2.SpinnerModelEditor">
+              <SpinnerModel initial="1" maximum="100000" minimum="1" numberType="java.lang.Integer" stepSize="1" type="number"/>
+            </Property>
             <Property name="enabled" type="boolean" value="false"/>
+          </Properties>
+        </Component>
+        <Component class="javax.swing.JLabel" name="jLabel1">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="Datos de la presentacion"/>
           </Properties>
         </Component>
       </SubComponents>
@@ -410,7 +406,7 @@
                   <EmptySpace min="-2" pref="27" max="-2" attributes="0"/>
                   <Component id="lblAtributoPedido" min="-2" max="-2" attributes="0"/>
                   <EmptySpace max="-2" attributes="0"/>
-                  <Component id="cmbAtributoPedido" pref="350" max="32767" attributes="0"/>
+                  <Component id="cmbAtributoPedido" pref="374" max="32767" attributes="0"/>
                   <EmptySpace min="-2" pref="148" max="-2" attributes="0"/>
               </Group>
               <Group type="102" attributes="0">

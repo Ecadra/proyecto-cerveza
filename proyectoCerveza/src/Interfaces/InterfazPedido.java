@@ -11,7 +11,7 @@ import javax.swing.JComboBox;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import proyectoCerveza.Pedido;
-import CRUD.crudGeneralCEM;
+import CRUD.crudPREG;
 import CRUD.crudIPL;
 import java.text.SimpleDateFormat;
 import proyectoCerveza.Expendio;
@@ -28,8 +28,7 @@ import javax.swing.table.DefaultTableCellRenderer;
  */
 public class InterfazPedido extends javax.swing.JFrame {
     
-    private crudGeneralCEM operacionesCRUD = new crudGeneralCEM();
-    private crudIPL operacionesPresentacionInv = new crudIPL();
+    private crudPREG operacionesCRUD = new crudPREG();
     
     
     public InterfazPedido() throws Exception {
@@ -51,11 +50,12 @@ public class InterfazPedido extends javax.swing.JFrame {
     }
     
     private void cargarPresentaciones(){
-        List<Presentacion> listaPresentaciones = operacionesPresentacionInv.opRead("Presentacion", "", "");
+        List<Presentacion> listaPresentaciones = operacionesCRUD.opReadObjetos("Presentacion", "", "");
         for(Presentacion presentacion : listaPresentaciones){
-            cmb_Presentacion.addItem(presentacion.getPre_cer().getCer_nombre()
-                    +  " " + presentacion.getPre_env().getTipo_envase() + " - " + 
-                    presentacion.getPre_env().getEnvase_capacidad() + " ml");
+//            cmb_Presentacion.addItem(presentacion.getPre_cer().getCer_nombre()
+//                    +  " " + presentacion.getPre_env().getTipo_envase() + " - " + 
+//                    presentacion.getPre_env().getEnvase_capacidad() + " ml");
+              cmb_Presentacion.addItem(presentacion.getPre_cod()+"");
         }
     }
 
@@ -73,8 +73,7 @@ public class InterfazPedido extends javax.swing.JFrame {
     public void limpiarPedido(){
         cmb_Expendio.setSelectedIndex(-1);
         cmb_Presentacion.setSelectedIndex(-1);
-        txtCodigo.setText("");
-        txtCantidad.setText("");
+        spinnerCantidad.setValue(0);
         txtTotal.setText("");
         txtSubtotal.setText("");
         txtIVA.setText("");
@@ -87,11 +86,13 @@ public class InterfazPedido extends javax.swing.JFrame {
         cmb_Expendio.setEnabled(activado);
         cmb_Presentacion.setEnabled(activado);
         txtCodigo.setEnabled(activado);
-        txtCantidad.setEnabled(activado);
+        spinnerCantidad.setEnabled(activado);
         dateFechaOrden.setEnabled(activado);
         dateFechaDespacho.setEnabled(activado);
         txtSubtotal.setEnabled(activado);
         txtBusquedaPedido.setEnabled(!activado);
+        txtIVA.setEnabled(activado);
+        txtTotal.setEnabled(activado);
     }
     
     class DateCellRenderer extends DefaultTableCellRenderer {
@@ -118,8 +119,7 @@ public class InterfazPedido extends javax.swing.JFrame {
             return false;
         }
         // Validación de la cantidad de cervezas dentro del pedido
-        if (txtCantidad.getText().equals("") || 
-                txtCantidad.getText().equals("Ingrese la cantidad")) {
+        if (spinnerCantidad.getValue().equals(0)) {
             mensajeAdvertencia("La cantidad del pedido.\n"
                     + "Favor de verificar que:\n"
                     + "-> Sea un dato numérico\n"
@@ -167,13 +167,14 @@ public class InterfazPedido extends javax.swing.JFrame {
         cmb_Presentacion = new javax.swing.JComboBox<>();
         txtCodigo = new javax.swing.JTextField();
         lblCantidad = new javax.swing.JLabel();
-        txtCantidad = new javax.swing.JTextField();
         lblTotal = new javax.swing.JLabel();
         txtTotal = new javax.swing.JTextField();
         lblSubtotal = new javax.swing.JLabel();
         txtSubtotal = new javax.swing.JTextField();
         txtIVA = new javax.swing.JTextField();
         lblIVA = new javax.swing.JLabel();
+        spinnerCantidad = new javax.swing.JSpinner();
+        jLabel1 = new javax.swing.JLabel();
         btnCancelarPedido = new javax.swing.JButton();
         btnNewPedido = new javax.swing.JButton();
         pnlRegistros = new javax.swing.JPanel();
@@ -189,16 +190,12 @@ public class InterfazPedido extends javax.swing.JFrame {
         setResizable(false);
 
         pnlDatosPedido.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)), "Datos Pedido"));
-        pnlDatosPedido.setEnabled(false);
 
         lbl_Codigo.setText("Código:");
-        lbl_Codigo.setEnabled(false);
 
         lbl_Cantidad.setText("Expendio:");
-        lbl_Cantidad.setEnabled(false);
 
         lblFechaOrden.setText("Fecha Orden:");
-        lblFechaOrden.setEnabled(false);
 
         dateFechaOrden.setEnabled(false);
 
@@ -234,7 +231,6 @@ public class InterfazPedido extends javax.swing.JFrame {
         });
 
         lblFechaDespacho.setText("Fecha Despacho:");
-        lblFechaDespacho.setEnabled(false);
 
         dateFechaDespacho.setEnabled(false);
 
@@ -246,7 +242,6 @@ public class InterfazPedido extends javax.swing.JFrame {
         });
 
         lbl_Cantidad1.setText("Presentación:");
-        lbl_Cantidad1.setEnabled(false);
 
         cmb_Presentacion.setEnabled(false);
         cmb_Presentacion.addActionListener(new java.awt.event.ActionListener() {
@@ -255,25 +250,19 @@ public class InterfazPedido extends javax.swing.JFrame {
             }
         });
 
+        txtCodigo.setEditable(false);
         txtCodigo.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        txtCodigo.setText("Ingrese el codigo del pedido");
         txtCodigo.setEnabled(false);
 
         lblCantidad.setText("Cantidad cerveza:");
-        lblCantidad.setEnabled(false);
-
-        txtCantidad.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        txtCantidad.setText("Ingrese la cantidad");
-        txtCantidad.setEnabled(false);
 
         lblTotal.setText("Total:");
-        lblTotal.setEnabled(false);
 
+        txtTotal.setEditable(false);
         txtTotal.setHorizontalAlignment(javax.swing.JTextField.CENTER);
         txtTotal.setEnabled(false);
 
         lblSubtotal.setText("Subtotal:");
-        lblSubtotal.setEnabled(false);
 
         txtSubtotal.setHorizontalAlignment(javax.swing.JTextField.CENTER);
         txtSubtotal.setEnabled(false);
@@ -288,11 +277,16 @@ public class InterfazPedido extends javax.swing.JFrame {
             }
         });
 
+        txtIVA.setEditable(false);
         txtIVA.setHorizontalAlignment(javax.swing.JTextField.CENTER);
         txtIVA.setEnabled(false);
 
         lblIVA.setText("IVA:");
-        lblIVA.setEnabled(false);
+
+        spinnerCantidad.setModel(new javax.swing.SpinnerNumberModel(1, 1, 100000, 1));
+        spinnerCantidad.setEnabled(false);
+
+        jLabel1.setText("Datos de la presentacion");
 
         javax.swing.GroupLayout pnlDatosPedidoLayout = new javax.swing.GroupLayout(pnlDatosPedido);
         pnlDatosPedido.setLayout(pnlDatosPedidoLayout);
@@ -307,41 +301,38 @@ public class InterfazPedido extends javax.swing.JFrame {
                     .addComponent(lbl_Cantidad1, javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(lbl_Cantidad, javax.swing.GroupLayout.Alignment.TRAILING))
                 .addGap(18, 18, 18)
-                .addGroup(pnlDatosPedidoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(cmb_Presentacion, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(dateFechaOrden, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(pnlDatosPedidoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                    .addComponent(dateFechaOrden, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 344, Short.MAX_VALUE)
+                    .addComponent(cmb_Presentacion, javax.swing.GroupLayout.Alignment.LEADING, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(cmb_Expendio, javax.swing.GroupLayout.Alignment.LEADING, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(dateFechaDespacho, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(cmb_Expendio, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(txtCodigo))
-                .addGap(81, 81, 81)
+                    .addComponent(jLabel1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(txtCodigo, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 188, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(pnlDatosPedidoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(pnlDatosPedidoLayout.createSequentialGroup()
+                        .addComponent(lblCantidad)
+                        .addGap(18, 18, 18)
+                        .addComponent(spinnerCantidad, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(pnlDatosPedidoLayout.createSequentialGroup()
+                        .addComponent(lblSubtotal)
+                        .addGap(18, 18, 18)
+                        .addComponent(txtSubtotal, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(pnlDatosPedidoLayout.createSequentialGroup()
+                        .addComponent(lblTotal)
+                        .addGap(18, 18, 18)
+                        .addComponent(txtTotal, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(pnlDatosPedidoLayout.createSequentialGroup()
+                        .addComponent(lblIVA)
+                        .addGap(18, 18, 18)
+                        .addComponent(txtIVA, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(72, 72, 72)
                 .addGroup(pnlDatosPedidoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(pnlDatosPedidoLayout.createSequentialGroup()
-                        .addGroup(pnlDatosPedidoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addGroup(pnlDatosPedidoLayout.createSequentialGroup()
-                                .addComponent(lblIVA)
-                                .addGap(18, 18, 18)
-                                .addComponent(txtIVA, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(pnlDatosPedidoLayout.createSequentialGroup()
-                                .addComponent(lblCantidad)
-                                .addGap(18, 18, 18)
-                                .addComponent(txtCantidad, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(pnlDatosPedidoLayout.createSequentialGroup()
-                                .addComponent(lblSubtotal)
-                                .addGap(18, 18, 18)
-                                .addComponent(txtSubtotal, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(pnlDatosPedidoLayout.createSequentialGroup()
-                                .addComponent(lblTotal)
-                                .addGap(18, 18, 18)
-                                .addComponent(txtTotal, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addGroup(pnlDatosPedidoLayout.createSequentialGroup()
-                        .addGap(344, 344, 344)
-                        .addGroup(pnlDatosPedidoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(btn_Eliminar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(btnActualizar, javax.swing.GroupLayout.DEFAULT_SIZE, 192, Short.MAX_VALUE)
-                            .addComponent(btnRegistrar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(btnLimpiar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                        .addGap(23, 23, 23))))
+                    .addComponent(btn_Eliminar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(btnActualizar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(btnRegistrar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(btnLimpiar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(23, 23, 23))
         );
         pnlDatosPedidoLayout.setVerticalGroup(
             pnlDatosPedidoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -351,7 +342,7 @@ public class InterfazPedido extends javax.swing.JFrame {
                     .addComponent(cmb_Expendio, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(lbl_Cantidad)
                     .addComponent(lblCantidad)
-                    .addComponent(txtCantidad, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(spinnerCantidad, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(pnlDatosPedidoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(pnlDatosPedidoLayout.createSequentialGroup()
@@ -364,33 +355,36 @@ public class InterfazPedido extends javax.swing.JFrame {
                         .addComponent(btnLimpiar))
                     .addGroup(pnlDatosPedidoLayout.createSequentialGroup()
                         .addGap(11, 11, 11)
-                        .addGroup(pnlDatosPedidoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addGroup(pnlDatosPedidoLayout.createSequentialGroup()
-                                .addGroup(pnlDatosPedidoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(txtIVA, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(lblIVA))
-                                .addGap(19, 19, 19))
+                        .addGroup(pnlDatosPedidoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(cmb_Presentacion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(lbl_Cantidad1)
+                            .addComponent(lblTotal)
+                            .addComponent(txtTotal, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGroup(pnlDatosPedidoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(pnlDatosPedidoLayout.createSequentialGroup()
                                 .addGroup(pnlDatosPedidoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                    .addComponent(cmb_Presentacion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(lbl_Cantidad1)
-                                    .addComponent(lblTotal)
-                                    .addComponent(txtTotal, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addGap(18, 18, 18)
-                                .addGroup(pnlDatosPedidoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                    .addComponent(lbl_Codigo)
-                                    .addComponent(txtCodigo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addComponent(lblSubtotal)
                                     .addComponent(txtSubtotal, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addGap(18, 18, 18)
-                                .addGroup(pnlDatosPedidoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                    .addComponent(dateFechaOrden, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(lblFechaOrden))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 19, Short.MAX_VALUE)))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addGroup(pnlDatosPedidoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                    .addComponent(txtIVA, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(lblIVA)))
+                            .addGroup(pnlDatosPedidoLayout.createSequentialGroup()
+                                .addComponent(jLabel1)
+                                .addGap(14, 14, 14)
+                                .addGroup(pnlDatosPedidoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                    .addComponent(txtCodigo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(lbl_Codigo))))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 13, Short.MAX_VALUE)
+                        .addGroup(pnlDatosPedidoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(dateFechaOrden, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(lblFechaOrden))
+                        .addGap(18, 18, 18)
                         .addGroup(pnlDatosPedidoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addComponent(dateFechaDespacho, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(lblFechaDespacho))))
-                .addGap(14, 14, Short.MAX_VALUE))
+                .addGap(18, 44, Short.MAX_VALUE))
         );
 
         btnCancelarPedido.setText("Cancelar");
@@ -448,7 +442,7 @@ public class InterfazPedido extends javax.swing.JFrame {
                 .addGap(27, 27, 27)
                 .addComponent(lblAtributoPedido)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(cmbAtributoPedido, 0, 350, Short.MAX_VALUE)
+                .addComponent(cmbAtributoPedido, 0, 374, Short.MAX_VALUE)
                 .addGap(148, 148, 148))
             .addGroup(pnlRegistrosLayout.createSequentialGroup()
                 .addGap(12, 12, 12)
@@ -481,7 +475,7 @@ public class InterfazPedido extends javax.swing.JFrame {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(698, Short.MAX_VALUE)
+                .addContainerGap(722, Short.MAX_VALUE)
                 .addComponent(btnCancelarPedido)
                 .addGap(27, 27, 27)
                 .addComponent(btnNewPedido)
@@ -509,7 +503,7 @@ public class InterfazPedido extends javax.swing.JFrame {
                     .addComponent(btnNewPedido))
                 .addGap(18, 18, 18)
                 .addComponent(pnlRegistros, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(10, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         pack();
@@ -529,7 +523,7 @@ public class InterfazPedido extends javax.swing.JFrame {
                 // Crear la nueva venta usando el String de fecha
                 Pedido nuevoPedido = new Pedido(
                     Integer.parseInt(txtCodigo.getText()),
-                        Short.parseShort(txtCantidad.getText()),
+                        Integer.parseInt(spinnerCantidad.getValue().toString()),
                         fechaOrdenS,
                         fechaDespachoS,
                         Float.parseFloat(txtTotal.getText()),
@@ -538,18 +532,16 @@ public class InterfazPedido extends javax.swing.JFrame {
                 );
 
                 
-                Expendio expendioSeleccionado = (Expendio) operacionesCRUD.opBuscarObjeto("Expendio", cmb_Expendio.getSelectedItem().toString());
-                if (expendioSeleccionado == null) {
-                    JOptionPane.showMessageDialog(null, "No se pudo encontrar el expendio seleccionado.", "Error", JOptionPane.ERROR_MESSAGE);
-                    return; // Salir del método si no se encuentra el expendio
-                }else{
-                    System.out.println("Expendio recuperado mediante opBuscarObjeto :\n" + expendioSeleccionado.toString());
-
-                }   
-//                Presentacion presentacionSeleccionada = (Presentacion) operacionesPresentacionInv.opBuscarObjeto("Presentacion", cmb_Presentacion.getSelectedItem().toString());
-//                System.out.println("Presentacion recuperada mediante opBuscarObjeto :\n" + presentacionSeleccionada.toString());
+                Expendio expendioSeleccionado = (Expendio) operacionesCRUD.opBuscarObjeto("Expendio",
+                        operacionesCRUD.nameToID("Expendio", cmb_Expendio.getSelectedItem().toString()));         
+                System.out.println("Expendio recuperado mediante opBuscarObjeto :\n" + expendioSeleccionado.toString());
+                
+                Presentacion presentacionSeleccionada = (Presentacion) operacionesCRUD.opBuscarObjeto("Presentacion",
+                        Integer.parseInt(cmb_Presentacion.getSelectedItem().toString()));
+                System.out.println("Presentacion recuperada mediante opBuscarObjeto :\n" + presentacionSeleccionada.toString());
 
                 nuevoPedido.formPed_exp(expendioSeleccionado);
+                nuevoPedido.formPed_pre(presentacionSeleccionada);
 //                nuevoPedido.formPed_pre(presentacionSeleccionada);
                 operacionesCRUD.opPersistObjeto("Pedido", nuevoPedido);
 
@@ -635,8 +627,6 @@ public class InterfazPedido extends javax.swing.JFrame {
             txtIVA.setText(String.format("%.2f", iva)); // Mostrar IVA con 2 decimales
             txtTotal.setText(String.format("%.2f", total)); // Mostrar Total con 2 decimales
         } catch (NumberFormatException ex) {
-            // En caso de que no sea un número válido, mostrar mensaje de error y limpiar los campos
-            JOptionPane.showMessageDialog(null, "Por favor, ingrese un valor numérico válido.", "Error", JOptionPane.ERROR_MESSAGE);
             txtSubtotal.setText("");
             txtIVA.setText("");
             txtTotal.setText("");
@@ -702,6 +692,7 @@ public class InterfazPedido extends javax.swing.JFrame {
     private javax.swing.JComboBox<String> cmb_Presentacion;
     private com.toedter.calendar.JDateChooser dateFechaDespacho;
     private com.toedter.calendar.JDateChooser dateFechaOrden;
+    private javax.swing.JLabel jLabel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JLabel lblAtributoPedido;
     private javax.swing.JLabel lblBusquedaPedido;
@@ -716,9 +707,9 @@ public class InterfazPedido extends javax.swing.JFrame {
     private javax.swing.JLabel lbl_Codigo;
     private javax.swing.JPanel pnlDatosPedido;
     private javax.swing.JPanel pnlRegistros;
+    private javax.swing.JSpinner spinnerCantidad;
     private javax.swing.JTable tblPedido;
     private javax.swing.JTextField txtBusquedaPedido;
-    private javax.swing.JTextField txtCantidad;
     private javax.swing.JTextField txtCodigo;
     private javax.swing.JTextField txtIVA;
     private javax.swing.JTextField txtSubtotal;
