@@ -12,7 +12,7 @@ public class Envase implements Serializable{
     @Id
     private int id_envase;
     private String tipo_envase;
-    private short capacidad_ml;
+    private int capacidad_ml;
     @OneToMany
     @JoinColumn(name = "pre_env", nullable = false)
     private List<Presentacion> env_pre = new ArrayList<Presentacion>();
@@ -23,7 +23,7 @@ public class Envase implements Serializable{
         this.capacidad_ml = 0;
     }
 
-    public Envase(int id, String envase, short capacidad) {
+    public Envase(int id, String envase, int capacidad) {
         this.id_envase = id;
         this.tipo_envase = envase;
         this.capacidad_ml = capacidad;
@@ -57,7 +57,7 @@ public class Envase implements Serializable{
         return tipo_envase;
     }
     
-    public short getEnvase_capacidad(){
+    public int getEnvase_capacidad(){
         return capacidad_ml;
     }
 
@@ -65,7 +65,7 @@ public class Envase implements Serializable{
         this.tipo_envase = tipo_envase;
     }
 
-    public void setCapacidad_ml(short capacidad_ml) {
+    public void setCapacidad_ml(int capacidad_ml) {
         this.capacidad_ml = capacidad_ml;
     }
      

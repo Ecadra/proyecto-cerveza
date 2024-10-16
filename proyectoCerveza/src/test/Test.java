@@ -21,19 +21,22 @@ import proyectoCerveza.Venta;
 
 
 public class Test {
-    
+        
+
        public static void main(String[] args) throws ParseException {
+        //Cesar
+        //String ruta = "D:\\Documentos HDD\\Proyecto Neatbeans\\Librerias\\objectdb-2.9.0\\db\\cervezadb.odb";
+        //Sebas
+        String ruta = "C:\\Users\\ulseg\\Downloads\\NetBeansProjects\\objectdb-2.9.0\\db\\cervezaodb.odb";
+        //Xim
+        //String ruta = "C:\\\\objectdb-2.9.0\\\\db\\\\cervezadb.odb";
+        //Edwin
+        //String ruta = "/home/edwin-993/cervezaodb/cervezadb.odb";
         SimpleDateFormat fecha = new SimpleDateFormat("yyyy-MM-dd");
 
         //Open a database connection
-        //create a new database if it doesn´t exist yet:
-        //Cesar    
-        //EntityManagerFactory emf = Persistence.createEntityManagerFactory("/home/edwin-993/cervezaodb/cervezadb.odb");
-        //EntityManagerFactory emf = Persistence.createEntityManagerFactory("D:\\Documentos HDD\\Proyecto Neatbeans\\Librerias\\objectdb-2.9.0\\db\\cervezadb.odb");
-        //Sebas   
-        EntityManagerFactory emf = Persistence.createEntityManagerFactory("C:\\Users\\ulseg\\Downloads\\NetBeansProjects\\objectdb-2.9.0\\db\\cervezaodb.odb");
-        //Xim     
-        //EntityManagerFactory emf= Persistence.createEntityManagerFactory("C:\\\\objectdb-2.9.0\\\\db\\\\cervezadb.odb");
+       
+        EntityManagerFactory emf = Persistence.createEntityManagerFactory(ruta);
         EntityManager em = emf.createEntityManager();
 
         em.getTransaction().begin();
@@ -66,9 +69,9 @@ public class Test {
         Sede se2 = new Sede("Cervecería Hidalgo", dir2);
         Sede se3 = new Sede("Cervecería Pachus", dir3);
         
-        Envase en1 = new Envase(1, "Lata", (short)300);
-        Envase en2 = new Envase(2, "Botella", (short)350);
-        Envase en3 = new Envase(3, "Barril", (short)20000);
+        Envase en1 = new Envase(1, "Lata", 300);
+        Envase en2 = new Envase(2, "Botella", 350);
+        Envase en3 = new Envase(3, "Barril", 20000);
 
        //Venta 
         Venta ve1 = new Venta(1,460,"11/10/2024",2347.50f);
@@ -83,9 +86,9 @@ public class Test {
         Grano g2 = new Grano(2,"Avena malteada", "Reino Unido");
         Grano g3 = new Grano(3,"Cebada 2-row","EUA");
         
-        Pedido pe1 = new Pedido(1, (short)200, "12/11/2022", "20/11/2022", 1200.0f, 600.0f, 300.0f);
-        Pedido pe2 = new Pedido(2, (short)150, "15/10/2023", "25/10/2023", 800.0f, 600.0f, 200.0f);
-        Pedido pe3 = new Pedido(3, (short)300, "01/09/2024", "10/09/2024", 1500.0f, 1000.0f, 500.0f);
+        Pedido pe1 = new Pedido(1, 200, "12/11/2022", "20/11/2022", 1200.0f, 600.0f, 300.0f);
+        Pedido pe2 = new Pedido(2, 150, "15/10/2023", "25/10/2023", 800.0f, 600.0f, 200.0f);
+        Pedido pe3 = new Pedido(3, 300, "01/09/2024", "10/09/2024", 1500.0f, 1000.0f, 500.0f);
         
         Receta r1 = new Receta(1,"200 gramos");
         Receta r2 = new Receta(2,"100 gramos");
@@ -276,7 +279,7 @@ public class Test {
 
 
         em.getTransaction().commit();
-        em.close();;
+        em.close();
         emf.close();
 
     }

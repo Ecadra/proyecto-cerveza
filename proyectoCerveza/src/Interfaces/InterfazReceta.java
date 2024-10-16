@@ -12,9 +12,10 @@ import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import proyectoCerveza.Grano;
 import proyectoCerveza.Receta;
-import CRUD.crudGeneralCEM;
+import CRUD.crudPREG;
 
 import java.util.List;
+import proyectoCerveza.Cerveza;
 
 /**
  *
@@ -22,21 +23,28 @@ import java.util.List;
  */
 public class InterfazReceta extends javax.swing.JFrame {
     
-    private crudGeneralCEM operacionesCRUD = new crudGeneralCEM();
+    private crudPREG operacionesCRUD = new crudPREG();
     
     public InterfazReceta() throws Exception {
         initComponents();
-        this.setLocationRelativeTo(null);
+        this.setLocationRelativeTo(null);  
+        cargarCervezas();
+        cargarGranos();
+        actualizarTabla();
+    }
+    
+    private void cargarCervezas(){
+        List<Cerveza> listaCervezas = operacionesCRUD.opReadObjetos("Cerveza", "", "");
+        for(Cerveza cerveza : listaCervezas){
+            cmbCerveza.addItem(cerveza.getCer_nombre());
+        }
+    }
+   
+    private void cargarGranos(){
         List<Grano> listaGranos = operacionesCRUD.opReadObjetos("Grano", "", "");
         for(Grano grano : listaGranos){
             cmbGrano.addItem(grano.getGra_nombre());
-        }        
-        tblReceta.setModel(operacionesCRUD.opBuscar("Receta", "", ""));
-    }
-    
-    public void limpiarPedido(){
-        cmbGrano.setSelectedIndex(0);
-        txtCantidad.setText("");
+        }   
     }
     
     
@@ -52,13 +60,15 @@ public class InterfazReceta extends javax.swing.JFrame {
     }
     
     public void limpiarReceta(){
-        cmbGrano.setSelectedIndex(-1);
+        cmbGrano.setSelectedIndex(0);
+        cmbCerveza.setSelectedIndex(0);
         txtCantidad.setText("");
     }
     
     public void activarReceta(boolean activado){
         btnRegistrar.setEnabled(activado);
         cmbGrano.setEnabled(activado);
+        cmbCerveza.setEnabled(activado);
         txtCantidad.setEnabled(activado);
         txtBusquedaReceta.setEnabled(!activado);
     }
@@ -98,6 +108,8 @@ public class InterfazReceta extends javax.swing.JFrame {
         txtCantidad = new javax.swing.JTextField();
         lblCapacidad = new javax.swing.JLabel();
         cmbGrano = new javax.swing.JComboBox<>();
+        lblCerveza = new javax.swing.JLabel();
+        cmbCerveza = new javax.swing.JComboBox<>();
         btnCancelarReceta = new javax.swing.JButton();
         btnNewReceta = new javax.swing.JButton();
         pnlRegistrros = new javax.swing.JPanel();
@@ -116,7 +128,6 @@ public class InterfazReceta extends javax.swing.JFrame {
         pnlDatosReceta.setEnabled(false);
 
         lblTipo.setText("Grano:");
-        lblTipo.setEnabled(false);
 
         btnActualizar.setText("Actualizar");
         btnActualizar.setEnabled(false);
@@ -159,12 +170,20 @@ public class InterfazReceta extends javax.swing.JFrame {
         });
 
         lblCapacidad.setText("Cantidad:");
-        lblCapacidad.setEnabled(false);
 
         cmbGrano.setEnabled(false);
         cmbGrano.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 cmbGranoActionPerformed(evt);
+            }
+        });
+
+        lblCerveza.setText("Cerveza:");
+
+        cmbCerveza.setEnabled(false);
+        cmbCerveza.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cmbCervezaActionPerformed(evt);
             }
         });
 
@@ -176,27 +195,30 @@ public class InterfazReceta extends javax.swing.JFrame {
                 .addGap(27, 27, 27)
                 .addGroup(pnlDatosRecetaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(pnlDatosRecetaLayout.createSequentialGroup()
-                        .addGroup(pnlDatosRecetaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(lblTipo)
-                            .addComponent(lblCapacidad))
-                        .addGap(18, 18, 18)
-                        .addGroup(pnlDatosRecetaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(txtCantidad, javax.swing.GroupLayout.DEFAULT_SIZE, 178, Short.MAX_VALUE)
-                            .addComponent(cmbGrano, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                        .addComponent(btnLimpiar)
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addGroup(pnlDatosRecetaLayout.createSequentialGroup()
-                        .addGap(6, 6, 6)
-                        .addComponent(btnLimpiar)))
-                .addGap(18, 59, Short.MAX_VALUE)
-                .addGroup(pnlDatosRecetaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(btn_Eliminar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(btnRegistrar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(btnActualizar, javax.swing.GroupLayout.DEFAULT_SIZE, 100, Short.MAX_VALUE))
-                .addContainerGap(47, Short.MAX_VALUE))
+                        .addGap(16, 16, 16)
+                        .addGroup(pnlDatosRecetaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(lblCerveza)
+                            .addComponent(lblCapacidad)
+                            .addComponent(lblTipo))
+                        .addGap(18, 18, 18)
+                        .addGroup(pnlDatosRecetaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                            .addComponent(cmbCerveza, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(txtCantidad, javax.swing.GroupLayout.DEFAULT_SIZE, 208, Short.MAX_VALUE)
+                            .addComponent(cmbGrano, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGroup(pnlDatosRecetaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(btn_Eliminar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(btnRegistrar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(btnActualizar, javax.swing.GroupLayout.DEFAULT_SIZE, 100, Short.MAX_VALUE))
+                        .addContainerGap(90, Short.MAX_VALUE))))
         );
         pnlDatosRecetaLayout.setVerticalGroup(
             pnlDatosRecetaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlDatosRecetaLayout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap(8, Short.MAX_VALUE)
                 .addComponent(btnRegistrar)
                 .addGap(18, 18, 18)
                 .addComponent(btnActualizar)
@@ -208,13 +230,17 @@ public class InterfazReceta extends javax.swing.JFrame {
                 .addGroup(pnlDatosRecetaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lblTipo)
                     .addComponent(cmbGrano, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(pnlDatosRecetaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(cmbCerveza, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(lblCerveza, javax.swing.GroupLayout.PREFERRED_SIZE, 13, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(pnlDatosRecetaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(lblCapacidad)
-                    .addComponent(txtCantidad, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                    .addComponent(txtCantidad, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(lblCapacidad))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(btnLimpiar)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(28, 28, 28))
         );
 
         btnCancelarReceta.setText("Cancelar");
@@ -307,10 +333,10 @@ public class InterfazReceta extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(btnInicio)
-                        .addContainerGap(460, Short.MAX_VALUE))
+                        .addContainerGap(508, Short.MAX_VALUE))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(pnlRegistrros, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 489, Short.MAX_VALUE)
+                            .addComponent(pnlRegistrros, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 537, Short.MAX_VALUE)
                             .addComponent(pnlDatosReceta, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(btnCancelarReceta)
@@ -323,9 +349,9 @@ public class InterfazReceta extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addGap(12, 12, 12)
                 .addComponent(btnInicio)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(pnlDatosReceta, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(pnlDatosReceta, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnCancelarReceta)
                     .addComponent(btnNewReceta))
@@ -368,7 +394,7 @@ public class InterfazReceta extends javax.swing.JFrame {
     }//GEN-LAST:event_btnInicioActionPerformed
 
     private void btnLimpiarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLimpiarActionPerformed
-        limpiarPedido();
+        limpiarReceta();
     }//GEN-LAST:event_btnLimpiarActionPerformed
 
     private void btn_EliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_EliminarActionPerformed
@@ -380,15 +406,29 @@ public class InterfazReceta extends javax.swing.JFrame {
             try {
                 int id = operacionesCRUD.opMaxID("Receta") + 1;
                 Receta nuevaReceta = new Receta(id, txtCantidad.getText());
-                Grano granoNuevo = (Grano)operacionesCRUD.opBuscarObjeto("Grano", cmbGrano.getSelectedItem().toString());
-                System.out.println("Grano recuperado mediante opBuscarObjeto :\n" + granoNuevo.toString());
 
-                nuevaReceta.formRec_gra(granoNuevo);
+                // Imprime el texto seleccionado en las combobox
+                System.out.println("Cerveza seleccionada: " + cmbCerveza.getSelectedItem().toString());
+                System.out.println("Grano seleccionado: " + cmbGrano.getSelectedItem().toString());
+
+                // Busca el objeto Cerveza seleccionado
+                Cerveza cervezaNueva = (Cerveza) operacionesCRUD.opBuscarObjeto("Cerveza",
+                        operacionesCRUD.nameToID("Cerveza",cmbCerveza.getSelectedItem().toString()));
+
+                // Busca el objeto Grano seleccionado
+                Grano granoNueva = (Grano) operacionesCRUD.opBuscarObjeto("Grano",
+                        operacionesCRUD.nameToID("Grano",cmbGrano.getSelectedItem().toString()));
+
+                // Asigna los objetos a la nueva receta
+                nuevaReceta.formRec_cer(cervezaNueva);
+                nuevaReceta.formRec_gra(granoNueva);
+
+                // Persiste la nueva receta
                 operacionesCRUD.opPersistObjeto("Receta", nuevaReceta);
 
                 System.out.println("Receta registrada exitosamente.");
-                
-            }catch (Exception err) {
+
+            } catch (Exception err) {
                 err.printStackTrace(); // Muestra el error completo en la consola para diagnóstico
                 JOptionPane.showMessageDialog(null, "Los datos introducidos no son válidos",
                         "Error al registrar la receta",
@@ -401,7 +441,7 @@ public class InterfazReceta extends javax.swing.JFrame {
 
         limpiarReceta();
         activarReceta(false);
-
+        actualizarTabla();
 
         
     }//GEN-LAST:event_btnRegistrarActionPerformed
@@ -415,8 +455,13 @@ public class InterfazReceta extends javax.swing.JFrame {
     }//GEN-LAST:event_txtCantidadActionPerformed
 
     private void cmbGranoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmbGranoActionPerformed
-                
+        //System.out.println("Grano seleccionada: " + cmbGrano.getSelectedItem().toString());
+
     }//GEN-LAST:event_cmbGranoActionPerformed
+
+    private void cmbCervezaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmbCervezaActionPerformed
+        //System.out.println("Cerveza seleccionada: " + cmbCerveza.getSelectedItem().toString());
+    }//GEN-LAST:event_cmbCervezaActionPerformed
 
     /**
      * @param args the command line arguments
@@ -497,11 +542,13 @@ public class InterfazReceta extends javax.swing.JFrame {
     private javax.swing.JButton btnRegistrar;
     private javax.swing.JButton btn_Eliminar;
     private javax.swing.JComboBox<String> cmbAtributo;
+    private javax.swing.JComboBox<String> cmbCerveza;
     private javax.swing.JComboBox<String> cmbGrano;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JLabel lblAtributo;
     private javax.swing.JLabel lblBusqueda;
     private javax.swing.JLabel lblCapacidad;
+    private javax.swing.JLabel lblCerveza;
     private javax.swing.JLabel lblTipo;
     private javax.swing.JPanel pnlDatosReceta;
     private javax.swing.JPanel pnlRegistrros;
