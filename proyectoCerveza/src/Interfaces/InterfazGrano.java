@@ -12,7 +12,7 @@ import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import proyectoCerveza.Grano;
 import proyectoCerveza.Receta;
-import CRUD.crudGeneralCEM;
+import CRUD.crudPREG;
 
 import java.util.List;
 
@@ -22,12 +22,18 @@ import java.util.List;
  */
 public class InterfazGrano extends javax.swing.JFrame {
     
-    private crudGeneralCEM operacionesCRUD = new crudGeneralCEM();
+    private crudPREG operacionesCRUD = new crudPREG();
     
     public InterfazGrano() throws Exception {
         initComponents();
         this.setLocationRelativeTo(null);
-        tblGrano.setModel(operacionesCRUD.opBuscar("Grano", "", ""));
+        actualizarTabla();
+    }
+    
+    public void actualizarTabla(){
+        tblGrano.setModel(operacionesCRUD.opBuscar("Grano",
+                (String)cmbAtributos.getSelectedItem(), txtBusquedaGrano.getText()));
+
     }
     
     public void limpiarGrano(){
@@ -313,14 +319,14 @@ public class InterfazGrano extends javax.swing.JFrame {
                 .addGap(12, 12, 12)
                 .addComponent(btnInicio)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(pnlDatosEnvase, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(26, 26, 26)
+                .addComponent(pnlDatosEnvase, javax.swing.GroupLayout.PREFERRED_SIZE, 162, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(btnCancelarEnvase)
                     .addComponent(btnNewEnvase))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(pnlRegistrros, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(22, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         pack();
@@ -386,6 +392,7 @@ public class InterfazGrano extends javax.swing.JFrame {
 
         limpiarGrano();
         activarGrano(false);
+        actualizarTabla();
     }//GEN-LAST:event_btnRegistrarActionPerformed
 
     private void btnActualizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnActualizarActionPerformed
