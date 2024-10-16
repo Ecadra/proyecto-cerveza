@@ -16,7 +16,8 @@ import javax.persistence.*;
     public class Fabricante implements Serializable {
     private static final long serialVersionUID = 1L;
  
-    @Id   
+    @Id  
+    private int id_fab;
     private String fab_nombre;
     private String fab_contacto;
     
@@ -30,12 +31,14 @@ import javax.persistence.*;
     
  
     public Fabricante(){
+     this.id_fab = 0;
      this.fab_nombre = "null";
      this.fab_contacto = "null";
     }
          
-    public Fabricante(String nom, String con)
+    public Fabricante(int id,String nom, String con)
     {  
+     id_fab = id;
      fab_nombre=nom;
      fab_contacto=con;
      
@@ -84,6 +87,14 @@ import javax.persistence.*;
     {
         getFab_mar().remove(mar);
     }
+    
+    public int getId_fab(){
+        return id_fab;
+    }
+    
+    public void setId_fab(int id_fab){
+        this.id_fab = id_fab;
+    }
  
     public String getFab_nombre() {
         return fab_nombre;
@@ -100,6 +111,7 @@ import javax.persistence.*;
     public void setFab_contacto(String fab_contacto) {
         this.fab_contacto = fab_contacto;
     }
+    
 
     public List<Sede> getFab_se() {
         return fab_se;
