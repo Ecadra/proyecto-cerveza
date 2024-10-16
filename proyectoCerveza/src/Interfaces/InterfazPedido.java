@@ -12,7 +12,6 @@ import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import proyectoCerveza.Pedido;
 import CRUD.crudPREG;
-import CRUD.crudIPL;
 import java.text.SimpleDateFormat;
 import proyectoCerveza.Expendio;
 import proyectoCerveza.Presentacion;
@@ -39,7 +38,7 @@ public class InterfazPedido extends javax.swing.JFrame {
         txtCodigo.setText((operacionesCRUD.opMaxID("Pedido")+1)+"");
         Date fechaOrden = dateFechaOrden.getDate();
         Date fechaDespacho = dateFechaDespacho.getDate();
-        tblPedido.setModel(operacionesCRUD.opBuscar("Pedido", "", ""));
+        actualizarTabla();
     }
     
     private void cargarExpendios(){
@@ -174,7 +173,7 @@ public class InterfazPedido extends javax.swing.JFrame {
         txtIVA = new javax.swing.JTextField();
         lblIVA = new javax.swing.JLabel();
         spinnerCantidad = new javax.swing.JSpinner();
-        jLabel1 = new javax.swing.JLabel();
+        lblPresentacion = new javax.swing.JLabel();
         btnCancelarPedido = new javax.swing.JButton();
         btnNewPedido = new javax.swing.JButton();
         pnlRegistros = new javax.swing.JPanel();
@@ -286,7 +285,7 @@ public class InterfazPedido extends javax.swing.JFrame {
         spinnerCantidad.setModel(new javax.swing.SpinnerNumberModel(1, 1, 100000, 1));
         spinnerCantidad.setEnabled(false);
 
-        jLabel1.setText("Datos de la presentacion");
+        lblPresentacion.setText("Datos de la presentacion");
 
         javax.swing.GroupLayout pnlDatosPedidoLayout = new javax.swing.GroupLayout(pnlDatosPedido);
         pnlDatosPedido.setLayout(pnlDatosPedidoLayout);
@@ -306,7 +305,7 @@ public class InterfazPedido extends javax.swing.JFrame {
                     .addComponent(cmb_Presentacion, javax.swing.GroupLayout.Alignment.LEADING, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(cmb_Expendio, javax.swing.GroupLayout.Alignment.LEADING, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(dateFechaDespacho, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jLabel1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(lblPresentacion, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(txtCodigo, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 188, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(pnlDatosPedidoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
@@ -371,7 +370,7 @@ public class InterfazPedido extends javax.swing.JFrame {
                                     .addComponent(txtIVA, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addComponent(lblIVA)))
                             .addGroup(pnlDatosPedidoLayout.createSequentialGroup()
-                                .addComponent(jLabel1)
+                                .addComponent(lblPresentacion)
                                 .addGap(14, 14, 14)
                                 .addGroup(pnlDatosPedidoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                                     .addComponent(txtCodigo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -555,6 +554,7 @@ public class InterfazPedido extends javax.swing.JFrame {
         }
         limpiarPedido();
         activarPedido(false);
+        actualizarTabla();
     }//GEN-LAST:event_btnRegistrarActionPerformed
 
     private void btnLimpiarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLimpiarActionPerformed
@@ -604,7 +604,20 @@ public class InterfazPedido extends javax.swing.JFrame {
     }//GEN-LAST:event_cmb_ExpendioActionPerformed
 
     private void cmb_PresentacionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmb_PresentacionActionPerformed
-       
+        try{
+            
+            int id = Integer.parseInt(cmb_Presentacion.getSelectedItem().toString());
+            Presentacion presentacion = (Presentacion) operacionesCRUD.opBuscarObjeto("Presentacion",
+                    id);
+            //System.out.println("El id recuperado es: " + id);
+            lblPresentacion.setText( "Presentacion: Cerveza " + presentacion.getPre_cer().getCer_nombre() 
+                     +  " en " + presentacion.getPre_env().getTipo_envase() + " de "
+                         + presentacion.getPre_env().getEnvase_capacidad() + " ml");
+
+            
+        }catch(Exception err){
+            
+        }
     }//GEN-LAST:event_cmb_PresentacionActionPerformed
 
     private void txtSubtotalActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtSubtotalActionPerformed
@@ -692,7 +705,6 @@ public class InterfazPedido extends javax.swing.JFrame {
     private javax.swing.JComboBox<String> cmb_Presentacion;
     private com.toedter.calendar.JDateChooser dateFechaDespacho;
     private com.toedter.calendar.JDateChooser dateFechaOrden;
-    private javax.swing.JLabel jLabel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JLabel lblAtributoPedido;
     private javax.swing.JLabel lblBusquedaPedido;
@@ -700,6 +712,7 @@ public class InterfazPedido extends javax.swing.JFrame {
     private javax.swing.JLabel lblFechaDespacho;
     private javax.swing.JLabel lblFechaOrden;
     private javax.swing.JLabel lblIVA;
+    private javax.swing.JLabel lblPresentacion;
     private javax.swing.JLabel lblSubtotal;
     private javax.swing.JLabel lblTotal;
     private javax.swing.JLabel lbl_Cantidad;

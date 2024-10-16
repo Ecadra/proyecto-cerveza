@@ -96,7 +96,7 @@
                       <Component id="cmb_Presentacion" alignment="0" max="32767" attributes="0"/>
                       <Component id="cmb_Expendio" alignment="0" max="32767" attributes="0"/>
                       <Component id="dateFechaDespacho" max="32767" attributes="0"/>
-                      <Component id="jLabel1" alignment="0" max="32767" attributes="0"/>
+                      <Component id="lblPresentacion" alignment="0" max="32767" attributes="0"/>
                       <Component id="txtCodigo" alignment="0" min="-2" pref="188" max="-2" attributes="0"/>
                   </Group>
                   <EmptySpace max="32767" attributes="0"/>
@@ -176,7 +176,7 @@
                                   </Group>
                               </Group>
                               <Group type="102" alignment="0" attributes="0">
-                                  <Component id="jLabel1" min="-2" max="-2" attributes="0"/>
+                                  <Component id="lblPresentacion" min="-2" max="-2" attributes="0"/>
                                   <EmptySpace min="-2" pref="14" max="-2" attributes="0"/>
                                   <Group type="103" groupAlignment="3" attributes="0">
                                       <Component id="txtCodigo" alignment="3" min="-2" max="-2" attributes="0"/>
@@ -359,7 +359,7 @@
             <Property name="enabled" type="boolean" value="false"/>
           </Properties>
         </Component>
-        <Component class="javax.swing.JLabel" name="jLabel1">
+        <Component class="javax.swing.JLabel" name="lblPresentacion">
           <Properties>
             <Property name="text" type="java.lang.String" value="Datos de la presentacion"/>
           </Properties>
