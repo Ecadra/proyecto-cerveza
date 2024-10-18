@@ -23,10 +23,12 @@ public class InterfazCerveza extends javax.swing.JFrame {
     public InterfazCerveza() {
         initComponents();
         cargarMarcas();
-        txtId.setText((operacionesCRUD.opMaxID("Cerveza")+1)+"");
+        actualizarIDMax();
         tblRegistros.setModel(operacionesCRUD.opBuscar("Cerveza", "", ""));
     }
-
+    private void actualizarIDMax(){
+        txtId.setText((operacionesCRUD.opMaxID("Cerveza")+1)+"");
+    }
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -38,6 +40,7 @@ public class InterfazCerveza extends javax.swing.JFrame {
 
         jLabel14 = new javax.swing.JLabel();
         jLabel15 = new javax.swing.JLabel();
+        jButton1 = new javax.swing.JButton();
         tbdFunciones = new javax.swing.JTabbedPane();
         jPanel1 = new javax.swing.JPanel();
         jPanel2 = new javax.swing.JPanel();
@@ -81,10 +84,13 @@ public class InterfazCerveza extends javax.swing.JFrame {
         cmbFiltro = new javax.swing.JComboBox<>();
         jLabel16 = new javax.swing.JLabel();
         txtCriterio = new javax.swing.JTextField();
+        btnRegresar = new javax.swing.JButton();
 
         jLabel14.setText("jLabel14");
 
         jLabel15.setText("jLabel15");
+
+        jButton1.setText("jButton1");
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -366,6 +372,11 @@ public class InterfazCerveza extends javax.swing.JFrame {
         );
 
         btnEliminar.setText("Eliminar cerveza");
+        btnEliminar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnEliminarActionPerformed(evt);
+            }
+        });
 
         btnLimpiar2.setText("Limpiar campos");
 
@@ -436,6 +447,8 @@ public class InterfazCerveza extends javax.swing.JFrame {
             }
         });
 
+        btnRegresar.setText("Regresar");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -453,7 +466,8 @@ public class InterfazCerveza extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(txtCriterio, javax.swing.GroupLayout.PREFERRED_SIZE, 115, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(11, 11, 11))
-                    .addComponent(tbdFunciones))
+                    .addComponent(tbdFunciones)
+                    .addComponent(btnRegresar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -471,8 +485,10 @@ public class InterfazCerveza extends javax.swing.JFrame {
                             .addComponent(jLabel13, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(jLabel16, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 167, Short.MAX_VALUE)
-                .addContainerGap())
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 123, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(btnRegresar)
+                .addGap(14, 14, 14))
         );
 
         pack();
@@ -502,6 +518,14 @@ public class InterfazCerveza extends javax.swing.JFrame {
         txtNombre.setText("");
         txtGraduacion.setText("");
         cmbMarca.setSelectedIndex(-1);
+        txtId1.setText((operacionesCRUD.opMaxID("Cerveza")+1)+"");
+        txtNombre1.setText("");
+        txtGraduacion1.setText("");
+        cmbMarca1.setSelectedIndex(-1);
+        txtId2.setText((operacionesCRUD.opMaxID("Cerveza")+1)+"");
+        txtNombre2.setText("");
+        txtGraduacion2.setText("");
+        cmbMarca2.setSelectedIndex(-1);
     }
     private void btnRegistrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRegistrarActionPerformed
         // TODO add your handling code here:
@@ -570,6 +594,9 @@ public class InterfazCerveza extends javax.swing.JFrame {
                 cerveza.formCer_mar(marca);
 
                 operacionesCRUD.opUpdateObjeto("Cerveza", cerveza);
+                actualizarTabla();
+                actualizarIDMax();
+                limpiarCampos();
             }catch(NumberFormatException err){
                 JOptionPane.showMessageDialog(null, "Los datos introducidos no son validos",
                         "Error en InterfazCerveza -> btnEditarActionPerformed",JOptionPane.ERROR_MESSAGE);
@@ -588,44 +615,95 @@ public class InterfazCerveza extends javax.swing.JFrame {
         // TODO add your handling code here:
         int fila = tblRegistros.getSelectedRow();
         //Se recuperan los datos de la cerveza en los campos correspondientes
-        txtId1.setText(operacionesCRUD.nameToID("Cerveza", tblRegistros.getValueAt(fila, 0).toString()) + "");
-        txtNombre1.setText(tblRegistros.getValueAt(fila, 0).toString());
-        txtGraduacion1.setText(tblRegistros.getValueAt(fila, 1).toString());
-        cmbMarca1.setSelectedItem(tblRegistros.getValueAt(fila, 2));
+        txtId1.setText(tblRegistros.getValueAt(fila, 0).toString());
+        txtNombre1.setText(tblRegistros.getValueAt(fila, 1).toString());
+        txtGraduacion1.setText(tblRegistros.getValueAt(fila, 2).toString());
+        cmbMarca1.setSelectedItem(tblRegistros.getValueAt(fila, 3));
+        txtId2.setText(tblRegistros.getValueAt(fila, 0).toString());
+        txtNombre2.setText(tblRegistros.getValueAt(fila, 1).toString());
+        txtGraduacion2.setText(tblRegistros.getValueAt(fila, 2).toString());
+        cmbMarca2.setSelectedItem(tblRegistros.getValueAt(fila, 3));
+        tbdFunciones.setSelectedIndex(1);
     }//GEN-LAST:event_tblRegistrosMouseClicked
-//    private boolean confirmCambioPanel(){
-//        int tabSelected = tbdFunciones.getSelectedIndex();
-//        int fila = tblRegistros.getSelectedRow();
-//        boolean confirmacion;
-//        switch(tabSelected){
-//            case 0:
-//                if(fila>-1){
-//                    if(JOptionPane.showConfirmDialog(null, "Se han detectado registros, cambiar de panel causara que se pierdan los cambios no guardados\n"
-//                            + "Está usted seguro de que desea continuar con el cambio de panel?",
-//                            "Advertencia de perdida de datos",JOptionPane.YES_NO_OPTION) == JOptionPane.NO_OPTION){
-//                        confirmacion = true;
-//                    }else{
-//                        confirmacion = false;
-//                    }
-//                }
-//            case 1:
-//            case 2:
-//                if(fila>-1){
-//                    if(JOptionPane.showConfirmDialog(null, "Se han detectado registros, cambiar de panel causara que se pierdan los cambios no guardados\n"
-//                            + "Está usted seguro de que desea continuar con el cambio de panel?",
-//                            "Advertencia de perdida de datos",JOptionPane.YES_NO_OPTION) == JOptionPane.NO_OPTION){
-//                        confirmacion = true;
-//                    }else{
-//                        confirmacion = false;
-//                    }
-//                }
-//                
-//        }
-//    }
+
+    private void eliminar(boolean activar){
+
+        btnEliminar.setEnabled(activar);
+    }
+    private void insertar(boolean activar){
+        txtId.setEnabled(activar);
+        txtNombre.setEnabled(activar);
+        txtGraduacion.setEnabled(activar);
+        cmbMarca.setEnabled(activar);
+        btnRegistrar.setEnabled(activar);
+    }
+    private void editar(boolean activar){
+        txtId1.setEnabled(activar);
+        txtNombre1.setEnabled(activar);
+        txtGraduacion1.setEnabled(activar);
+        cmbMarca1.setEnabled(activar);
+        btnEditar.setEnabled(activar);
+    }
+    
     private void tbdFuncionesMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tbdFuncionesMouseClicked
         // TODO add your handling code here:
-        
+        boolean tablaSeleccionada = tblRegistros.getSelectedRow() != -1;
+        if(!tablaSeleccionada){
+            JOptionPane.showMessageDialog(null,"Seleccione un registro de la tabla para poder editarlo o eliminarlo",
+                    "Seleccione un registro para realizar esta accion",JOptionPane.INFORMATION_MESSAGE);
+            tbdFunciones.setSelectedIndex(0);
+        }else{
+            int tabSeleccionada = tbdFunciones.getSelectedIndex();
+            if (JOptionPane.showConfirmDialog(rootPane, """
+                                                       Al cambiar de funcion se perderan los cambios de la funcion actual
+                                                       Esta usted seguro de querer proceder?""", "Confirmación de cambio de panel",
+                    JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
+                if ((tabSeleccionada == 1 || tabSeleccionada == 2) && tablaSeleccionada) {
+                    //Se activa la tab correspondiente segun la seleccion del usuario mediante un switch
+                    switch (tabSeleccionada) {
+                        case 1 -> {
+                            editar(true);
+                            eliminar(false);
+                            insertar(false);
+                            btnRegresar.setEnabled(false);
+                        }
+                        case 2 -> {
+                            eliminar(true);
+                            editar(false);
+                            insertar(false);
+                            btnRegresar.setEnabled(false);
+                        }
+                        default ->
+                            System.out.println("Ocurrio un error inesperado, favor de contactar al desarrollador");
+                    }
+                } else {
+                    //De lo contrario, se regresa el indice a 0, insersion
+                    editar(false);
+                    eliminar(false);
+                    insertar(true);
+                    tblRegistros.clearSelection();
+                    tbdFunciones.setSelectedIndex(0);
+                }
+            }   
+        }     
     }//GEN-LAST:event_tbdFuncionesMouseClicked
+
+    private void btnEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarActionPerformed
+        // TODO add your handling code here:  
+        if(JOptionPane.showConfirmDialog(null, "¿Está usted seguro que desea eliminar el registro?",
+                "Confirmación de eliminacion",JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION){
+            try{
+                operacionesCRUD.opDeleteObjeto("Cerveza", Integer.parseInt(txtId2.getText()));
+                JOptionPane.showMessageDialog(null, "Se ha eliminado el objeto de manera satisfactoria");
+                actualizarTabla();
+                limpiarCampos();
+                tbdFunciones.setSelectedIndex(0);
+            }catch(NumberFormatException err){
+                JOptionPane.showMessageDialog(null, "El tipo de dato del identificador no es un numero",
+                        "Error de formato de numero",JOptionPane.ERROR_MESSAGE);
+            }
+        }
+    }//GEN-LAST:event_btnEliminarActionPerformed
 
     /**
      * @param args the command line arguments
@@ -669,10 +747,12 @@ public class InterfazCerveza extends javax.swing.JFrame {
     private javax.swing.JButton btnLimpiar1;
     private javax.swing.JButton btnLimpiar2;
     private javax.swing.JButton btnRegistrar;
+    private javax.swing.JButton btnRegresar;
     private javax.swing.JComboBox<String> cmbFiltro;
     private javax.swing.JComboBox<String> cmbMarca;
     private javax.swing.JComboBox<String> cmbMarca1;
     private javax.swing.JComboBox<String> cmbMarca2;
+    private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;

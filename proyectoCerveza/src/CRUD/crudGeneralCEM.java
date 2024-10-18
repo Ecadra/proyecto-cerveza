@@ -17,11 +17,6 @@ import proyectoCerveza.Expendio;
 import proyectoCerveza.Fabricante;
 import proyectoCerveza.Inventario;
 import proyectoCerveza.Marca;
-import proyectoCerveza.Pedido;
-import proyectoCerveza.Grano;
-import proyectoCerveza.Envase;
-import proyectoCerveza.Receta;
-import proyectoCerveza.Presentacion;
 
 /**
  *
@@ -32,7 +27,7 @@ public class crudGeneralCEM {
     //Cesar
     //public String ruta = "D:\\Documentos HDD\\Proyecto Neatbeans\\Librerias\\objectdb-2.9.0\\db\\cervezadb.odb";
     //Sebas
-    public String ruta = "C:\\Users\\ulseg\\Downloads\\NetBeansProjects\\objectdb-2.9.0\\db\\cervezaodb.odb";
+    public String ruta = "/home/edwin-993/cervezaodb/cervezadb.odb";
     //Xim
     //public String ruta = "C:\\\\objectdb-2.9.0\\\\db\\\\cervezadb.odb";
     //Edwin
@@ -81,14 +76,9 @@ public class crudGeneralCEM {
                 break;
             case "Expendio":
                 Expendio expendioNuevo = (Expendio) objeto;
-                Inventario inventario = em.find(Inventario.class, expendioNuevo.getExp_inv().getInv_cod());
-
-                expendioNuevo.formExp_inv(inventario);
-                inventario.formInv_exp(expendioNuevo);
 
                 em.getTransaction().begin();
                 em.persist(expendioNuevo);
-                em.persist(inventario);
                 em.getTransaction().commit();
 
                 em.close();
@@ -103,7 +93,7 @@ public class crudGeneralCEM {
         EntityManager em = emf.createEntityManager();
         switch (entidad) {
             case "Cerveza":
-                Cerveza nuevosDatosCer= (Cerveza) objeto;
+                Cerveza nuevosDatosCer = (Cerveza) objeto;
                 Cerveza cerActualizar;
                 
                 //Inicia la transaccion con la base de datos
@@ -153,6 +143,8 @@ public class crudGeneralCEM {
                 //Se compromete la transaccion
                 em.getTransaction().commit();
                 //Se cierran las conexiones a la base de datos
+                
+                JOptionPane.showMessageDialog(null, "Se ha actualizado la cerveza " + nuevosDatosCer.getCer_nombre());
                 em.close();
                 emf.close();
                 break;
@@ -163,7 +155,7 @@ public class crudGeneralCEM {
                 
                 marActualizar = em.find(Marca.class, nuevosDatosMar.getId_marca());
                 
-                System.out.println("Se ha encontrado la marca a actualizar. \n"
+                System.out.println("\nSe ha encontrado la marca a actualizar. \n"
                         + "Datos anteriores: \n" + nuevosDatosMar);
                 
                 marActualizar.setMar_nombre(nuevosDatosMar.getMar_nombre());
@@ -174,17 +166,28 @@ public class crudGeneralCEM {
                 break;
             case"Expendio":
                 Expendio nuevosDatosExp = (Expendio) objeto;
-                Expendio expActualizar;
+                Expendio datosViejosExp;
+                
+                //Inicia la transaccion con la base de datos
                 em.getTransaction().begin();
-
-                expActualizar = em.find(Expendio.class, nuevosDatosExp.getExp_nombre());
-
-                System.out.println("Se ha encontrado la marca a actualizar. \n"
-                        + "Datos nuevos: \n" + nuevosDatosExp);
-
-                expActualizar.setExp_nombre(nuevosDatosExp.getExp_nombre());
-
+                
+                //Se busca el expendio a actualizar en la base de datos mediante el id
+                datosViejosExp = em.find(Expendio.class, nuevosDatosExp.getId_expendio());
+                //En caso de que se encuentre la cerveza se notifica por consola y se actualizan los datos de la nuevosDatosCer (Excluendo las relaciones del objeto)
+                System.out.println("\nSe ha encontrado el expendio a actualizar.\n"
+                        + "Datos anteriores:  \n" + nuevosDatosExp.toString()+
+                        "Nuevos datos: \n" + nuevosDatosExp.toString());
+                
+                datosViejosExp.setExp_direccion(nuevosDatosExp.getExp_direccion());
+                datosViejosExp.setExp_nombre(nuevosDatosExp.getExp_nombre());
+                datosViejosExp.setExp_rfc(nuevosDatosExp.getExp_rfc());
+                datosViejosExp.setExp_telefono(nuevosDatosExp.getExp_telefono());
+               
+                //Se compromete la transaccion
                 em.getTransaction().commit();
+                //Se cierran las conexiones a la base de datos
+                
+                JOptionPane.showMessageDialog(null, "\n\nSe ha actualizado la cerveza " + nuevosDatosExp.getExp_nombre());
                 em.close();
                 emf.close();
             break;
@@ -278,6 +281,7 @@ public class crudGeneralCEM {
             case "Cerveza":
                 Cerveza cerveza;
                 //Se crean las columnas que se desea aparezcan en el TableModel
+                columnNames.addElement("Identificador");
                 columnNames.addElement("Nombre");
                 columnNames.addElement("Graduacion");
                 columnNames.addElement("Marca");
@@ -285,6 +289,7 @@ public class crudGeneralCEM {
                 while (it.hasNext()) {
                     cerveza = (Cerveza) it.next();
                     Vector nuevaFila = new Vector();
+                    nuevaFila.addElement(cerveza.getId_cerveza());
                     nuevaFila.addElement(cerveza.getCer_nombre());
                     nuevaFila.addElement(cerveza.getCer_graduacion());
                     nuevaFila.addElement(cerveza.getCer_mar().getMar_nombre());
@@ -293,6 +298,7 @@ public class crudGeneralCEM {
                 break;
             case "Expendio":
                 Expendio Expendio;
+                columnNames.addElement("Identificador");
                 columnNames.addElement("Nombre");
                 columnNames.addElement("RFC");
                 columnNames.addElement("Estado de operacion");
@@ -302,6 +308,7 @@ public class crudGeneralCEM {
                 while (itExp.hasNext()) {
                     Expendio = (Expendio) itExp.next();
                     Vector nuevaFila = new Vector();
+                    nuevaFila.addElement(Expendio.getId_expendio());
                     nuevaFila.addElement(Expendio.getExp_nombre());
                     nuevaFila.addElement(Expendio.getExp_rfc());
                     nuevaFila.addElement(Expendio.isExp_estado());
@@ -313,12 +320,16 @@ public class crudGeneralCEM {
                 break;
             case "Marca":
                 Marca Marca;
+                columnNames.addElement("Identificador");
                 columnNames.addElement("Nombre de la marca");
+                columnNames.addElement("Fabricante");
                 Iterator itMar = resultados.iterator();
                 while (itMar.hasNext()) {
                     Marca = (Marca) itMar.next();
                     Vector nuevaFila = new Vector();
+                    nuevaFila.addElement(Marca.getId_marca());
                     nuevaFila.addElement(Marca.getMar_nombre());
+                    nuevaFila.addElement(Marca.getMar_fab().getFab_nombre());
                     rows.addElement(nuevaFila);
                 }
                 break;
@@ -420,10 +431,11 @@ public class crudGeneralCEM {
 
     }
 
-    public void opDeleteObjeto(String entidad, String criterio) {//Funcion de CRUD para borrar una Cerveza
+    public void opDeleteObjeto(String entidad, int criterio) {//Funcion de CRUD para borrar una Cerveza
         Object objeto = null;
         EntityManagerFactory emf = Persistence.createEntityManagerFactory(ruta);
         EntityManager em = emf.createEntityManager();
+        
         em.getTransaction().begin();
         switch (entidad) {
             case "Cerveza":
@@ -443,6 +455,11 @@ public class crudGeneralCEM {
                         "Error en crudCerveza -> opDelete", JOptionPane.ERROR_MESSAGE);
                 break;
         }
+        em.getTransaction().commit();
+        // Close the database connection: 
+        em.close();
+        emf.close();
+        System.out.println("Objeto eliminado: " + objeto.toString());
     }
 
     public int opMaxID(String entidad) {

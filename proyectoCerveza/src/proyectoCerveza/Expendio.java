@@ -42,7 +42,7 @@ public class Expendio implements Serializable {
     private List<Pedido> exp_ped = new ArrayList<Pedido>();
     @OneToOne
     @JoinColumn(name = "inv_exp", nullable = false)
-    private Inventario exp_inv;
+    private List<Inventario> exp_inv = new ArrayList<Inventario>();
     @OneToMany
     @JoinColumn(name = "ven_exp", nullable = false)
     private List<Venta> exp_ven = new ArrayList<Venta>();
@@ -65,11 +65,11 @@ public class Expendio implements Serializable {
     }
 
     public void formExp_inv(Inventario inv) {
-        this.exp_inv = inv;
+        this.exp_inv.add(inv);
     }
 
-    public void dropExp_inv() {
-        this.exp_inv = null;
+    public void dropExp_inv(Inventario inv) {
+        this.exp_inv.remove(inv);
     }
 
     public void formExp_ven(Venta ven) {
@@ -140,11 +140,11 @@ public class Expendio implements Serializable {
         this.exp_direccion = exp_direccion;
     }
 
-    public Inventario getExp_inv() {
+    public List<Inventario> getExp_inv() {
         return exp_inv;
     }
 
-    public void setExp_inv(Inventario exp_inv) {
+    public void setExp_inv(List<Inventario> exp_inv) {
         this.exp_inv = exp_inv;
     }
 
