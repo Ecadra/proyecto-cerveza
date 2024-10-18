@@ -6,9 +6,8 @@ package Interfaces;
 
 import CRUD.crudGeneralCEM;
 import estructuras.Direccion;
-import java.util.List;
+import javax.swing.JOptionPane;
 import proyectoCerveza.Expendio;
-import proyectoCerveza.Inventario;
 
 /**
  *
@@ -25,12 +24,6 @@ public class InterfazExpendio extends javax.swing.JFrame {
         actualizarTabla();
         actualizarIDs();
         
-        List<Inventario> listaInventarios = operacionesCRUD.opReadObjetos("Inventario", "", "");
-        for(Inventario inventario : listaInventarios){
-            cmbInventario.addItem(inventario.getInv_cod()+"");
-            cmbInventario2.addItem(inventario.getInv_cod()+"");
-            cmbInventario1.addItem(inventario.getInv_cod()+"");
-        }
     }
     private void actualizarTabla(){
         tblRegistros.setModel(operacionesCRUD.opBuscar("Expendio", "", ""));
@@ -116,8 +109,6 @@ public class InterfazExpendio extends javax.swing.JFrame {
         txtRFC = new javax.swing.JTextField();
         cmbActivo = new javax.swing.JComboBox<>();
         txtNumeroTelefono = new javax.swing.JTextField();
-        jLabel14 = new javax.swing.JLabel();
-        cmbInventario = new javax.swing.JComboBox<>();
         btnRegistrar = new javax.swing.JButton();
         btnLimpiar = new javax.swing.JButton();
         jPanel4 = new javax.swing.JPanel();
@@ -145,8 +136,6 @@ public class InterfazExpendio extends javax.swing.JFrame {
         txtRFC1 = new javax.swing.JTextField();
         cmbActivo1 = new javax.swing.JComboBox<>();
         txtNumeroTelefono1 = new javax.swing.JTextField();
-        jLabel26 = new javax.swing.JLabel();
-        cmbInventario1 = new javax.swing.JComboBox<>();
         btnRegistrar1 = new javax.swing.JButton();
         btnLimpiar1 = new javax.swing.JButton();
         jPanel7 = new javax.swing.JPanel();
@@ -174,8 +163,6 @@ public class InterfazExpendio extends javax.swing.JFrame {
         txtRFC2 = new javax.swing.JTextField();
         cmbActivo2 = new javax.swing.JComboBox<>();
         txtNumeroTelefono2 = new javax.swing.JTextField();
-        jLabel38 = new javax.swing.JLabel();
-        cmbInventario2 = new javax.swing.JComboBox<>();
         btnRegistrar2 = new javax.swing.JButton();
         btnLimpiar2 = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
@@ -292,8 +279,6 @@ public class InterfazExpendio extends javax.swing.JFrame {
         cmbActivo.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Inactivo", "Activo" }));
         cmbActivo.setSelectedIndex(-1);
 
-        jLabel14.setText("Inventario:");
-
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
@@ -321,13 +306,9 @@ public class InterfazExpendio extends javax.swing.JFrame {
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(txtNombre, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addGroup(jPanel2Layout.createSequentialGroup()
-                                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jLabel5)
-                                    .addComponent(jLabel14))
+                                .addComponent(jLabel5)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addComponent(txtNumeroTelefono)
-                                    .addComponent(cmbInventario, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                                .addComponent(txtNumeroTelefono)))
                         .addGap(0, 0, Short.MAX_VALUE))))
         );
 
@@ -357,11 +338,7 @@ public class InterfazExpendio extends javax.swing.JFrame {
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel5)
                     .addComponent(txtNumeroTelefono, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel14)
-                    .addComponent(cmbInventario, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 42, Short.MAX_VALUE)
                 .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
@@ -506,8 +483,6 @@ public class InterfazExpendio extends javax.swing.JFrame {
         cmbActivo1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Inactivo", "Activo" }));
         cmbActivo1.setSelectedIndex(-1);
 
-        jLabel26.setText("Inventario:");
-
         javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
         jPanel5.setLayout(jPanel5Layout);
         jPanel5Layout.setHorizontalGroup(
@@ -535,19 +510,15 @@ public class InterfazExpendio extends javax.swing.JFrame {
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(txtNombre1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addGroup(jPanel5Layout.createSequentialGroup()
-                                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jLabel19)
-                                    .addComponent(jLabel26))
+                                .addComponent(jLabel19)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addComponent(txtNumeroTelefono1)
-                                    .addComponent(cmbInventario1, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                                .addComponent(txtNumeroTelefono1)))
                         .addGap(0, 0, Short.MAX_VALUE))))
         );
 
-        jPanel5Layout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {jLabel15, jLabel16, jLabel17, jLabel18, jLabel19, jLabel26});
+        jPanel5Layout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {jLabel15, jLabel16, jLabel17, jLabel18, jLabel19});
 
-        jPanel5Layout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {cmbActivo1, cmbInventario1, txtId1, txtNombre1, txtNumeroTelefono1, txtRFC1});
+        jPanel5Layout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {cmbActivo1, txtId1, txtNombre1, txtNumeroTelefono1, txtRFC1});
 
         jPanel5Layout.setVerticalGroup(
             jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -571,16 +542,17 @@ public class InterfazExpendio extends javax.swing.JFrame {
                 .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel19)
                     .addComponent(txtNumeroTelefono1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel26)
-                    .addComponent(cmbInventario1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 42, Short.MAX_VALUE)
                 .addComponent(jPanel6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
 
         btnRegistrar1.setText("Registrar");
+        btnRegistrar1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnRegistrar1ActionPerformed(evt);
+            }
+        });
 
         btnLimpiar1.setText("Limpiar campos");
 
@@ -710,8 +682,6 @@ public class InterfazExpendio extends javax.swing.JFrame {
         cmbActivo2.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Inactivo", "Activo" }));
         cmbActivo2.setSelectedIndex(-1);
 
-        jLabel38.setText("Inventario:");
-
         javax.swing.GroupLayout jPanel8Layout = new javax.swing.GroupLayout(jPanel8);
         jPanel8.setLayout(jPanel8Layout);
         jPanel8Layout.setHorizontalGroup(
@@ -739,19 +709,15 @@ public class InterfazExpendio extends javax.swing.JFrame {
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(txtNombre2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addGroup(jPanel8Layout.createSequentialGroup()
-                                .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jLabel31)
-                                    .addComponent(jLabel38))
+                                .addComponent(jLabel31)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addComponent(txtNumeroTelefono2)
-                                    .addComponent(cmbInventario2, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                                .addComponent(txtNumeroTelefono2)))
                         .addGap(0, 0, Short.MAX_VALUE))))
         );
 
-        jPanel8Layout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {jLabel27, jLabel28, jLabel29, jLabel30, jLabel31, jLabel38});
+        jPanel8Layout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {jLabel27, jLabel28, jLabel29, jLabel30, jLabel31});
 
-        jPanel8Layout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {cmbActivo2, cmbInventario2, txtId2, txtNombre2, txtNumeroTelefono2, txtRFC2});
+        jPanel8Layout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {cmbActivo2, txtId2, txtNombre2, txtNumeroTelefono2, txtRFC2});
 
         jPanel8Layout.setVerticalGroup(
             jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -775,11 +741,7 @@ public class InterfazExpendio extends javax.swing.JFrame {
                 .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel31)
                     .addComponent(txtNumeroTelefono2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel38)
-                    .addComponent(cmbInventario2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 42, Short.MAX_VALUE)
                 .addComponent(jPanel9, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
@@ -917,41 +879,87 @@ public class InterfazExpendio extends javax.swing.JFrame {
                 !txtColonia.getText().isEmpty() &&
                 !txtCP.getText().isEmpty() &&
                 !txtEstado.getText().isEmpty() &&
-                cmbActivo.getSelectedIndex() != -1 &&
-                cmbInventario.getSelectedIndex() != -1;
+                cmbActivo.getSelectedIndex() != -1;
   
+    }
+    private boolean validacionEditar(){
+        return !txtId1.getText().isEmpty() &&
+                !txtNombre1.getText().isEmpty() &&
+                !txtRFC1.getText().isEmpty() &&
+                !txtNumeroTelefono1.getText().isEmpty() &&
+                !txtCalle1.getText().isEmpty() &&
+                !txtColonia1.getText().isEmpty() &&
+                !txtCP1.getText().isEmpty() &&
+                !txtEstado1.getText().isEmpty() &&
+                cmbActivo1.getSelectedIndex() != -1;
+  
+    }
+    private boolean validacionEliminar(){
+        return !txtId2.getText().isEmpty();
     }
     private void btnRegistrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRegistrarActionPerformed
         // TODO add your handling code here:
         boolean habilitado = cmbActivo.getSelectedIndex() == 1;
-        Direccion direccion = new Direccion(txtCalle.getText(),
-        (Integer)spnNumeroExterior.getValue(),
-        (Integer)spnNumeroInterior.getValue(),
-        txtColonia.getText(),
-        Integer.parseInt(txtCP.getText()),
-        txtEstado.getText());
-        
-        Expendio nuevoExpendio = new Expendio(
-        Integer.parseInt(txtId.getText()),
-        txtNombre.getText(),
-        txtRFC.getText(),
-        habilitado,
-        direccion,
-        txtNumeroTelefono.getText());
-        Inventario inventarioNuevoExpendio = (Inventario)operacionesCRUD.opBuscarObjeto("Inventario", cmbInventario.getSelectedItem().toString());
-        
-        nuevoExpendio.formExp_inv(inventarioNuevoExpendio);
-        
-        operacionesCRUD.opPersistObjeto("Expendio", nuevoExpendio);
-        
-        actualizarTabla();
-        limpiarCampos();
+        if(validacion()){
+            Direccion direccion = new Direccion(txtCalle.getText(),
+            (Integer)spnNumeroExterior.getValue(),
+            (Integer)spnNumeroInterior.getValue(),
+            txtColonia.getText(),
+            Integer.parseInt(txtCP.getText()),
+            txtEstado.getText());
+
+            Expendio nuevoExpendio = new Expendio(
+            Integer.parseInt(txtId.getText()),
+            txtNombre.getText(),
+            txtRFC.getText(),
+            habilitado,
+            direccion,
+            txtNumeroTelefono.getText());
+
+            operacionesCRUD.opPersistObjeto("Expendio", nuevoExpendio);
+
+            actualizarTabla();
+            limpiarCampos();
+        }else{
+            JOptionPane.showMessageDialog(null,"Se han introducido datos que no son v[alidos en uno o más campos de la interfaz, favor de verificar nuevamente",
+                    "Error de conversion de datos numéricos",JOptionPane.ERROR_MESSAGE);
+        }
     }//GEN-LAST:event_btnRegistrarActionPerformed
 
     private void btnLimpiarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLimpiarActionPerformed
          // TODO add your handling code here:
          limpiarCampos();
     }//GEN-LAST:event_btnLimpiarActionPerformed
+
+    private void btnRegistrar1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRegistrar1ActionPerformed
+        // TODO add your handling code here:
+        boolean habilitado = cmbActivo.getSelectedIndex() == 1;
+        if(validacionEditar()){
+            Direccion direccion = new Direccion(txtCalle1.getText(),
+            (Integer)spnNumeroExterior1.getValue(),
+            (Integer)spnNumeroInterior1.getValue(),
+            txtColonia1.getText(),
+            Integer.parseInt(txtCP1.getText()),
+            txtEstado1.getText());
+
+            Expendio nuevoExpendio = new Expendio(
+            Integer.parseInt(txtId1.getText()),
+            txtNombre1.getText(),
+            txtRFC1.getText(),
+            habilitado,
+            direccion,
+            txtNumeroTelefono1.getText());
+
+            operacionesCRUD.opUpdateObjeto("Expendio", nuevoExpendio);
+
+            actualizarTabla();
+            limpiarCampos();
+        }else{
+            JOptionPane.showMessageDialog(null,"Se han introducido datos que no son v[alidos en uno o más campos de la interfaz, favor de verificar nuevamente",
+                    "Error de conversion de datos numéricos",JOptionPane.ERROR_MESSAGE);
+        }
+        
+    }//GEN-LAST:event_btnRegistrar1ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -999,9 +1007,6 @@ public class InterfazExpendio extends javax.swing.JFrame {
     private javax.swing.JComboBox<String> cmbActivo1;
     private javax.swing.JComboBox<String> cmbActivo2;
     private javax.swing.JComboBox<String> cmbFiltro;
-    private javax.swing.JComboBox<String> cmbInventario;
-    private javax.swing.JComboBox<String> cmbInventario1;
-    private javax.swing.JComboBox<String> cmbInventario2;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel1;
@@ -1009,7 +1014,6 @@ public class InterfazExpendio extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel12;
     private javax.swing.JLabel jLabel13;
-    private javax.swing.JLabel jLabel14;
     private javax.swing.JLabel jLabel15;
     private javax.swing.JLabel jLabel16;
     private javax.swing.JLabel jLabel17;
@@ -1022,7 +1026,6 @@ public class InterfazExpendio extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel23;
     private javax.swing.JLabel jLabel24;
     private javax.swing.JLabel jLabel25;
-    private javax.swing.JLabel jLabel26;
     private javax.swing.JLabel jLabel27;
     private javax.swing.JLabel jLabel28;
     private javax.swing.JLabel jLabel29;
@@ -1035,7 +1038,6 @@ public class InterfazExpendio extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel35;
     private javax.swing.JLabel jLabel36;
     private javax.swing.JLabel jLabel37;
-    private javax.swing.JLabel jLabel38;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
