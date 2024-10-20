@@ -4,6 +4,7 @@
  */
 package CRUD;
 
+import estructuras.Direccion;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -62,7 +63,7 @@ public class crudGeneralCEM {
                 break;
             case "Marca":
                 Marca marcaNueva = (Marca) objeto;
-                Fabricante fabricante = em.find(Fabricante.class, marcaNueva.getMar_fab().getFab_nombre());
+                Fabricante fabricante = em.find(Fabricante.class, marcaNueva.getMar_fab().getId_fab());
 
                 marcaNueva.formMar_fab(fabricante);
                 fabricante.formFab_mar(marcaNueva);
@@ -157,10 +158,32 @@ public class crudGeneralCEM {
                 
                 System.out.println("\nSe ha encontrado la marca a actualizar. \n"
                         + "Datos anteriores: \n" + nuevosDatosMar);
+                Fabricante fabViejo = em.find(Fabricante.class, marActualizar.getMar_fab().getId_fab());
+                System.out.println("\n\nFabricante anteriormente relacionado: " + fabViejo.toString());
+                Fabricante fabNuevo = em.find(Fabricante.class, nuevosDatosMar.getMar_fab().getId_fab());
                 
-                marActualizar.setMar_nombre(nuevosDatosMar.getMar_nombre());
+                System.out.println("\n\nFabricante seleccionado en la interfaz: " + fabNuevo.toString());
                 
+                if(fabViejo.getId_fab() == fabNuevo.getId_fab()){
+                    System.out.println("\n\nNo se ha actualizado la relacion del objeto Marca - Fabricante... Actualizando solo los datos del objeto");
+                    //Se actualiza el nombre
+                    marActualizar.setMar_nombre(nuevosDatosMar.getMar_nombre());
+                }else{
+                    System.out.println("\n\nSe han detectado cambios en la relacion del objeto Marca - Fabricante... Actualizando relacion y datos del objeto");
+                    //Se actualiza el nombre
+                    marActualizar.setMar_nombre(nuevosDatosMar.getMar_nombre());
+                    
+                    //Se elimina el anterior fabricante de manera bidireccional
+                    marActualizar.dropMar_fab(fabViejo);
+                    fabViejo.dropFab_se(marActualizar);
+                    
+                    //Se hace una nueva relacion de manera bidireccional
+                    fabNuevo.formFab_mar(marActualizar);
+                    marActualizar.formMar_fab(fabNuevo);
+                    
+                }
                 em.getTransaction().commit();
+                System.out.println("Se ha actualizado la marca: " + marActualizar.toString());
                 em.close();
                 emf.close();
                 break;
@@ -187,7 +210,7 @@ public class crudGeneralCEM {
                 em.getTransaction().commit();
                 //Se cierran las conexiones a la base de datos
                 
-                JOptionPane.showMessageDialog(null, "\n\nSe ha actualizado la cerveza " + nuevosDatosExp.getExp_nombre());
+                JOptionPane.showMessageDialog(null, "\n\nSe ha actualizado el expendio " + nuevosDatosExp.getExp_nombre());
                 em.close();
                 emf.close();
             break;
@@ -302,7 +325,12 @@ public class crudGeneralCEM {
                 columnNames.addElement("Nombre");
                 columnNames.addElement("RFC");
                 columnNames.addElement("Estado de operacion");
-                columnNames.addElement("Direccion");
+                columnNames.addElement("Calle");
+                columnNames.addElement("Numero exterior");
+                columnNames.addElement("Numero interior");
+                columnNames.addElement("Colonia");
+                columnNames.addElement("Codigo postal");
+                columnNames.addElement("Estado");
                 columnNames.addElement("Telefono:");
                 Iterator itExp = resultados.iterator();
                 while (itExp.hasNext()) {
@@ -311,8 +339,14 @@ public class crudGeneralCEM {
                     nuevaFila.addElement(Expendio.getId_expendio());
                     nuevaFila.addElement(Expendio.getExp_nombre());
                     nuevaFila.addElement(Expendio.getExp_rfc());
-                    nuevaFila.addElement(Expendio.isExp_estado());
-                    nuevaFila.addElement(Expendio.getExp_direccion().toString());
+                    String activo = Expendio.isExp_estado() ? "Activo" : "Inactivo";
+                    nuevaFila.addElement(activo);
+                    Direccion direccion = Expendio.getExp_direccion();
+                    nuevaFila.addElement(direccion.getCalle());
+                    nuevaFila.addElement(direccion.getNumeroExt());
+                    nuevaFila.addElement(direccion.getNumeroInt());
+                    nuevaFila.addElement(direccion.getColonia());
+                    nuevaFila.addElement(direccion.getEstado());
                     nuevaFila.addElement(Expendio.getExp_telefono());
 
                     rows.addElement(nuevaFila);
@@ -408,7 +442,7 @@ public class crudGeneralCEM {
                 emf.close();
                 return objeto;
             case"Fabricante":
-                objeto = em.find(Fabricante.class, criterio); //Marca se busca mediante el nombreí
+                objeto = em.find(Fabricante.class, Integer.parseInt(criterio)); //Marca se busca mediante el nombreí
                 em.close();
                 emf.close();
                 return objeto;
@@ -555,6 +589,19 @@ public class crudGeneralCEM {
                 em.close();
                 emf.close();
                 return resultadosExpendio.get(0);
+            case "Fabricante":
+                //Se recuperan los objetos Fabricante desde la base de datos
+                TypedQuery<Integer> consultaFabricante = null; //Objeto para la consulta
+                List<Integer> resultadosFabricante = new ArrayList<Integer>();//Lista para los resultados
+                
+                consultaFabricante = em.createQuery("SELECT c.id_fab FROM Fabricante c WHERE c.fab_nombre = '" + nombreEntidad + "'", Integer.class);
+                resultadosFabricante = consultaFabricante.getResultList();
+
+                System.out.println("Se ha recuperado satisfactoriamente el ID del Fabricante " + nombreEntidad);
+
+                em.close();
+                emf.close();
+                return resultadosFabricante.get(0);
         }
         return -1;
     }
