@@ -624,6 +624,9 @@ public class InterfazCerveza extends javax.swing.JFrame {
         txtGraduacion2.setText(tblRegistros.getValueAt(fila, 2).toString());
         cmbMarca2.setSelectedItem(tblRegistros.getValueAt(fila, 3));
         tbdFunciones.setSelectedIndex(1);
+        editar(true);
+        eliminar(true);
+        insertar(false);
     }//GEN-LAST:event_tblRegistrosMouseClicked
 
     private void eliminar(boolean activar){

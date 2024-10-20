@@ -83,7 +83,7 @@ public class InterfazExpendio extends javax.swing.JFrame {
     private void initComponents() {
 
         jButton1 = new javax.swing.JButton();
-        jTabbedPane1 = new javax.swing.JTabbedPane();
+        tbdFunciones = new javax.swing.JTabbedPane();
         jPanel1 = new javax.swing.JPanel();
         jPanel2 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
@@ -136,7 +136,7 @@ public class InterfazExpendio extends javax.swing.JFrame {
         txtRFC1 = new javax.swing.JTextField();
         cmbActivo1 = new javax.swing.JComboBox<>();
         txtNumeroTelefono1 = new javax.swing.JTextField();
-        btnRegistrar1 = new javax.swing.JButton();
+        btnActualizar = new javax.swing.JButton();
         btnLimpiar1 = new javax.swing.JButton();
         jPanel7 = new javax.swing.JPanel();
         jPanel8 = new javax.swing.JPanel();
@@ -163,11 +163,11 @@ public class InterfazExpendio extends javax.swing.JFrame {
         txtRFC2 = new javax.swing.JTextField();
         cmbActivo2 = new javax.swing.JComboBox<>();
         txtNumeroTelefono2 = new javax.swing.JTextField();
-        btnRegistrar2 = new javax.swing.JButton();
+        btnEliminar = new javax.swing.JButton();
         btnLimpiar2 = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         tblRegistros = new javax.swing.JTable();
-        jButton2 = new javax.swing.JButton();
+        btnRegresar = new javax.swing.JButton();
         jLabel12 = new javax.swing.JLabel();
         cmbFiltro = new javax.swing.JComboBox<>();
         jLabel13 = new javax.swing.JLabel();
@@ -177,11 +177,19 @@ public class InterfazExpendio extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        jTabbedPane1.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        tbdFunciones.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        tbdFunciones.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tbdFuncionesMouseClicked(evt);
+            }
+        });
 
         jPanel2.setBorder(javax.swing.BorderFactory.createTitledBorder("Datos del expendio"));
 
         jLabel1.setText("Expendio numero");
+
+        txtId.setEditable(false);
+        txtId.setEnabled(false);
 
         jLabel2.setText("Nombre:");
 
@@ -343,7 +351,7 @@ public class InterfazExpendio extends javax.swing.JFrame {
                 .addContainerGap())
         );
 
-        btnRegistrar.setText("Registrar");
+        btnRegistrar.setText("Registrar expendio");
         btnRegistrar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnRegistrarActionPerformed(evt);
@@ -385,11 +393,14 @@ public class InterfazExpendio extends javax.swing.JFrame {
                 .addGap(10, 10, 10))
         );
 
-        jTabbedPane1.addTab("Insertar", jPanel1);
+        tbdFunciones.addTab("Insertar", jPanel1);
 
         jPanel5.setBorder(javax.swing.BorderFactory.createTitledBorder("Datos del expendio"));
 
         jLabel15.setText("Expendio numero");
+
+        txtId1.setEditable(false);
+        txtId1.setEnabled(false);
 
         jLabel16.setText("Nombre:");
 
@@ -547,10 +558,10 @@ public class InterfazExpendio extends javax.swing.JFrame {
                 .addContainerGap())
         );
 
-        btnRegistrar1.setText("Registrar");
-        btnRegistrar1.addActionListener(new java.awt.event.ActionListener() {
+        btnActualizar.setText("Guardar cambios");
+        btnActualizar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnRegistrar1ActionPerformed(evt);
+                btnActualizarActionPerformed(evt);
             }
         });
 
@@ -567,7 +578,7 @@ public class InterfazExpendio extends javax.swing.JFrame {
                         .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(0, 0, Short.MAX_VALUE))
                     .addGroup(jPanel4Layout.createSequentialGroup()
-                        .addComponent(btnRegistrar1)
+                        .addComponent(btnActualizar)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(btnLimpiar1)))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
@@ -579,16 +590,19 @@ public class InterfazExpendio extends javax.swing.JFrame {
                 .addComponent(jPanel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btnRegistrar1)
+                    .addComponent(btnActualizar)
                     .addComponent(btnLimpiar1))
                 .addGap(10, 10, 10))
         );
 
-        jTabbedPane1.addTab("Editar", jPanel4);
+        tbdFunciones.addTab("Editar", jPanel4);
 
         jPanel8.setBorder(javax.swing.BorderFactory.createTitledBorder("Datos del expendio"));
 
         jLabel27.setText("Expendio numero");
+
+        txtId2.setEditable(false);
+        txtId2.setEnabled(false);
 
         jLabel28.setText("Nombre:");
 
@@ -602,6 +616,8 @@ public class InterfazExpendio extends javax.swing.JFrame {
 
         jLabel32.setText("Calle:");
 
+        txtCalle2.setEnabled(false);
+
         jLabel33.setText("Numero exterior:");
 
         jLabel34.setText("Numero interior:");
@@ -611,6 +627,16 @@ public class InterfazExpendio extends javax.swing.JFrame {
         jLabel36.setText("Código postal:");
 
         jLabel37.setText("Estado:");
+
+        spnNumeroExterior2.setEnabled(false);
+
+        spnNumeroInterior2.setEnabled(false);
+
+        txtColonia2.setEnabled(false);
+
+        txtCP2.setEnabled(false);
+
+        txtEstado2.setEnabled(false);
 
         javax.swing.GroupLayout jPanel9Layout = new javax.swing.GroupLayout(jPanel9);
         jPanel9.setLayout(jPanel9Layout);
@@ -679,8 +705,24 @@ public class InterfazExpendio extends javax.swing.JFrame {
                     .addComponent(txtEstado2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
         );
 
+        txtNombre2.setEditable(false);
+        txtNombre2.setEnabled(false);
+
+        txtRFC2.setEditable(false);
+        txtRFC2.setEnabled(false);
+        txtRFC2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtRFC2ActionPerformed(evt);
+            }
+        });
+
         cmbActivo2.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Inactivo", "Activo" }));
         cmbActivo2.setSelectedIndex(-1);
+        cmbActivo2.setAutoscrolls(true);
+        cmbActivo2.setEnabled(false);
+
+        txtNumeroTelefono2.setEditable(false);
+        txtNumeroTelefono2.setEnabled(false);
 
         javax.swing.GroupLayout jPanel8Layout = new javax.swing.GroupLayout(jPanel8);
         jPanel8.setLayout(jPanel8Layout);
@@ -746,7 +788,12 @@ public class InterfazExpendio extends javax.swing.JFrame {
                 .addContainerGap())
         );
 
-        btnRegistrar2.setText("Registrar");
+        btnEliminar.setText("Eliminar datos");
+        btnEliminar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnEliminarActionPerformed(evt);
+            }
+        });
 
         btnLimpiar2.setText("Limpiar campos");
 
@@ -761,7 +808,7 @@ public class InterfazExpendio extends javax.swing.JFrame {
                         .addComponent(jPanel8, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(0, 0, Short.MAX_VALUE))
                     .addGroup(jPanel7Layout.createSequentialGroup()
-                        .addComponent(btnRegistrar2)
+                        .addComponent(btnEliminar)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(btnLimpiar2)))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
@@ -773,12 +820,12 @@ public class InterfazExpendio extends javax.swing.JFrame {
                 .addComponent(jPanel8, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btnRegistrar2)
+                    .addComponent(btnEliminar)
                     .addComponent(btnLimpiar2))
                 .addGap(10, 10, 10))
         );
 
-        jTabbedPane1.addTab("Eliminar", jPanel7);
+        tbdFunciones.addTab("Eliminar", jPanel7);
 
         tblRegistros.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -791,9 +838,14 @@ public class InterfazExpendio extends javax.swing.JFrame {
                 "Title 1", "Title 2", "Title 3", "Title 4"
             }
         ));
+        tblRegistros.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tblRegistrosMouseClicked(evt);
+            }
+        });
         jScrollPane1.setViewportView(tblRegistros);
 
-        jButton2.setText("Cancelar y regresar");
+        btnRegresar.setText("Cancelar y regresar");
 
         jLabel12.setText("FIltrar por:");
 
@@ -820,8 +872,8 @@ public class InterfazExpendio extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                    .addComponent(jButton2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jTabbedPane1))
+                    .addComponent(btnRegresar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(tbdFunciones))
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jScrollPane1)
@@ -843,9 +895,10 @@ public class InterfazExpendio extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addContainerGap()
-                        .addComponent(jTabbedPane1)
-                        .addGap(18, 18, 18)
-                        .addComponent(jButton2))
+                        .addComponent(tbdFunciones)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(btnRegresar)
+                        .addGap(6, 6, 6))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(7, 7, 7)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -931,35 +984,141 @@ public class InterfazExpendio extends javax.swing.JFrame {
          limpiarCampos();
     }//GEN-LAST:event_btnLimpiarActionPerformed
 
-    private void btnRegistrar1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRegistrar1ActionPerformed
+    private void btnActualizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnActualizarActionPerformed
         // TODO add your handling code here:
-        boolean habilitado = cmbActivo.getSelectedIndex() == 1;
-        if(validacionEditar()){
-            Direccion direccion = new Direccion(txtCalle1.getText(),
-            (Integer)spnNumeroExterior1.getValue(),
-            (Integer)spnNumeroInterior1.getValue(),
-            txtColonia1.getText(),
-            Integer.parseInt(txtCP1.getText()),
-            txtEstado1.getText());
-
-            Expendio nuevoExpendio = new Expendio(
-            Integer.parseInt(txtId1.getText()),
-            txtNombre1.getText(),
-            txtRFC1.getText(),
-            habilitado,
-            direccion,
-            txtNumeroTelefono1.getText());
-
-            operacionesCRUD.opUpdateObjeto("Expendio", nuevoExpendio);
-
-            actualizarTabla();
-            limpiarCampos();
-        }else{
-            JOptionPane.showMessageDialog(null,"Se han introducido datos que no son v[alidos en uno o más campos de la interfaz, favor de verificar nuevamente",
-                    "Error de conversion de datos numéricos",JOptionPane.ERROR_MESSAGE);
-        }
         
-    }//GEN-LAST:event_btnRegistrar1ActionPerformed
+        
+    }//GEN-LAST:event_btnActualizarActionPerformed
+    private void insertar(boolean activacion){
+        txtNombre.setEnabled(activacion);
+        txtRFC.setEnabled(activacion);
+        cmbActivo.setEnabled(activacion);
+        txtNumeroTelefono.setEnabled(activacion);
+        txtCalle.setEnabled(activacion);
+        spnNumeroInterior.setEnabled(activacion);
+        spnNumeroExterior.setEnabled(activacion);
+        txtColonia.setEnabled(activacion);
+        txtCP.setEnabled(activacion);
+        txtEstado.setEnabled(activacion);
+        btnRegistrar.setEnabled(activacion);
+    }
+    private void eliminar(boolean activacion){
+        btnEliminar.setEnabled(activacion);
+    }
+    private void editar(boolean activacion){
+
+        txtNombre1.setEnabled(activacion);
+        txtRFC1.setEnabled(activacion);
+        cmbActivo1.setEnabled(activacion);
+        txtNumeroTelefono1.setEnabled(activacion);
+        txtCalle1.setEnabled(activacion);
+        spnNumeroInterior1.setEnabled(activacion);
+        spnNumeroExterior1.setEnabled(activacion);
+        txtColonia1.setEnabled(activacion);
+        txtCP1.setEnabled(activacion);
+        txtEstado1.setEnabled(activacion);
+        btnActualizar.setEnabled(activacion);
+    }
+    private void tbdFuncionesMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tbdFuncionesMouseClicked
+        // TODO add your handling code here:
+        boolean tablaSeleccionada = tblRegistros.getSelectedRow() != -1;
+        if(!tablaSeleccionada){
+            JOptionPane.showMessageDialog(null,"Seleccione un registro de la tabla para poder editarlo o eliminarlo",
+                    "Seleccione un registro para realizar esta accion",JOptionPane.INFORMATION_MESSAGE);
+            tbdFunciones.setSelectedIndex(0);
+        }else{
+            int tabSeleccionada = tbdFunciones.getSelectedIndex();
+            if (JOptionPane.showConfirmDialog(rootPane, """
+                                                       Al cambiar de funcion se perderan los cambios de la funcion actual
+                                                       Esta usted seguro de querer proceder?""", "Confirmación de cambio de panel",
+                    JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
+                if ((tabSeleccionada == 1 || tabSeleccionada == 2) && tablaSeleccionada) {
+                    //Se activa la tab correspondiente segun la seleccion del usuario mediante un switch
+                    switch (tabSeleccionada) {
+                        case 1 -> {
+                            editar(true);
+                            eliminar(false);
+                            insertar(false);
+                            btnRegresar.setEnabled(false);
+                        }
+                        case 2 -> {
+                            eliminar(true);
+                            editar(false);
+                            insertar(false);
+                            btnRegresar.setEnabled(false);
+                        }
+                        default ->
+                            System.out.println("Ocurrio un error inesperado, favor de contactar al desarrollador");
+                    }
+                } else {
+                    //De lo contrario, se regresa el indice a 0, insersion
+                    editar(false);
+                    eliminar(false);
+                    insertar(true);
+                    tblRegistros.clearSelection();
+                    tbdFunciones.setSelectedIndex(0);
+                }
+            }   
+        }
+    }//GEN-LAST:event_tbdFuncionesMouseClicked
+
+    private void txtRFC2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtRFC2ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtRFC2ActionPerformed
+
+    private void tblRegistrosMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblRegistrosMouseClicked
+        // TODO add your handling code here:
+        int fila = tblRegistros.getSelectedRow();
+        tbdFunciones.setSelectedIndex(1);
+        txtId1.setText(tblRegistros.getValueAt(fila, 0).toString());
+        txtNombre1.setText(tblRegistros.getValueAt(fila, 1).toString());
+        txtRFC1.setText(tblRegistros.getValueAt(fila,2).toString());
+        cmbActivo1.setSelectedItem(tblRegistros.getValueAt(fila, 3));
+        txtNumeroTelefono1.setText(tblRegistros.getValueAt(fila, 10).toString());
+
+        txtId2.setText(tblRegistros.getValueAt(fila, 0).toString());
+        txtNombre2.setText(tblRegistros.getValueAt(fila, 1).toString());
+        txtRFC2.setText(tblRegistros.getValueAt(fila,2).toString());
+        cmbActivo2.setSelectedItem(tblRegistros.getValueAt(fila, 3));
+        txtNumeroTelefono2.setText(tblRegistros.getValueAt(fila, 10).toString());
+        
+        Expendio expendio = (Expendio)operacionesCRUD.opBuscarObjeto("Expendio", txtId1.getText());
+        Direccion direccionExpendio = expendio.getExp_direccion();
+        txtCalle1.setText(direccionExpendio.getCalle());
+        spnNumeroExterior1.setValue(direccionExpendio.getNumeroExt());
+        spnNumeroInterior1.setValue(direccionExpendio.getNumeroInt());
+        txtColonia1.setText(direccionExpendio.getColonia());
+        txtCP1.setText(direccionExpendio.getCodigoPostal()+"");
+        txtEstado1.setText(direccionExpendio.getEstado());
+        
+        txtCalle2.setText(direccionExpendio.getCalle());
+        spnNumeroExterior2.setValue(direccionExpendio.getNumeroExt());
+        spnNumeroInterior2.setValue(direccionExpendio.getNumeroInt());
+        txtColonia2.setText(direccionExpendio.getColonia());
+        txtCP2.setText(direccionExpendio.getCodigoPostal()+"");
+        txtEstado2.setText(direccionExpendio.getEstado());
+        editar(true);
+        eliminar(true);
+        insertar(false);
+        
+    }//GEN-LAST:event_tblRegistrosMouseClicked
+
+    private void btnEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarActionPerformed
+        // TODO add your handling code here:
+        if(JOptionPane.showConfirmDialog(null, "¿Está usted seguro que desea eliminar el registro?",
+                "Confirmación de eliminacion",JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION){
+            try{
+                operacionesCRUD.opDeleteObjeto("Expendio", Integer.parseInt(txtId2.getText()));
+                JOptionPane.showMessageDialog(null, "Se ha eliminado el objeto de manera satisfactoria");
+                actualizarTabla();
+                limpiarCampos();
+                tbdFunciones.setSelectedIndex(0);
+            }catch(NumberFormatException err){
+                JOptionPane.showMessageDialog(null, "El tipo de dato del identificador no es un numero",
+                        "Error de formato de numero",JOptionPane.ERROR_MESSAGE);
+            }
+        }
+    }//GEN-LAST:event_btnEliminarActionPerformed
 
     /**
      * @param args the command line arguments
@@ -997,18 +1156,18 @@ public class InterfazExpendio extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnActualizar;
+    private javax.swing.JButton btnEliminar;
     private javax.swing.JButton btnLimpiar;
     private javax.swing.JButton btnLimpiar1;
     private javax.swing.JButton btnLimpiar2;
     private javax.swing.JButton btnRegistrar;
-    private javax.swing.JButton btnRegistrar1;
-    private javax.swing.JButton btnRegistrar2;
+    private javax.swing.JButton btnRegresar;
     private javax.swing.JComboBox<String> cmbActivo;
     private javax.swing.JComboBox<String> cmbActivo1;
     private javax.swing.JComboBox<String> cmbActivo2;
     private javax.swing.JComboBox<String> cmbFiltro;
     private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
@@ -1054,13 +1213,13 @@ public class InterfazExpendio extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel8;
     private javax.swing.JPanel jPanel9;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTabbedPane jTabbedPane1;
     private javax.swing.JSpinner spnNumeroExterior;
     private javax.swing.JSpinner spnNumeroExterior1;
     private javax.swing.JSpinner spnNumeroExterior2;
     private javax.swing.JSpinner spnNumeroInterior;
     private javax.swing.JSpinner spnNumeroInterior1;
     private javax.swing.JSpinner spnNumeroInterior2;
+    private javax.swing.JTabbedPane tbdFunciones;
     private javax.swing.JTable tblRegistros;
     private javax.swing.JTextField txtCP;
     private javax.swing.JTextField txtCP1;

@@ -6,6 +6,7 @@ package Interfaces;
 
 import CRUD.crudGeneralCEM;
 import java.util.List;
+import javax.swing.JOptionPane;
 import proyectoCerveza.Fabricante;
 import proyectoCerveza.Marca;
 
@@ -30,8 +31,6 @@ public class InterfazMarca extends javax.swing.JFrame {
             cmbFabricante2.addItem(fab.getFab_nombre());
         }
         txtId.setText((operacionesCRUD.opMaxID("Marca")+1)+"");
-        txtId1.setText((operacionesCRUD.opMaxID("Marca")+1)+"");
-        txtId2.setText((operacionesCRUD.opMaxID("Marca")+1)+"");
         
     }
 
@@ -55,7 +54,7 @@ public class InterfazMarca extends javax.swing.JFrame {
         jLabel3 = new javax.swing.JLabel();
         cmbFabricante = new javax.swing.JComboBox<>();
         btnRegistrar = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
+        btnLimpiar = new javax.swing.JButton();
         jPanel3 = new javax.swing.JPanel();
         jPanel4 = new javax.swing.JPanel();
         jLabel5 = new javax.swing.JLabel();
@@ -64,8 +63,8 @@ public class InterfazMarca extends javax.swing.JFrame {
         jLabel6 = new javax.swing.JLabel();
         jLabel7 = new javax.swing.JLabel();
         cmbFabricante1 = new javax.swing.JComboBox<>();
-        jButton3 = new javax.swing.JButton();
-        jButton4 = new javax.swing.JButton();
+        btnActualizar = new javax.swing.JButton();
+        btnLimpiar1 = new javax.swing.JButton();
         jPanel5 = new javax.swing.JPanel();
         jPanel6 = new javax.swing.JPanel();
         jLabel8 = new javax.swing.JLabel();
@@ -74,16 +73,23 @@ public class InterfazMarca extends javax.swing.JFrame {
         jLabel9 = new javax.swing.JLabel();
         jLabel10 = new javax.swing.JLabel();
         cmbFabricante2 = new javax.swing.JComboBox<>();
-        jButton5 = new javax.swing.JButton();
-        jButton6 = new javax.swing.JButton();
+        btnEliminar = new javax.swing.JButton();
+        btnLimpiar2 = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         tblRegistros = new javax.swing.JTable();
         jLabel12 = new javax.swing.JLabel();
         txtCriterio = new javax.swing.JTextField();
+        btnRegresar = new javax.swing.JButton();
 
         jLabel1.setText("jLabel1");
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+
+        tbdFunciones.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tbdFuncionesMouseClicked(evt);
+            }
+        });
 
         jPanel1.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
 
@@ -138,14 +144,14 @@ public class InterfazMarca extends javax.swing.JFrame {
                         .addContainerGap())))
         );
 
-        btnRegistrar.setText("Accion");
+        btnRegistrar.setText("Registrar marca");
         btnRegistrar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnRegistrarActionPerformed(evt);
             }
         });
 
-        jButton2.setText("Limpiar");
+        btnLimpiar.setText("Limpiar");
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -157,7 +163,7 @@ public class InterfazMarca extends javax.swing.JFrame {
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(btnRegistrar)
                         .addGap(182, 182, 182)
-                        .addComponent(jButton2))
+                        .addComponent(btnLimpiar))
                     .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
@@ -169,7 +175,7 @@ public class InterfazMarca extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnRegistrar)
-                    .addComponent(jButton2))
+                    .addComponent(btnLimpiar))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -230,9 +236,14 @@ public class InterfazMarca extends javax.swing.JFrame {
                 .addContainerGap())
         );
 
-        jButton3.setText("Accion");
+        btnActualizar.setText("Guardar cambios");
+        btnActualizar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnActualizarActionPerformed(evt);
+            }
+        });
 
-        jButton4.setText("Limpiar");
+        btnLimpiar1.setText("Limpiar");
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
@@ -243,10 +254,10 @@ public class InterfazMarca extends javax.swing.JFrame {
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(jPanel3Layout.createSequentialGroup()
-                        .addComponent(jButton3)
+                        .addComponent(btnActualizar)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jButton4)))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addComponent(btnLimpiar1)))
+                .addContainerGap(46, Short.MAX_VALUE))
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -256,10 +267,10 @@ public class InterfazMarca extends javax.swing.JFrame {
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel3Layout.createSequentialGroup()
                         .addGap(10, 10, 10)
-                        .addComponent(jButton3))
+                        .addComponent(btnActualizar))
                     .addGroup(jPanel3Layout.createSequentialGroup()
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jButton4)))
+                        .addComponent(btnLimpiar1)))
                 .addContainerGap())
         );
 
@@ -278,6 +289,8 @@ public class InterfazMarca extends javax.swing.JFrame {
         jLabel9.setText("Fabricante:");
 
         jLabel10.setText("Nombre:");
+
+        cmbFabricante2.setEnabled(false);
 
         javax.swing.GroupLayout jPanel6Layout = new javax.swing.GroupLayout(jPanel6);
         jPanel6.setLayout(jPanel6Layout);
@@ -317,9 +330,14 @@ public class InterfazMarca extends javax.swing.JFrame {
                 .addGap(9, 9, 9))
         );
 
-        jButton5.setText("Accion");
+        btnEliminar.setText("Eliminar marca");
+        btnEliminar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnEliminarActionPerformed(evt);
+            }
+        });
 
-        jButton6.setText("Limpiar");
+        btnLimpiar2.setText("Limpiar");
 
         javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
         jPanel5.setLayout(jPanel5Layout);
@@ -330,9 +348,9 @@ public class InterfazMarca extends javax.swing.JFrame {
                 .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(jPanel6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(jPanel5Layout.createSequentialGroup()
-                        .addComponent(jButton5)
+                        .addComponent(btnEliminar)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jButton6)))
+                        .addComponent(btnLimpiar2)))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel5Layout.setVerticalGroup(
@@ -343,10 +361,10 @@ public class InterfazMarca extends javax.swing.JFrame {
                 .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel5Layout.createSequentialGroup()
                         .addGap(10, 10, 10)
-                        .addComponent(jButton5))
+                        .addComponent(btnEliminar))
                     .addGroup(jPanel5Layout.createSequentialGroup()
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jButton6)))
+                        .addComponent(btnLimpiar2)))
                 .addGap(10, 10, 10))
         );
 
@@ -363,9 +381,16 @@ public class InterfazMarca extends javax.swing.JFrame {
                 "Title 1", "Title 2", "Title 3", "Title 4"
             }
         ));
+        tblRegistros.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tblRegistrosMouseClicked(evt);
+            }
+        });
         jScrollPane1.setViewportView(tblRegistros);
 
         jLabel12.setText("Buscar marca:");
+
+        btnRegresar.setText("Regresar al menu principal");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -382,7 +407,10 @@ public class InterfazMarca extends javax.swing.JFrame {
                         .addContainerGap()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                             .addComponent(jScrollPane1)
-                            .addComponent(tbdFunciones))))
+                            .addComponent(tbdFunciones)))
+                    .addGroup(layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(btnRegresar)))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
@@ -395,8 +423,10 @@ public class InterfazMarca extends javax.swing.JFrame {
                     .addComponent(txtCriterio, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel12))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 144, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(12, 12, 12))
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 118, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(8, 8, 8)
+                .addComponent(btnRegresar)
+                .addContainerGap())
         );
 
         pack();
@@ -415,6 +445,8 @@ public class InterfazMarca extends javax.swing.JFrame {
         txtNombre2.setText("");
         
         cmbFabricante.setSelectedIndex(-1); 
+        cmbFabricante1.setSelectedIndex(-1); 
+        cmbFabricante2.setSelectedIndex(-1); 
     }
     private boolean validacion(){
         return !txtNombre.getText().isEmpty() && cmbFabricante.getSelectedIndex()!=-1;
@@ -425,7 +457,7 @@ public class InterfazMarca extends javax.swing.JFrame {
          if(validacion()){
             Marca marcaNueva = new Marca(Integer.parseInt(txtId.getText()),txtNombre.getText());
          
-            Fabricante fabricanteMarcaNueva = (Fabricante)operacionesCRUD.opBuscarObjeto("Fabricante",cmbFabricante.getSelectedItem().toString());
+            Fabricante fabricanteMarcaNueva = (Fabricante)operacionesCRUD.opBuscarObjeto("Fabricante",operacionesCRUD.nameToID("Fabricante",cmbFabricante.getSelectedItem().toString())+"");
 
             System.out.println("Fabricante recuperado mediante opBuscarObjeto:\n" + fabricanteMarcaNueva.toString());
 
@@ -435,6 +467,136 @@ public class InterfazMarca extends javax.swing.JFrame {
             limpiarCampos();
          }
     }//GEN-LAST:event_btnRegistrarActionPerformed
+    public void insertar(boolean activacion){
+        txtNombre.setEnabled(activacion);
+        cmbFabricante.setEnabled(activacion);
+        btnRegistrar.setEnabled(activacion);
+        btnLimpiar.setEnabled(activacion);
+    }
+    public void editar(boolean activacion){
+        txtNombre1.setEnabled(activacion);
+        cmbFabricante1.setEnabled(activacion);
+        btnActualizar.setEnabled(activacion);
+        btnLimpiar1.setEnabled(activacion);
+        txtId1.setEnabled(!activacion);
+    }
+    public void eliminar(boolean activacion){
+        
+        btnEliminar.setEnabled(activacion);
+        btnLimpiar2.setEnabled(activacion);
+        txtId2.setEnabled(!activacion);
+        txtNombre2.setEnabled(!activacion);
+    }
+    private void tblRegistrosMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblRegistrosMouseClicked
+        // TODO add your handling code here:
+        int fila = tblRegistros.getSelectedRow();
+        
+        txtId1.setText(tblRegistros.getValueAt(fila,0)+"");
+        txtNombre1.setText(tblRegistros.getValueAt(fila, 1)+"");
+        cmbFabricante1.setSelectedItem(tblRegistros.getValueAt(fila, 2));
+        
+        txtId2.setText(tblRegistros.getValueAt(fila,0)+"");
+        txtNombre2.setText(tblRegistros.getValueAt(fila, 1)+"");
+        cmbFabricante2.setSelectedItem(tblRegistros.getValueAt(fila, 2));
+        
+        tbdFunciones.setSelectedIndex(1);
+        editar(true);
+        eliminar(true);
+        insertar(false);
+        
+    }//GEN-LAST:event_tblRegistrosMouseClicked
+
+    private void tbdFuncionesMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tbdFuncionesMouseClicked
+        // TODO add your handling code here:
+        boolean tablaSeleccionada = tblRegistros.getSelectedRow() != -1;
+        if(!tablaSeleccionada){
+            JOptionPane.showMessageDialog(null,"Seleccione un registro de la tabla para poder editarlo o eliminarlo",
+                    "Seleccione un registro para realizar esta accion",JOptionPane.INFORMATION_MESSAGE);
+            tbdFunciones.setSelectedIndex(0);
+        }else{
+            int tabSeleccionada = tbdFunciones.getSelectedIndex();
+            if (JOptionPane.showConfirmDialog(rootPane, """
+                                                       Al cambiar de funcion se perderan los cambios de la funcion actual
+                                                       Esta usted seguro de querer proceder?""", "Confirmación de cambio de panel",
+                    JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
+                if ((tabSeleccionada == 1 || tabSeleccionada == 2) && tablaSeleccionada) {
+                    //Se activa la tab correspondiente segun la seleccion del usuario mediante un switch
+                    switch (tabSeleccionada) {
+                        case 1 -> {
+                            editar(true);
+                            eliminar(false);
+                            insertar(false);
+                            btnRegresar.setEnabled(false);
+                        }
+                        case 2 -> {
+                            eliminar(true);
+                            editar(false);
+                            insertar(false);
+                            btnRegresar.setEnabled(false);
+                        }
+                        default ->
+                            System.out.println("Ocurrio un error inesperado, favor de contactar al desarrollador");
+                    }
+                } else {
+                    //De lo contrario, se regresa el indice a 0, insersion
+                    editar(false);
+                    eliminar(false);
+                    insertar(true);
+                    tblRegistros.clearSelection();
+                    tbdFunciones.setSelectedIndex(0);
+                }
+            }   
+        }
+    }//GEN-LAST:event_tbdFuncionesMouseClicked
+
+    private boolean validacionEditar(){
+        return !txtNombre1.getText().isEmpty() && cmbFabricante1.getSelectedIndex() != -1;
+    }
+    
+    private void btnActualizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnActualizarActionPerformed
+        // TODO add your handling code here:
+        if(validacionEditar()){
+            Marca nuevaMarca = new Marca(
+            Integer.parseInt(txtId1.getText()),
+            txtNombre1.getText());
+            
+            Fabricante fab = (Fabricante) operacionesCRUD.opBuscarObjeto("Fabricante", operacionesCRUD.nameToID("Fabricante", cmbFabricante1.getSelectedItem().toString())+"");
+            
+            nuevaMarca.formMar_fab(fab);
+            
+            if(JOptionPane.showConfirmDialog(null, "Esta accion no se puede deshacer, está seguro de querer continuar?",
+                    "Confirmacion de actualizacion",JOptionPane.INFORMATION_MESSAGE) == JOptionPane.YES_OPTION){
+                operacionesCRUD.opUpdateObjeto("Marca",nuevaMarca);
+            }
+
+            actualizarTabla();
+            limpiarCampos();
+        }else{
+            JOptionPane.showMessageDialog(null,"Se han introducido datos que no son validos en uno o más campos de la interfaz, favor de verificar nuevamente",
+                    "Error de conversion de datos numéricos",JOptionPane.ERROR_MESSAGE);
+        }
+        
+    }//GEN-LAST:event_btnActualizarActionPerformed
+
+    private void btnEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarActionPerformed
+        // TODO add your handling code here:
+        if(JOptionPane.showConfirmDialog(null, "¿Está usted seguro que desea eliminar el registro?",
+                "Confirmación de eliminacion",JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION){
+            try{
+                operacionesCRUD.opDeleteObjeto("Marca", Integer.parseInt(txtId2.getText()));
+                JOptionPane.showMessageDialog(null, "Se ha eliminado el objeto de manera satisfactoria");
+                actualizarTabla();
+                limpiarCampos();
+                tbdFunciones.setSelectedIndex(0);
+                eliminar(false);
+                editar(false);
+                insertar(true);
+            }catch(NumberFormatException err){
+                JOptionPane.showMessageDialog(null, "El tipo de dato del identificador no es un numero",
+                        "Error de formato de numero",JOptionPane.ERROR_MESSAGE);
+            }
+        }
+    }//GEN-LAST:event_btnEliminarActionPerformed
 
     /**
      * @param args the command line arguments
@@ -472,15 +634,16 @@ public class InterfazMarca extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnActualizar;
+    private javax.swing.JButton btnEliminar;
+    private javax.swing.JButton btnLimpiar;
+    private javax.swing.JButton btnLimpiar1;
+    private javax.swing.JButton btnLimpiar2;
     private javax.swing.JButton btnRegistrar;
+    private javax.swing.JButton btnRegresar;
     private javax.swing.JComboBox<String> cmbFabricante;
     private javax.swing.JComboBox<String> cmbFabricante1;
     private javax.swing.JComboBox<String> cmbFabricante2;
-    private javax.swing.JButton jButton2;
-    private javax.swing.JButton jButton3;
-    private javax.swing.JButton jButton4;
-    private javax.swing.JButton jButton5;
-    private javax.swing.JButton jButton6;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel12;
