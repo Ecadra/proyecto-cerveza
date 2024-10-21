@@ -5,6 +5,9 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.*;
+import proyectoCerveza.Expendio;
+import proyectoCerveza.Presentacion;
+import proyectoCerveza.Venta;
 
 
 @Entity
@@ -57,14 +60,14 @@ public class Inventario implements Serializable {
     public void formInv_exp(Expendio e1){
         this.inv_exp=e1;
     }
-    public void dropInv_exp(Expendio e1){
-        this.inv_exp=e1;
+    public void dropInv_exp(){
+        this.inv_exp=null;
     }
     public void formInv_pre(Presentacion pre1){
         this.inv_pre=pre1;
     }
-    public void dropInv_pre(Presentacion pre1){
-        this.inv_pre=pre1;
+    public void dropInv_pre(){
+        this.inv_pre=null;
     }
 
     public void setInv_cod(int inv_cod) {

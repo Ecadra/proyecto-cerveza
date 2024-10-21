@@ -21,16 +21,21 @@ import proyectoCerveza.Presentacion;
 
 public class crudIPL {
     
+    //Cesar
+    public String ruta= "D:\\Documentos HDD\\Proyecto Neatbeans\\Librerias\\objectdb-2.9.0\\db\\cervezadb.odb";
+    //Sebastian
+    //public String ruta= "C:\\Users\\ulseg\\Downloads\\NetBeansProjects\\objectdb-2.9.0\\db\\cervezaodb.odb";
+    //Ximena
+    //public String ruta="C:\\\\objectdb-2.9.0\\\\db\\\\cervezadb.odb";
+    //Edwin
+    //public String ruta="/home/edwin-993/cervezaodb/cervezadb.odb";
+    
+    
     public void opCreate(String entidad, Object obj){
         //Se crea la conexion a la base de datos (Si no existe, se crea)
-        //Cesar    
-        EntityManagerFactory emf = Persistence.createEntityManagerFactory("D:\\Documentos HDD\\Proyecto Neatbeans\\Librerias\\objectdb-2.9.0\\db\\cervezadb.odb");
-        //Sebas   
-        //EntityManagerFactory emf = Persistence.createEntityManagerFactory("C:\\Users\\ulseg\\Downloads\\NetBeansProjects\\objectdb-2.9.0\\db\\cervezaodb.odb");
-        //Xim    
-        //EntityManagerFactory emf= Persistence.createEntityManagerFactory("C:\\\\objectdb-2.9.0\\\\db\\\\cervezadb.odb");
-        //Edwin
-        //EntityManagerFactory emf = Persistence.createEntityManagerFactory("/home/edwin-993/cervezaodb/cervezadb.odb")
+
+        EntityManagerFactory emf = Persistence.createEntityManagerFactory(ruta);
+        
         EntityManager em = emf.createEntityManager();
         
         
@@ -41,7 +46,7 @@ public class crudIPL {
             case "Presentacion":
                 Presentacion pre = (Presentacion)obj;
                 
-                Envase env=em.find(Envase.class, pre.getPre_env().getTipo_envase());//Ejemplo de herencia
+                Envase env=em.find(Envase.class, pre.getPre_env().getId_envase());//Ejemplo de herencia
                 Cerveza cer=em.find(Cerveza.class, pre.getPre_cer().getId_cerveza());
                 
                  
@@ -116,14 +121,9 @@ public class crudIPL {
    
     public List opRead(String ent, String field, String crit){
        //Se crea la conexion a la base de datos (Si no existe, se crea)
-        //Cesar    
-        EntityManagerFactory emf = Persistence.createEntityManagerFactory("D:\\Documentos HDD\\Proyecto Neatbeans\\Librerias\\objectdb-2.9.0\\db\\cervezadb.odb");
-        //Sebas   
-        //EntityManagerFactory emf = Persistence.createEntityManagerFactory("C:\\Users\\ulseg\\Downloads\\NetBeansProjects\\objectdb-2.9.0\\db\\cervezaodb.odb");
-        //Xim    
-        //EntityManagerFactory emf= Persistence.createEntityManagerFactory("C:\\\\objectdb-2.9.0\\\\db\\\\cervezadb.odb");
-        //Edwin
-        //EntityManagerFactory emf = Persistence.createEntityManagerFactory("/home/edwin-993/cervezaodb/cervezadb.odb")
+        
+        EntityManagerFactory emf = Persistence.createEntityManagerFactory(ruta);
+      
         EntityManager em = emf.createEntityManager();
        
        switch(ent){
@@ -134,7 +134,7 @@ public class crudIPL {
                if(crit.equals("")){
                    queryPresentacion=em.createQuery("SELECT c FROM Presentacion c",Presentacion.class);
                }else{
-                   queryPresentacion=em.createQuery("SELECT c FROM Presentacion WHERE c."+field+" LIKE "+crit+ "%", Presentacion.class);
+                   queryPresentacion=em.createQuery("SELECT c FROM Presentacion c WHERE c."+field+"="+crit+"", Presentacion.class);
                }
                resultPre=queryPresentacion.getResultList();
                System.out.print("\nSe han recuperado "+resultPre.size()+ "presentaciones");
@@ -164,9 +164,9 @@ public class crudIPL {
                List<Inventario>resultInv=null;
                
                if(crit.equals("")){
-                    queryInv=em.createQuery("SELECT c FROM  Inventario c", Inventario.class);//(Query, objeto a buscar.clase
+                   queryInv=em.createQuery("SELECT c FROM  Inventario c", Inventario.class);//(Query, objeto a buscar.clase
                }else{
-                   queryInv=em.createQuery("SELECT c FROM Inventario WHERE c."+field+" LIKE "+crit+" % ", Inventario.class);
+                   queryInv=em.createQuery("SELECT c FROM Inventario c WHERE c."+field+"="+crit+"", Inventario.class);
                }
                resultInv=queryInv.getResultList();
                System.out.print("\nSe han recuperado "+resultInv.size()+ " Inventarios");
@@ -178,13 +178,21 @@ public class crudIPL {
                TypedQuery<Envase>queryEnv=null;
                List<Envase>resultEnv=null;
                
-               if(crit.equals("")){
+               if(crit.equals("")){//Si no se busca por un criterio entonces se busca toda la tabla
                    queryEnv=em.createQuery("SELECT c FROM Envase c", Envase.class);
                }else{
-                   queryEnv=em.createQuery("SELECT c FROM Envase WHERE c."+field+" LIKE "+crit+" % ", Envase.class);
+                        if(field.equals("tipo_envase")){
+
+                            queryEnv=em.createQuery("SELECT c FROM Envase c WHERE c."+field+" LIKE '"+crit+"%'", Envase.class);
+
+                        }
+                        if(field.equals("capacidad_ml")){
+
+                            queryEnv=em.createQuery("SELECT c FROM Envase c WHERE c."+field+" = "+crit, Envase.class);  
+                        }
                }
                resultEnv=queryEnv.getResultList();
-               System.out.print("\nSe han recuperado "+resultEnv.size()+ " Inventarios");
+               System.out.print("\nSe han recuperado "+resultEnv.size()+ " Envases");
                em.close();
                emf.close();
                return resultEnv;
@@ -206,15 +214,15 @@ public class crudIPL {
                Presentacion presentacion;
                
                columnNames.addElement("Código de la presentación");
-               columnNames.addElement("Tipo de envase");
-               columnNames.addElement("Cerveza");
+               columnNames.addElement("Código del Envase");
+               columnNames.addElement("Código de Cerveza");
                Iterator itPre=resultX.iterator();
                while(itPre.hasNext()){
                    presentacion=(Presentacion)itPre.next();
                    Vector nuevaFila=new Vector();
                    nuevaFila.addElement(presentacion.getPre_cod());
-                   nuevaFila.addElement(presentacion.getPre_env().getTipo_envase());
-                   nuevaFila.addElement(presentacion.getPre_cer().getCer_nombre());
+                   nuevaFila.addElement(presentacion.getPre_env().getId_envase());
+                   nuevaFila.addElement(presentacion.getPre_cer().getId_cerveza());
                    rows.addElement(nuevaFila);   
                }
             break;
@@ -268,6 +276,7 @@ public class crudIPL {
             case "Envase":
                 Envase envase;
                 
+                columnNames.addElement("Código del envase");
                 columnNames.addElement("Tipo de envase");
                 columnNames.addElement("Capacidad en ml");
                 
@@ -275,7 +284,8 @@ public class crudIPL {
                 while(itEnv.hasNext()){
                     envase = (Envase)itEnv.next();
                     Vector nuevaFila = new Vector();
-
+                    
+                    nuevaFila.addElement(envase.getId_envase());
                     nuevaFila.addElement(envase.getTipo_envase());
                     nuevaFila.addElement(envase.getEnvase_capacidad());
                     rows.addElement(nuevaFila);
@@ -287,15 +297,16 @@ public class crudIPL {
    }
    public TableModel opBuscar(String ent, String field, String crit){
        TableModel tm=null;
+       System.out.println("\nLa entidad a buscar en opBuscar es: "+ent+"\nEL criterio es: "+crit);
        if(ent.equals("Inventario")){//Inicio de if inventario
            List<Inventario>results;
            switch(field){//Inicio del switch
-               case "Código de Inventario":
+               case "Codigo de Inventario":
                    results=opRead(ent,"inv_cod",crit);
                    tm=listToTM(results,ent);
                break;
                case "Precio Unitario":
-                   results=opRead(ent,"precion_unitario",crit);
+                   results=opRead(ent,"precio_unitario",crit);
                    tm=listToTM(results,ent);
                break;
                case "Cantidad":
@@ -307,6 +318,7 @@ public class crudIPL {
                    results=opRead(ent,"existencia",crit);
                    tm=listToTM(results,ent);
                break;
+               
                default:
                    results=opRead(ent,field,crit);
                    tm=listToTM(results, ent);
@@ -334,14 +346,23 @@ public class crudIPL {
        
        if(ent.equals("Presentacion")){//Inicio de if presentacion
            
-           List<Presentacion>results=opRead(ent,field,crit);
-           tm=listToTM(results,ent);
+           List<Presentacion>results;
+           switch(field){
+               case  "Codigo de la presentacion":
+                   results=opRead(ent,"pre_cod",crit);
+                   tm=listToTM(results,ent);  
+                break;
+               default:
+                   results=opRead(ent,field,crit);
+                   tm=listToTM(results,ent);
+               break;
+           }
+           
   
        }//Fin de if presentacion
        
        if(ent.equals("Envase")){//Envase
            List<Envase>results;
-           
            switch(field){//switch
                case "Tipo de envase":
                    results=opRead(ent,"tipo_envase",crit);
@@ -366,36 +387,33 @@ public class crudIPL {
    public void opDelte(String ent, String crit){
        Object obj=null;
         //Se crea la conexion a la base de datos (Si no existe, se crea)
-        //Cesar    
-        EntityManagerFactory emf = Persistence.createEntityManagerFactory("D:\\Documentos HDD\\Proyecto Neatbeans\\Librerias\\objectdb-2.9.0\\db\\cervezadb.odb");
-        //Sebas   
-        //EntityManagerFactory emf = Persistence.createEntityManagerFactory("C:\\Users\\ulseg\\Downloads\\NetBeansProjects\\objectdb-2.9.0\\db\\cervezaodb.odb");
-        //Xim    
-        //EntityManagerFactory emf= Persistence.createEntityManagerFactory("C:\\\\objectdb-2.9.0\\\\db\\\\cervezadb.odb");
-        //Edwin
-        //EntityManagerFactory emf = Persistence.createEntityManagerFactory("/home/edwin-993/cervezaodb/cervezadb.odb")
+           
+        EntityManagerFactory emf = Persistence.createEntityManagerFactory(ruta);
+       
         EntityManager em = emf.createEntityManager();
        em.getTransaction().begin();
        
        switch(ent){
            
            case "Inventario":
-               obj=em.find(Inventario.class, crit);
+               obj=em.find(Inventario.class, Integer.parseInt(crit));
                em.remove(obj);
            break;
            case "Lote":
-               obj=em.find(Lote.class, crit);
+               obj=em.find(Lote.class, Integer.parseInt(crit));
                em.remove(obj);
            break;
            case "Presentacion":
-               obj=em.find(Presentacion.class, crit);
+               obj=em.find(Presentacion.class, Integer.parseInt(crit));
                em.remove(obj);
            break;
            default:
                JOptionPane.showMessageDialog(null, "\nNo se ha encontrado nada que borrar","Error->opDelete",JOptionPane.ERROR_MESSAGE);
            break;
-           
        }
+        em.getTransaction().commit();
+        em.close();
+        emf.close();
    }
    
    public Object opBuscarObjeto(String ent, String crit){
@@ -403,14 +421,8 @@ public class crudIPL {
        System.out.print("\nLa entidad a buscar dentro de opBuscar es: "+ent);
        System.out.print("\nEl criterio de busqueda dentro de opBuscar es: "+crit);
         //Se crea la conexion a la base de datos (Si no existe, se crea)
-        //Cesar    
-        EntityManagerFactory emf = Persistence.createEntityManagerFactory("D:\\Documentos HDD\\Proyecto Neatbeans\\Librerias\\objectdb-2.9.0\\db\\cervezadb.odb");
-        //Sebas   
-        //EntityManagerFactory emf = Persistence.createEntityManagerFactory("C:\\Users\\ulseg\\Downloads\\NetBeansProjects\\objectdb-2.9.0\\db\\cervezaodb.odb");
-        //Xim    
-        //EntityManagerFactory emf= Persistence.createEntityManagerFactory("C:\\\\objectdb-2.9.0\\\\db\\\\cervezadb.odb");
-        //Edwin
-        //EntityManagerFactory emf = Persistence.createEntityManagerFactory("/home/edwin-993/cervezaodb/cervezadb.odb")
+        
+        EntityManagerFactory emf = Persistence.createEntityManagerFactory(ruta);
         EntityManager em = emf.createEntityManager();
        
        switch(ent){
@@ -427,21 +439,26 @@ public class crudIPL {
                return obj;
                
            case "Expendio":
-               obj=em.find(Expendio.class, nameToID("Expendio",crit));
+               obj=em.find(Expendio.class, Integer.parseInt(crit));
                em.close();
                emf.close();
                return obj;
                
            case "Cerveza":
                
-               obj=em.find(Cerveza.class, nameToID("Cerveza",crit));
+               obj=em.find(Cerveza.class, Integer.parseInt(crit));
                em.close();
                emf.close();
                return obj;
                
            case "Envase":
                
-               obj=em.find(Envase.class, crit);
+               obj=em.find(Envase.class, Integer.parseInt(crit));
+               em.close();
+               emf.close();
+               return obj;
+           case "Inventario":
+               obj=em.find(Inventario.class, Integer.parseInt(crit));
                em.close();
                emf.close();
                return obj;
@@ -451,14 +468,8 @@ public class crudIPL {
    
    public int nameToID(String entidad, String nombreEntidad){
        //Se crea la conexion a la base de datos (Si no existe, se crea)
-        //Cesar    
-        EntityManagerFactory emf = Persistence.createEntityManagerFactory("D:\\Documentos HDD\\Proyecto Neatbeans\\Librerias\\objectdb-2.9.0\\db\\cervezadb.odb");
-        //Sebas   
-        //EntityManagerFactory emf = Persistence.createEntityManagerFactory("C:\\Users\\ulseg\\Downloads\\NetBeansProjects\\objectdb-2.9.0\\db\\cervezaodb.odb");
-        //Xim    
-        //EntityManagerFactory emf= Persistence.createEntityManagerFactory("C:\\\\objectdb-2.9.0\\\\db\\\\cervezadb.odb");
-        //Edwin
-        //EntityManagerFactory emf = Persistence.createEntityManagerFactory("/home/edwin-993/cervezaodb/cervezadb.odb")
+         
+        EntityManagerFactory emf = Persistence.createEntityManagerFactory(ruta);
         EntityManager em = emf.createEntityManager();
        
        switch(entidad){
@@ -490,6 +501,136 @@ public class crudIPL {
                 
        }
        return -1;
+   }
+   
+   
+   public void opUpdate(String entidad, Object obj){
+       
+        EntityManagerFactory emf = Persistence.createEntityManagerFactory(ruta);
+        EntityManager em = emf.createEntityManager();
+        System.out.print("\n La entidad a actualizar es: "+ entidad);
+        
+        switch(entidad){//Inicio del switch update
+            case "Inventario":
+               
+                Inventario invNuevo=(Inventario)obj;
+                Inventario invViejo;
+                int aux = invNuevo.getInv_cod();
+                
+                em.getTransaction().begin();
+                invViejo=em.find(Inventario.class,aux);
+                System.out.print("\nSe ha encontrado un inventario con el ID: "+aux);
+                System.out.print("\nEl inventario nuevo es: \n"+ invNuevo);
+                System.out.print("\nEl inventario viejo es: \n"+ invViejo);
+                
+                
+                
+               if(invViejo.getInv_exp().getId_expendio()==invNuevo.getInv_exp().getId_expendio()){
+                   
+                 invViejo.setInv_cod(invNuevo.getInv_cod());
+                 invViejo.setCantidad(invNuevo.getCantidad());
+                 invViejo.setExistencia(invNuevo.isExistencia());
+                 invViejo.setPrecio_unitario(invNuevo.getPrecio_unitario());
+                }else {
+                   
+                    Expendio exp=em.find(Expendio.class, invNuevo.getInv_exp().getId_expendio());
+                    invViejo.dropInv_exp();
+                    invViejo.formInv_exp(exp);
+                    invViejo.setInv_cod(invNuevo.getInv_cod());
+                    invViejo.setCantidad(invNuevo.getCantidad());
+                    invViejo.setExistencia(invNuevo.isExistencia());
+                    invViejo.setPrecio_unitario(invNuevo.getPrecio_unitario());
+                    
+                    
+               }
+                    
+                if(invViejo.getInv_pre().getPre_cod()==invNuevo.getInv_pre().getPre_cod()){
+                    invViejo.setInv_cod(invNuevo.getInv_cod());
+                    invViejo.setCantidad(invNuevo.getCantidad());
+                    invViejo.setExistencia(invNuevo.isExistencia());
+                    invViejo.setPrecio_unitario(invNuevo.getPrecio_unitario());
+              
+                }else{
+                    
+                   Presentacion pre=em.find(Presentacion.class, invNuevo.getInv_pre().getPre_cod());
+                   invViejo.dropInv_pre();
+                   invViejo.formInv_pre(pre);
+                   invViejo.setInv_cod(invNuevo.getInv_cod());
+                   invViejo.setCantidad(invNuevo.getCantidad());
+                   invViejo.setExistencia(invNuevo.isExistencia());
+                   invViejo.setPrecio_unitario(invNuevo.getPrecio_unitario());
+                   
+               }
+                
+                em.getTransaction().commit();
+                em.close();
+                emf.close(); 
+            break;    
+            case "Presentacion":
+                Presentacion nuevaPres=(Presentacion)obj;
+                Presentacion viejaPres;
+                int auxPres=nuevaPres.getPre_cod();
+                
+                em.getTransaction().begin();
+                viejaPres=em.find(Presentacion.class, auxPres);
+                System.out.print("\nSe ha encontrado una presentacion con el ID: "+auxPres);
+                System.out.print("\nLa presentacion nueva es: \n"+ nuevaPres);
+                System.out.print("\nLa presentacion viejo es: \n"+ viejaPres);
+                
+                if(viejaPres.getPre_cer().getId_cerveza()==nuevaPres.getPre_cer().getId_cerveza()){
+                    System.out.print("\nNo hay que cambiar la relación de presentacion con cerveza\n");
+                }else{
+                    Cerveza cer=em.find(Cerveza.class, nuevaPres.getPre_cer().getId_cerveza());
+                    viejaPres.dropPre_cer();
+                    viejaPres.formPre_cer(cer);    
+                }
+                
+                
+                 if(viejaPres.getPre_env().getId_envase()==nuevaPres.getPre_env().getId_envase()){
+                    System.out.print("\nNo hay que cambiar la relación de presentacion con envase\n");
+                }else{
+                    Envase env=em.find(Envase.class, nuevaPres.getPre_env().getId_envase());
+                    viejaPres.dropPre_env();
+                    viejaPres.formPre_env(env);
+                }
+                em.getTransaction().commit();
+                em.close();
+                emf.close(); 
+            break;
+                
+        }//Fin del switch update
+       
+   }
+   
+   public int opIDMax(String entidad){
+      EntityManagerFactory emf = Persistence.createEntityManagerFactory(ruta);
+      EntityManager em = emf.createEntityManager();
+      
+      switch(entidad){
+          
+          case "Inventario":
+              TypedQuery<Integer>queryInv=null;
+              List<Integer>resultsInv=new ArrayList();
+              
+              queryInv=em.createQuery("SELECT MAX(c.inv_cod)FROM Inventario c",Integer.class);
+              resultsInv=queryInv.getResultList();
+              
+              em.close();
+              emf.close();
+              return resultsInv.get(0);
+              
+          case "Presentacion":
+              TypedQuery<Integer>queryPres=null;
+              List<Integer>resultsPres=new ArrayList();
+              
+              queryPres=em.createQuery("SELECT MAX(c.pre_cod)FROM Presentacion c",Integer.class);
+              resultsPres=queryPres.getResultList();
+              
+              em.close();
+              emf.close();
+              return resultsPres.get(0);
+      }
+        return -1;
    }
    
   
