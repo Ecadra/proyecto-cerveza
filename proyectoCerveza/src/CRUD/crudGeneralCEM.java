@@ -28,10 +28,11 @@ public class crudGeneralCEM {
     //Cesar
     //public String ruta = "D:\\Documentos HDD\\Proyecto Neatbeans\\Librerias\\objectdb-2.9.0\\db\\cervezadb.odb";
     //Sebas
-    public String ruta = "/home/edwin-993/cervezaodb/cervezadb.odb";
-    //Xim
+    public String ruta = "C:\\Users\\ulseg\\Downloads\\NetBeansProjects\\objectdb-2.9.0\\db\\cervezaodb.odb";    //Xim
     //public String ruta = "C:\\\\objectdb-2.9.0\\\\db\\\\cervezadb.odb";
     //Edwin
+    //public String ruta = "/home/edwin-993/cervezaodb/cervezadb.odb";
+
 
     public void opPersistObjeto(String entidad, Object objeto) {
         EntityManagerFactory emf = Persistence.createEntityManagerFactory(ruta);

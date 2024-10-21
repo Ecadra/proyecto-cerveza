@@ -28,6 +28,8 @@ import javax.swing.table.DefaultTableCellRenderer;
 public class InterfazPedido extends javax.swing.JFrame {
     
     private crudPREG operacionesCRUD = new crudPREG();
+    private int selectedPedidoId = -1; // Se inicializa en -1, indicando que no hay selección inicial
+    private Pedido pedidoSeleccionado;
     
     
     public InterfazPedido() throws Exception {
@@ -51,15 +53,14 @@ public class InterfazPedido extends javax.swing.JFrame {
     private void cargarPresentaciones(){
         List<Presentacion> listaPresentaciones = operacionesCRUD.opReadObjetos("Presentacion", "", "");
         for(Presentacion presentacion : listaPresentaciones){
-//            cmb_Presentacion.addItem(presentacion.getPre_cer().getCer_nombre()
-//                    +  " " + presentacion.getPre_env().getTipo_envase() + " - " + 
-//                    presentacion.getPre_env().getEnvase_capacidad() + " ml");
-              cmb_Presentacion.addItem(presentacion.getPre_cod()+"");
+//            
+              cmb_Presentacion.addItem(String.valueOf(presentacion.getPre_cod()));
         }
     }
 
     private void actualizarTabla(){
-        tblPedido.setModel(operacionesCRUD.opBuscar("Pedido", (String)cmbAtributoPedido.getSelectedItem(), txtBusquedaPedido.getText()));
+        tblPedido.setModel(operacionesCRUD.opBuscar("Pedido",
+                (String)cmbAtributoPedido.getSelectedItem(), txtBusquedaPedido.getText()));
     }
     
     public void mensajeAdvertencia(String mensaje, String titulo){
@@ -107,16 +108,7 @@ public class InterfazPedido extends javax.swing.JFrame {
     }
     
     public boolean validarDatos(){
-        // Validación del código de la cerveza
-        if (txtCodigo.getText().equals("") || 
-                txtCodigo.getText().equals("Ingrese el codigo del pedido")) {
-            mensajeAdvertencia("El código es inválido.\n"
-                    + "Favor de verificar que:\n"
-                    + "-> No contenga acentos\n"
-                    + "-> No contenga caracteres especiales\n"
-                    + "-> Haya registrado correctamente el código del pedido\n", "Código inválido");
-            return false;
-        }
+        
         // Validación de la cantidad de cervezas dentro del pedido
         if (spinnerCantidad.getValue().equals(0)) {
             mensajeAdvertencia("La cantidad del pedido.\n"
@@ -128,7 +120,7 @@ public class InterfazPedido extends javax.swing.JFrame {
         }
         
         if (txtSubtotal.getText().equals("") || 
-                txtSubtotal.getText().equals("Ingrese el subtotal")) {
+                txtSubtotal.getText().equals(0)) {
             mensajeAdvertencia("El subtotal del pedido.\n"
                     + "Favor de verificar que:\n"
                     + "-> Sea un dato numérico\n"
@@ -234,11 +226,6 @@ public class InterfazPedido extends javax.swing.JFrame {
         dateFechaDespacho.setEnabled(false);
 
         cmb_Expendio.setEnabled(false);
-        cmb_Expendio.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                cmb_ExpendioActionPerformed(evt);
-            }
-        });
 
         lbl_Cantidad1.setText("Presentación:");
 
@@ -265,11 +252,6 @@ public class InterfazPedido extends javax.swing.JFrame {
 
         txtSubtotal.setHorizontalAlignment(javax.swing.JTextField.CENTER);
         txtSubtotal.setEnabled(false);
-        txtSubtotal.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtSubtotalActionPerformed(evt);
-            }
-        });
         txtSubtotal.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyReleased(java.awt.event.KeyEvent evt) {
                 txtSubtotalKeyReleased(evt);
@@ -427,6 +409,11 @@ public class InterfazPedido extends javax.swing.JFrame {
                 "Title 1", "Title 2", "Title 3", "Title 4", "Title 5", "Title 6", "Title 7", "Title 8"
             }
         ));
+        tblPedido.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tblPedidoMouseClicked(evt);
+            }
+        });
         jScrollPane1.setViewportView(tblPedido);
 
         javax.swing.GroupLayout pnlRegistrosLayout = new javax.swing.GroupLayout(pnlRegistros);
@@ -441,7 +428,7 @@ public class InterfazPedido extends javax.swing.JFrame {
                 .addGap(27, 27, 27)
                 .addComponent(lblAtributoPedido)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(cmbAtributoPedido, 0, 374, Short.MAX_VALUE)
+                .addComponent(cmbAtributoPedido, 0, 372, Short.MAX_VALUE)
                 .addGap(148, 148, 148))
             .addGroup(pnlRegistrosLayout.createSequentialGroup()
                 .addGap(12, 12, 12)
@@ -474,7 +461,7 @@ public class InterfazPedido extends javax.swing.JFrame {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(722, Short.MAX_VALUE)
+                .addContainerGap(720, Short.MAX_VALUE)
                 .addComponent(btnCancelarPedido)
                 .addGap(27, 27, 27)
                 .addComponent(btnNewPedido)
@@ -483,7 +470,7 @@ public class InterfazPedido extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(pnlRegistros, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(pnlDatosPedido, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(pnlDatosPedido, javax.swing.GroupLayout.PREFERRED_SIZE, 969, Short.MAX_VALUE)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(btnInicio)
                         .addGap(0, 0, Short.MAX_VALUE)))
@@ -562,13 +549,71 @@ public class InterfazPedido extends javax.swing.JFrame {
     }//GEN-LAST:event_btnLimpiarActionPerformed
 
     private void btn_EliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_EliminarActionPerformed
-    
+        // Confirmación de eliminación
+        if (JOptionPane.showConfirmDialog(null, "¿Está usted seguro que desea eliminar el registro de Envase?",
+                "Confirmación de eliminación", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
+            try {
+                // Se llama al método de CRUD para eliminar el envase usando el ID del campo de texto
+                operacionesCRUD.opDeleteObjeto("Pedido", selectedPedidoId);
+
+                // Mensaje de confirmación
+                JOptionPane.showMessageDialog(null, "Se ha eliminado el envase de manera satisfactoria");
+
+                // Actualiza la tabla y limpia los campos
+                actualizarTabla();
+                limpiarPedido();
+
+                // Cambia a la pestaña principal u otra vista
+
+            } catch (NumberFormatException err) {
+                // Manejo de error cuando el identificador no es un número válido
+                JOptionPane.showMessageDialog(null, "El tipo de dato del identificador no es un número",
+                        "Error de formato de número", JOptionPane.ERROR_MESSAGE);
+            }
+        }
             
     }//GEN-LAST:event_btn_EliminarActionPerformed
 
     private void btnActualizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnActualizarActionPerformed
-    
-        
+        try{
+                //Se incializa un objeto cerveza con los datos de la interfaz, excluyendo la relacion
+                Pedido pedido = new Pedido();
+                pedido.setPed_codigo(selectedPedidoId);
+                pedido.setPed_cantidad((int)spinnerCantidad.getValue());
+                pedido.setPed_total(Float.parseFloat(txtTotal.getText()));
+                pedido.setPed_subtotal(Float.parseFloat(txtSubtotal.getText()));
+                pedido.setPed_iva(Float.parseFloat(txtIVA.getText()));
+                pedido.setPed_forden(dateFechaOrden.getDate());
+                pedido.setPed_fdespacho(dateFechaDespacho.getDate());
+
+               //Objeto presentacion
+               Presentacion presentacion = new Presentacion();
+               presentacion.setPre_cod((int) operacionesCRUD.opBuscarObjeto("Presentacion", (int)cmb_Presentacion.getSelectedItem()));
+               
+               pedido.formPed_pre(presentacion);
+               
+               //Objeto expendio
+               Expendio expendio = new Expendio();
+               expendio.setExp_nombre((String) cmb_Expendio.getSelectedItem());
+               expendio.setId_expendio(operacionesCRUD.nameToID("Expendio", expendio.getExp_nombre()));
+                
+               pedido.formPed_exp(expendio);
+
+                operacionesCRUD.opUpdateObjeto("Pedido", pedido);
+                actualizarTabla();
+                limpiarPedido();
+            }catch(NumberFormatException err){
+                JOptionPane.showMessageDialog(null, "Los datos introducidos no son validos",
+                        "Error en InterfazCerveza -> btnEditarActionPerformed",JOptionPane.ERROR_MESSAGE);
+            }catch(ClassCastException err){
+                JOptionPane.showMessageDialog(null, "Existe un error en la logica de clases, revisar atentamente",
+                        "Error en InterfazCerveza -> btnEditarActionPerformed",JOptionPane.ERROR_MESSAGE);
+            }catch(NullPointerException err){
+            JOptionPane.showMessageDialog(null, "El indice de la lista de marcas se ha salido de los limites\n"
+                    + "Probablemente la lista de marcas no esta cargando adecuadamente",
+                        "Error en InterfazCerveza -> btnEditarActionPerformed",JOptionPane.ERROR_MESSAGE);
+            }
+
     }//GEN-LAST:event_btnActualizarActionPerformed
 
     private void btnCancelarPedidoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarPedidoActionPerformed
@@ -599,10 +644,6 @@ public class InterfazPedido extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_btnInicioActionPerformed
 
-    private void cmb_ExpendioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmb_ExpendioActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_cmb_ExpendioActionPerformed
-
     private void cmb_PresentacionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmb_PresentacionActionPerformed
         try{
             
@@ -619,10 +660,6 @@ public class InterfazPedido extends javax.swing.JFrame {
             
         }
     }//GEN-LAST:event_cmb_PresentacionActionPerformed
-
-    private void txtSubtotalActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtSubtotalActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txtSubtotalActionPerformed
 
     private void txtSubtotalKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtSubtotalKeyReleased
    
@@ -649,6 +686,63 @@ public class InterfazPedido extends javax.swing.JFrame {
     private void cmbAtributoPedidoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmbAtributoPedidoActionPerformed
         actualizarTabla();
     }//GEN-LAST:event_cmbAtributoPedidoActionPerformed
+
+    private void tblPedidoMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblPedidoMouseClicked
+        if(!tblPedido.isEnabled()){
+            // Si la tabla no está habilitada, no haces nada
+        } else {
+            // Obtienes la fila seleccionada
+            int filaSeleccionada = tblPedido.getSelectedRow();
+
+            // Verificas si se ha seleccionado una fila
+            if(filaSeleccionada != -1) {
+                // Recuperas el valor en la columna 1 (índice 0)
+                Object valor = tblPedido.getValueAt(filaSeleccionada, 0); 
+
+                selectedPedidoId = (int) valor;
+                
+                pedidoSeleccionado = (Pedido)operacionesCRUD.opBuscarObjeto("Pedido", selectedPedidoId);
+                
+                txtCodigo.setText(String.valueOf(pedidoSeleccionado.getPed_codigo()));
+                spinnerCantidad.setValue(pedidoSeleccionado.getPed_cantidad());
+                dateFechaOrden.setDate(pedidoSeleccionado.getPed_forden());
+                dateFechaDespacho.setDate(pedidoSeleccionado.getPed_fdespacho());
+                txtTotal.setText(String.valueOf(pedidoSeleccionado.getPed_total()));
+                txtSubtotal.setText(String.valueOf(pedidoSeleccionado.getPed_subtotal()));
+                txtIVA.setText(String.valueOf(pedidoSeleccionado.getPed_iva()));
+            
+                
+                Object valorExpendio = tblPedido.getValueAt(filaSeleccionada, 1);
+                System.out.println("Expendio Nombre: " + valorExpendio);
+                
+                String expendio = valorExpendio.toString();
+                cmb_Expendio.setSelectedItem(expendio);
+
+                // Recupera el valor de la columna 2 para Presentacion (asegúrate de que sea el índice correcto)
+                Object valorPresentacion = tblPedido.getValueAt(filaSeleccionada, 2);
+                System.out.println("Presentacion ID: " + valorPresentacion);
+
+                // Intenta convertir el valor a String (si es un entero en la tabla)
+                String idPresentacion = valorPresentacion.toString();
+
+                // Establece el item seleccionado en el JComboBox basado en el ID como String
+                cmb_Presentacion.setSelectedItem(idPresentacion);
+               
+                txtCodigo.setEnabled(true);
+                spinnerCantidad.setEnabled(true);
+                dateFechaOrden.setEnabled(true);
+                dateFechaDespacho.setEnabled(true);
+                txtTotal.setEnabled(true);
+                txtSubtotal.setEnabled(true);
+                txtIVA.setEnabled(true);
+                btnActualizar.setEnabled(true);
+                btn_Eliminar.setEnabled(true);
+                cmb_Expendio.setEnabled(true);
+                cmb_Presentacion.setEnabled(true);
+                
+            }
+        }
+    }//GEN-LAST:event_tblPedidoMouseClicked
 
     /**
      * @param args the command line arguments

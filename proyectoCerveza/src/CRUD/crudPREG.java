@@ -238,22 +238,6 @@ public class crudPREG {
         EntityManagerFactory emf = Persistence.createEntityManagerFactory(ruta);
         EntityManager em = emf.createEntityManager();
         switch (entidad) {
-            case"Expendio":
-                Expendio nuevosDatosExp = (Expendio) objeto;
-                Expendio expActualizar;
-                em.getTransaction().begin();
-
-                expActualizar = em.find(Expendio.class, nuevosDatosExp.getId_expendio());
-
-                System.out.println("Se ha encontrado la marca a actualizar. \n"
-                        + "Datos nuevos: \n" + nuevosDatosExp);
-
-                expActualizar.setExp_nombre(nuevosDatosExp.getExp_nombre());
-
-                em.getTransaction().commit();
-                em.close();
-                emf.close();
-            break;
             case "Pedido":
                 Pedido nuevosDatosPed = (Pedido) objeto;
                 Pedido pedActualizar;
@@ -268,6 +252,32 @@ public class crudPREG {
                     System.out.println("Se ha encontrado el pedido a actualizar."
                             + " \nDatos anteriores: \n" + pedActualizar);
 
+                    // Verifica y actualiza la relación con el Expendio
+                    Expendio expBD = em.find(Expendio.class, pedActualizar.getPed_exp().getId_expendio());
+                    Expendio expSeleccionado = em.find(Expendio.class, nuevosDatosPed.getPed_exp().getId_expendio());
+                    if (expBD.getId_expendio() != expSeleccionado.getId_expendio()) {
+                        System.out.println("Se han detectado cambios en la relación con Expendio... Actualizando.");
+                        pedActualizar.dropPed_exp();
+                        expBD.dropExp_ped(pedActualizar);
+                        pedActualizar.formPed_exp(expSeleccionado);
+                        expSeleccionado.formExp_ped(pedActualizar);
+                    } else {
+                        System.out.println("No se detectaron cambios en la relación con Expendio.");
+                    }
+
+                    // Verifica y actualiza la relación con Presentacion
+                    Presentacion preBD = em.find(Presentacion.class, pedActualizar.getPed_pre().getPre_cod());
+                    Presentacion preSeleccionada = em.find(Presentacion.class, nuevosDatosPed.getPed_pre().getPre_cod());
+                    if (preBD.getPre_cod() != preSeleccionada.getPre_cod()) {
+                        System.out.println("Se han detectado cambios en la relación con Presentacion... Actualizando.");
+                        pedActualizar.dropPed_pre();
+                        preBD.dropPre_ped(pedActualizar);
+                        pedActualizar.formPed_pre(preSeleccionada);
+                        preSeleccionada.formPre_ped(pedActualizar);
+                    } else {
+                        System.out.println("No se detectaron cambios en la relación con Presentacion.");
+                    }
+
                     // Actualiza los campos del pedido con los nuevos valores
                     pedActualizar.setPed_cantidad(nuevosDatosPed.getPed_cantidad());
                     pedActualizar.setPed_forden(nuevosDatosPed.getPed_forden());
@@ -279,10 +289,18 @@ public class crudPREG {
                     // Muestra el pedido modificado
                     System.out.println("Pedido modificado: \n" + pedActualizar);
 
+                    // Persiste los cambios en las relaciones y el pedido
+                    em.persist(pedActualizar);
+                    em.persist(expBD);
+                    em.persist(expSeleccionado);
+                    em.persist(preBD);
+                    em.persist(preSeleccionada);
+
                     // Confirma la transacción
                     em.getTransaction().commit();
 
                     // Mensaje de confirmación
+                    JOptionPane.showMessageDialog(null, "El pedido ha sido actualizado exitosamente.");
                     System.out.println("El pedido ha sido actualizado.");
                 } else {
                     // Si no se encuentra el pedido, muestra un mensaje de error
@@ -308,13 +326,40 @@ public class crudPREG {
                 if (recActualizar != null) {
                     // Muestra los datos de la receta antes de la actualización
                     System.out.println("Se ha encontrado la receta a actualizar. \nDatos anteriores: \n" + recActualizar);
+                    
+                    Grano graBD = em.find(Grano.class, recActualizar.getRec_gra().getId_grano());
+                    Grano graSeleccionado = em.find(Grano.class, nuevosDatosRec.getRec_gra().getId_grano());
+                    if(graBD.getId_grano() != graSeleccionado.getId_grano()){
+                        System.out.println("Se han detectado cammbios en la relación con grano");
+                        recActualizar.dropRec_gra();
+                        recActualizar.formRec_gra(graSeleccionado);
+                        graSeleccionado.formGra_rec(recActualizar);
+                    }else{
 
+                    }
+
+                    Cerveza cerBD = em.find(Cerveza.class, recActualizar.getRec_cer().getId_cerveza());
+                    Cerveza cerSeleccionado = em.find(Cerveza.class, nuevosDatosRec.getRec_cer().getId_cerveza());
+                    if(cerBD.getId_cerveza() != cerSeleccionado.getId_cerveza()){
+                        System.out.println("Se han detectado cammbios en la relación con cerveza");
+                        recActualizar.dropRec_cer();
+                        recActualizar.formRec_cer(cerSeleccionado);
+                        cerSeleccionado.formCer_rec(recActualizar);
+                    }else{
+
+                    }
                     // Actualiza los campos de la receta con los nuevos valores
                     recActualizar.setRec_cantidad(nuevosDatosRec.getRec_cantidad());
 
                     // Muestra la receta modificada
                     System.out.println("Receta modificada: \n" + recActualizar);
 
+                    
+                    em.persist(recActualizar);
+                    em.persist(cerBD);
+                    em.persist(graBD);
+                    em.persist(cerSeleccionado);
+                    em.persist(graSeleccionado);
                     em.getTransaction().commit();
                     System.out.println("La receta ha sido actualizada.");
                 } else {
@@ -330,46 +375,118 @@ public class crudPREG {
             case "Grano":
                 Grano nuevosDatosGra = (Grano) objeto;
                 Grano graActualizar;
-
                 em.getTransaction().begin();
-
-                // Busca el grano en la base de datos utilizando el nombre del grano como identificador
+                // Busca el grano en la base de datos utilizando el id del grano como identificador
                 graActualizar = em.find(Grano.class, nuevosDatosGra.getId_grano());
-
+                // Verifica si el grano fue encontrado
                 if (graActualizar != null) {
+                    // Muestra los datos del grano antes de la actualización
+                    System.out.println("Se ha encontrado el grano a actualizar."
+                            + " \nDatos anteriores: \n" + graActualizar);
                     // Actualiza los campos del grano con los nuevos valores
                     graActualizar.setGra_nombre(nuevosDatosGra.getGra_nombre());
                     graActualizar.setGra_procedencia(nuevosDatosGra.getGra_procedencia());
+                    // Muestra el grano modificado
+                    System.out.println("Grano modificado: \n" + graActualizar);
+                    // Persiste los cambios en el grano
+                    em.persist(graActualizar);
+                    // Confirma la transacción
+                    em.getTransaction().commit();
+                    // Mensaje de confirmación
+                    JOptionPane.showMessageDialog(null, "El grano ha sido actualizado exitosamente.");
+                    System.out.println("El grano ha sido actualizado.");
                 } else {
-                    em.getTransaction().rollback();
+                    // Si no se encuentra el grano, muestra un mensaje de error
+                    System.out.println("No se encontró ningún grano con el id: " + nuevosDatosGra.getId_grano());
+                    em.getTransaction().rollback();  // Reversión de la transacción si no se encuentra
                 }
-
-                em.getTransaction().commit();
+                // Cierra la conexión a la base de datos
                 em.close();
                 emf.close();
                 break;
             case "Envase":
                 Envase nuevosDatosEnv = (Envase) objeto;
                 Envase envActualizar;
-
                 em.getTransaction().begin();
-
-                // Busca el grano en la base de datos utilizando el nombre del grano como identificador
+                // Busca el envase en la base de datos utilizando el id del envase como identificador
                 envActualizar = em.find(Envase.class, nuevosDatosEnv.getId_envase());
-
+                // Verifica si el envase fue encontrado
                 if (envActualizar != null) {
-                    // Actualiza los campos del grano con los nuevos valores
+                    // Muestra los datos del envase antes de la actualización
+                    System.out.println("Se ha encontrado el envase a actualizar."
+                            + " \nDatos anteriores: \n" + envActualizar);
+                    // Actualiza los campos del envase con los nuevos valores
                     envActualizar.setTipo_envase(nuevosDatosEnv.getTipo_envase());
                     envActualizar.setCapacidad_ml(nuevosDatosEnv.getEnvase_capacidad());
+                    // Muestra el envase modificado
+                    System.out.println("Envase modificado: \n" + envActualizar);
+                    // Persiste los cambios en el envase
+                    em.persist(envActualizar);
+                    // Confirma la transacción
+                    em.getTransaction().commit();
+                    // Mensaje de confirmación
+                    JOptionPane.showMessageDialog(null, "El envase ha sido actualizado exitosamente.");
+                    System.out.println("El envase ha sido actualizado.");
                 } else {
-                    em.getTransaction().rollback();
+                    // Si no se encuentra el envase, muestra un mensaje de error
+                    System.out.println("No se encontró ningún envase con el id: " + nuevosDatosEnv.getId_envase());
+                    em.getTransaction().rollback();  // Reversión de la transacción si no se encuentra
                 }
-                em.getTransaction().commit();
+                // Cierra la conexión a la base de datos
                 em.close();
                 emf.close();
                 break;
+
         }
     }
+    
+    
+    public void opDeleteObjeto(String entidad, int criterio) {
+        Object objeto = null;
+        EntityManagerFactory emf = Persistence.createEntityManagerFactory(ruta);
+        EntityManager em = emf.createEntityManager();
+        em.getTransaction().begin();
+
+        switch (entidad) {
+            case "Pedido":
+                objeto = em.find(Pedido.class, criterio);
+                if (objeto != null) {
+                    em.remove(objeto);
+                }
+                break;
+
+            case "Grano":
+                objeto = em.find(Grano.class, criterio);
+                if (objeto != null) {
+                    em.remove(objeto); 
+                }
+                break;
+
+            case "Envase":
+                objeto = em.find(Envase.class, criterio);
+                if (objeto != null) {
+                    em.remove(objeto);        
+                }
+                break;
+
+            case "Receta":
+                objeto = em.find(Receta.class, criterio);
+                if (objeto != null) {
+                    em.remove(objeto);
+                }
+                break;
+
+            default:
+                JOptionPane.showMessageDialog(null, "El objeto que se desea eliminar no se encuentra registrado en este método",
+                                              "Error -> opDelete", JOptionPane.ERROR_MESSAGE);
+                break;
+        }
+
+        em.getTransaction().commit();
+        em.close();
+        emf.close();
+    }
+
     
     public TableModel listToTM(List resultados, String entidad) { //Clase para convertir de una lista de resultados a un TableModel
         Vector columnNames = new Vector();
@@ -378,6 +495,7 @@ public class crudPREG {
             case "Grano":
                 Grano grano;
                 //Se crean las columnas que se desea aparezcan en el TableModel
+                columnNames.addElement("ID");
                 columnNames.addElement("Nombre");
                 columnNames.addElement("Procedencia");
                 
@@ -385,6 +503,7 @@ public class crudPREG {
                 while (itGran.hasNext()) {
                     grano = (Grano) itGran.next();
                     Vector nuevaFila = new Vector();
+                    nuevaFila.addElement(grano.getId_grano());
                     nuevaFila.addElement(grano.getGra_nombre());
                     nuevaFila.addElement(grano.getGra_procedencia());
                     rows.addElement(nuevaFila);
@@ -409,7 +528,7 @@ public class crudPREG {
                     Vector nuevaFila = new Vector();
                     nuevaFila.addElement(pedido.getPed_codigo());
                     nuevaFila.addElement(pedido.getPed_exp().getExp_nombre());
-                    nuevaFila.addElement(pedido.getPed_pre().getPre_env().getTipo_envase());
+                    nuevaFila.addElement(pedido.getPed_pre().getPre_env().getId_envase());
                     nuevaFila.addElement(pedido.getPed_pre().getPre_env().getEnvase_capacidad());
                     nuevaFila.addElement(pedido.getPed_cantidad());
                     nuevaFila.addElement(pedido.getPed_forden());
@@ -424,6 +543,7 @@ public class crudPREG {
             case "Receta":
                 Receta receta;
                 //Se crean las columnas que se desea aparezcan en el TableModel
+                columnNames.addElement("ID");
                 columnNames.addElement("Cantidad");
                 columnNames.addElement("Grano");
                 columnNames.addElement("Cerveza");
@@ -432,6 +552,7 @@ public class crudPREG {
                 while (itRec.hasNext()) {
                     receta = (Receta) itRec.next();
                     Vector nuevaFila = new Vector();
+                    nuevaFila.addElement(receta.getId_receta());
                     nuevaFila.addElement(receta.getRec_cantidad());
                     nuevaFila.addElement(receta.getRec_gra().getGra_nombre());
                     nuevaFila.addElement(receta.getRec_cer().getCer_nombre());
@@ -440,6 +561,7 @@ public class crudPREG {
                 break;
             case "Envase":
                 Envase envase;
+                columnNames.addElement("ID");
                 columnNames.addElement("Envase");
                 columnNames.addElement("Capacidad en ml");
                 
@@ -447,6 +569,7 @@ public class crudPREG {
                 while (itEnv.hasNext()) {
                     envase = (Envase) itEnv.next();
                     Vector nuevaFila = new Vector();
+                    nuevaFila.addElement(envase.getId_envase());
                     nuevaFila.addElement(envase.getTipo_envase());
                     nuevaFila.addElement(envase.getEnvase_capacidad());
                     
@@ -579,6 +702,11 @@ public class crudPREG {
                 em.close();
                 emf.close();
                 return objeto;
+            case "Envase":
+                objeto = em.find(Envase.class, criterio); //Grano se busca mediante el nombre
+                em.close();
+                emf.close();
+                return objeto;
             case "Presentacion":
                 objeto = em.find(Presentacion.class, criterio); //Presentacion se busca mediante el nombreí
                 em.close();
@@ -595,31 +723,6 @@ public class crudPREG {
         }
         return objeto;
 
-    }
-    
-    public void opDeleteObjeto(String entidad, int criterio) {//Funcion de CRUD para borrar una Cerveza
-        Object objeto = null;
-        EntityManagerFactory emf = Persistence.createEntityManagerFactory(ruta);
-        EntityManager em = emf.createEntityManager();
-        em.getTransaction().begin();
-        switch (entidad) {
-            case "Pedido":
-                objeto = em.find(Pedido.class, criterio);
-                em.remove(objeto);
-                break;
-            case "Grano":
-                objeto = em.find(Grano.class, criterio);
-                em.remove(objeto);
-                break;
-            case "Receta":
-                objeto = em.find(Receta.class, criterio);
-                em.remove(objeto);
-                break;
-            default:
-                JOptionPane.showMessageDialog(null, "El objeto que se desea eliminar no se encuentra registrado en este método",
-                        "Error -> opDelete", JOptionPane.ERROR_MESSAGE);
-                break;
-        }
     }
     
     public int opMaxID(String entidad) {

@@ -24,6 +24,8 @@ import proyectoCerveza.Cerveza;
 public class InterfazReceta extends javax.swing.JFrame {
     
     private crudPREG operacionesCRUD = new crudPREG();
+    private int selectedRecetaId = -1; // Se inicializa en -1, indicando que no hay selección inicial
+    private Receta recetaSeleccionada;
     
     public InterfazReceta() throws Exception {
         initComponents();
@@ -81,7 +83,7 @@ public class InterfazReceta extends javax.swing.JFrame {
                     + "Favor de verificar que:\n"
                     + "-> No contenga acentos\n"
                     + "-> No contenga caracteres especiales\n"
-                    + "-> Haya registrado correctamente el código del pedido\n", "Código inválido");
+                    + "-> Haya registrado correctamente la cantidad del grano\n", "Código inválido");
             return false;
         }
        
@@ -163,29 +165,14 @@ public class InterfazReceta extends javax.swing.JFrame {
         txtCantidad.setHorizontalAlignment(javax.swing.JTextField.CENTER);
         txtCantidad.setText("Ingrese la cantidad");
         txtCantidad.setEnabled(false);
-        txtCantidad.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtCantidadActionPerformed(evt);
-            }
-        });
 
         lblCapacidad.setText("Cantidad:");
 
         cmbGrano.setEnabled(false);
-        cmbGrano.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                cmbGranoActionPerformed(evt);
-            }
-        });
 
         lblCerveza.setText("Cerveza:");
 
         cmbCerveza.setEnabled(false);
-        cmbCerveza.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                cmbCervezaActionPerformed(evt);
-            }
-        });
 
         javax.swing.GroupLayout pnlDatosRecetaLayout = new javax.swing.GroupLayout(pnlDatosReceta);
         pnlDatosReceta.setLayout(pnlDatosRecetaLayout);
@@ -208,17 +195,17 @@ public class InterfazReceta extends javax.swing.JFrame {
                             .addComponent(cmbCerveza, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(txtCantidad, javax.swing.GroupLayout.DEFAULT_SIZE, 208, Short.MAX_VALUE)
                             .addComponent(cmbGrano, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED, 21, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addGroup(pnlDatosRecetaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(btn_Eliminar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(btnRegistrar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(btnActualizar, javax.swing.GroupLayout.DEFAULT_SIZE, 100, Short.MAX_VALUE))
-                        .addContainerGap(30, Short.MAX_VALUE))))
+                        .addContainerGap(39, Short.MAX_VALUE))))
         );
         pnlDatosRecetaLayout.setVerticalGroup(
             pnlDatosRecetaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlDatosRecetaLayout.createSequentialGroup()
-                .addContainerGap(8, Short.MAX_VALUE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(btnRegistrar)
                 .addGap(18, 18, 18)
                 .addComponent(btnActualizar)
@@ -270,6 +257,11 @@ public class InterfazReceta extends javax.swing.JFrame {
         lblAtributo.setText("Atributo:");
 
         cmbAtributo.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Cantidad" }));
+        cmbAtributo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cmbAtributoActionPerformed(evt);
+            }
+        });
 
         tblReceta.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -282,6 +274,11 @@ public class InterfazReceta extends javax.swing.JFrame {
                 "Title 1", "Title 2", "Title 3"
             }
         ));
+        tblReceta.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tblRecetaMouseClicked(evt);
+            }
+        });
         jScrollPane1.setViewportView(tblReceta);
 
         javax.swing.GroupLayout pnlRegistrrosLayout = new javax.swing.GroupLayout(pnlRegistrros);
@@ -373,12 +370,14 @@ public class InterfazReceta extends javax.swing.JFrame {
     private void btnNewRecetaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNewRecetaActionPerformed
         activarReceta(true);
         limpiarReceta();
+        btnActualizar.setEnabled(false);
+        btn_Eliminar.setEnabled(false);
         
     }//GEN-LAST:event_btnNewRecetaActionPerformed
 
     private void txtBusquedaRecetaKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtBusquedaRecetaKeyReleased
     
-        
+        actualizarTabla();
     }//GEN-LAST:event_txtBusquedaRecetaKeyReleased
 
     private void btnInicioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnInicioActionPerformed
@@ -399,7 +398,28 @@ public class InterfazReceta extends javax.swing.JFrame {
     }//GEN-LAST:event_btnLimpiarActionPerformed
 
     private void btn_EliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_EliminarActionPerformed
+        // Confirmación de eliminación
+        if (JOptionPane.showConfirmDialog(null, "¿Está usted seguro que desea eliminar el registro de Receta?",
+                "Confirmación de eliminación", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
+            try {
+                // Se llama al método de CRUD para eliminar el envase usando el ID del campo de texto
+                operacionesCRUD.opDeleteObjeto("Receta", selectedRecetaId);
 
+                // Mensaje de confirmación
+                JOptionPane.showMessageDialog(null, "Se ha eliminado el envase de manera satisfactoria");
+
+                // Actualiza la tabla y limpia los campos
+                actualizarTabla();
+                limpiarReceta();
+
+                // Cambia a la pestaña principal u otra vista
+
+            } catch (NumberFormatException err) {
+                // Manejo de error cuando el identificador no es un número válido
+                JOptionPane.showMessageDialog(null, "El tipo de dato del identificador no es un número",
+                        "Error de formato de número", JOptionPane.ERROR_MESSAGE);
+            }
+        }
     }//GEN-LAST:event_btn_EliminarActionPerformed
 
     private void btnRegistrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRegistrarActionPerformed
@@ -442,27 +462,88 @@ public class InterfazReceta extends javax.swing.JFrame {
 
         limpiarReceta();
         activarReceta(false);
-        actualizarTabla();
-
-        
+        actualizarTabla();     
     }//GEN-LAST:event_btnRegistrarActionPerformed
 
     private void btnActualizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnActualizarActionPerformed
-
+        try{
+                Receta receta = new Receta();
+                receta.setId_receta(selectedRecetaId);
+                receta.setRec_cantidad(txtCantidad.getText());
+                
+                Cerveza cerveza = new Cerveza();
+                cerveza.setCer_nombre((String) cmbCerveza.getSelectedItem());
+                System.out.println("Actualizacion: Nombre de la cerveza: " + cerveza.getCer_nombre());
+                cerveza.setId_cerveza(operacionesCRUD.nameToID("Cerveza", cerveza.getCer_nombre()));
+                System.out.println("Actualizacion: ID de la marca: " + cerveza.getId_cerveza());
+                
+                receta.formRec_cer(cerveza);
+              Grano grano = new Grano();
+                grano.setGra_nombre((String) cmbGrano.getSelectedItem());
+                System.out.println("Actualizacion: Nombre del grano: " + grano.getGra_nombre());
+                grano.setId_grano(operacionesCRUD.nameToID("Grano", grano.getGra_nombre()));
+                System.out.println("Actualizacion: ID del grano: " + grano.getId_grano());
+                
+                receta.formRec_gra(grano);
+              
+                operacionesCRUD.opUpdateObjeto("Receta", receta);
+                actualizarTabla();
+                limpiarReceta();
+            }catch(NumberFormatException err){
+                JOptionPane.showMessageDialog(null, "Los datos introducidos no son validos",
+                        "Error en InterfazCerveza -> btnEditarActionPerformed",JOptionPane.ERROR_MESSAGE);
+            }catch(ClassCastException err){
+                JOptionPane.showMessageDialog(null, "Existe un error en la logica de clases, revisar atentamente",
+                        "Error en InterfazCerveza -> btnEditarActionPerformed",JOptionPane.ERROR_MESSAGE);
+            }catch(NullPointerException err){
+            JOptionPane.showMessageDialog(null, "El indice de la lista de marcas se ha salido de los limites\n"
+                    + "Probablemente la lista de marcas no esta cargando adecuadamente",
+                        "Error en InterfazCerveza -> btnEditarActionPerformed",JOptionPane.ERROR_MESSAGE);
+            }
     }//GEN-LAST:event_btnActualizarActionPerformed
 
-    private void txtCantidadActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtCantidadActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txtCantidadActionPerformed
+    private void tblRecetaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblRecetaMouseClicked
+        if(!tblReceta.isEnabled()){
+            // Si la tabla no está habilitada, no haces nada
+        } else {
+            // Obtienes la fila seleccionada
+            int filaSeleccionada = tblReceta.getSelectedRow();
 
-    private void cmbGranoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmbGranoActionPerformed
-        //System.out.println("Grano seleccionada: " + cmbGrano.getSelectedItem().toString());
+            // Verificas si se ha seleccionado una fila
+            if(filaSeleccionada != -1) {
+                // Recuperas el valor en la columna 1 (índice 0)
+                Object valor = tblReceta.getValueAt(filaSeleccionada, 0); 
 
-    }//GEN-LAST:event_cmbGranoActionPerformed
+                selectedRecetaId = (int) valor;
+                
+                recetaSeleccionada = (Receta)operacionesCRUD.opBuscarObjeto("Receta", selectedRecetaId);
+                
+                txtCantidad.setText(recetaSeleccionada.getRec_cantidad());
+                
+                Object valorCerveza = tblReceta.getValueAt(filaSeleccionada, 3);
+                System.out.println("Cerveza nombre: " + valorCerveza);
+                String cerveza = valorCerveza.toString();
+                cmbCerveza.setSelectedItem(cerveza);
+                
+                Object valorGrano = tblReceta.getValueAt(filaSeleccionada, 2);
+                System.out.println("Grano nombre: " + valorGrano);
+                String grano = valorGrano.toString();
+                cmbGrano.setSelectedItem(grano);
+               
+               
+                txtCantidad.setEnabled(true);
+                btnActualizar.setEnabled(true);
+                btn_Eliminar.setEnabled(true);
+                cmbCerveza.setEnabled(true);
+                cmbGrano.setEnabled(true);
+                
+            }
+        }
+    }//GEN-LAST:event_tblRecetaMouseClicked
 
-    private void cmbCervezaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmbCervezaActionPerformed
-        //System.out.println("Cerveza seleccionada: " + cmbCerveza.getSelectedItem().toString());
-    }//GEN-LAST:event_cmbCervezaActionPerformed
+    private void cmbAtributoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmbAtributoActionPerformed
+        actualizarTabla();
+    }//GEN-LAST:event_cmbAtributoActionPerformed
 
     /**
      * @param args the command line arguments
