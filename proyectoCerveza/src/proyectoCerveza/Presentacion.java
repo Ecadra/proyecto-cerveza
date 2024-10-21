@@ -4,6 +4,9 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.*;
+import proyectoCerveza.Cerveza;
+import proyectoCerveza.Envase;
+import proyectoCerveza.Pedido;
 
 @Entity
 public class Presentacion implements Serializable {
@@ -42,16 +45,16 @@ public class Presentacion implements Serializable {
         this.pre_env=env1;
     }
     
-    public void dropPre_env(Envase env1){
-        this.pre_env=env1;
+    public void dropPre_env(){
+        this.pre_env=null;
     }
     
     public void formPre_cer(Cerveza cer1){
         this.pre_cer=cer1;
     }
     
-    public void dropPre_cer(Cerveza cer1){
-        this.pre_cer=cer1;
+    public void dropPre_cer(){
+        this.pre_cer=null;
     }
     /////////////////////////////////////////////////////
      public void formPre_ped(Pedido ped1){
