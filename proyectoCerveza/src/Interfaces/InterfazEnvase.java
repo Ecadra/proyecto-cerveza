@@ -23,6 +23,9 @@ import java.util.List;
 public class InterfazEnvase extends javax.swing.JFrame {
     
     private crudPREG operacionesCRUD = new crudPREG();
+    private int selectedEnvaseId = -1; // Se inicializa en -1, indicando que no hay selección inicial
+    private Envase envaseSeleccionado;
+    
     public InterfazEnvase() throws Exception {
         initComponents();
         this.setLocationRelativeTo(null);
@@ -233,6 +236,11 @@ public class InterfazEnvase extends javax.swing.JFrame {
         lblAtributo.setText("Atributo:");
 
         cmbAtributos.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Tipo de envase", "Capacidad" }));
+        cmbAtributos.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cmbAtributosActionPerformed(evt);
+            }
+        });
 
         tblEnvase.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -245,6 +253,11 @@ public class InterfazEnvase extends javax.swing.JFrame {
                 "Title 1", "Title 2"
             }
         ));
+        tblEnvase.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tblEnvaseMouseClicked(evt);
+            }
+        });
         jScrollPane1.setViewportView(tblEnvase);
 
         javax.swing.GroupLayout pnlRegistrrosLayout = new javax.swing.GroupLayout(pnlRegistrros);
@@ -333,7 +346,7 @@ public class InterfazEnvase extends javax.swing.JFrame {
     }//GEN-LAST:event_btnNewEnvaseActionPerformed
 
     private void txtBusquedaEnvaseKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtBusquedaEnvaseKeyReleased
-    
+        actualizarTabla();
         
     }//GEN-LAST:event_txtBusquedaEnvaseKeyReleased
 
@@ -355,7 +368,28 @@ public class InterfazEnvase extends javax.swing.JFrame {
     }//GEN-LAST:event_btnLimpiarActionPerformed
 
     private void btn_EliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_EliminarActionPerformed
+        // Confirmación de eliminación
+        if (JOptionPane.showConfirmDialog(null, "¿Está usted seguro que desea eliminar el registro de Envase?",
+                "Confirmación de eliminación", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
+            try {
+                // Se llama al método de CRUD para eliminar el envase usando el ID del campo de texto
+                operacionesCRUD.opDeleteObjeto("Envase", selectedEnvaseId);
 
+                // Mensaje de confirmación
+                JOptionPane.showMessageDialog(null, "Se ha eliminado el envase de manera satisfactoria");
+
+                // Actualiza la tabla y limpia los campos
+                actualizarTabla();
+                limpiarEnvase();
+
+                // Cambia a la pestaña principal u otra vista
+
+            } catch (NumberFormatException err) {
+                // Manejo de error cuando el identificador no es un número válido
+                JOptionPane.showMessageDialog(null, "El tipo de dato del identificador no es un número",
+                        "Error de formato de número", JOptionPane.ERROR_MESSAGE);
+            }
+        }
     }//GEN-LAST:event_btn_EliminarActionPerformed
 
     private void btnRegistrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRegistrarActionPerformed
@@ -383,8 +417,78 @@ public class InterfazEnvase extends javax.swing.JFrame {
     }//GEN-LAST:event_btnRegistrarActionPerformed
 
     private void btnActualizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnActualizarActionPerformed
+        System.out.println(selectedEnvaseId);
 
+        // Obtener los valores anteriores
+        String tipoAnterior = envaseSeleccionado.getTipo_envase();
+        int capacidadAnterior = envaseSeleccionado.getEnvase_capacidad();
+
+        // Obtener los nuevos valores desde los campos de texto
+        String tipoNuevo = txtTipoEnvase.getText();
+        int capacidadNueva = (int) spinnerCantidad.getValue();
+
+        // Crear el mensaje de confirmación con los datos anteriores y nuevos
+        String mensajeConfirmacion = "¿Desea confirmar los cambios?\n\n" +
+                                     "Tipo anterior: " + tipoAnterior + "\n" +
+                                     "Capacidad anterior: " + capacidadAnterior + "\n\n" +
+                                     "Tipo nuevo: " + tipoNuevo + "\n" +
+                                     "Capacidad nueva: " + capacidadNueva;
+
+        // Mostrar el cuadro de diálogo de confirmación
+        int opcion = JOptionPane.showConfirmDialog(null, mensajeConfirmacion, "Confirmar cambios", JOptionPane.YES_NO_OPTION);
+
+        // Si el usuario confirma, procede con la actualización
+        if (opcion == JOptionPane.YES_OPTION) {
+            envaseSeleccionado.setTipo_envase(tipoNuevo);
+            envaseSeleccionado.setCapacidad_ml(capacidadNueva);
+
+            try {
+                // Llamar a operacionesCRUD para actualizar en la base de datos
+                operacionesCRUD.opUpdateObjeto("Envase", envaseSeleccionado);
+
+                // Actualizar la tabla y limpiar los campos
+                actualizarTabla();
+                limpiarEnvase();
+                JOptionPane.showMessageDialog(null, "Los cambios han sido confirmados y guardados.");
+            } catch (Exception e) {
+                JOptionPane.showMessageDialog(null, "Error al actualizar el envase: " + e.getMessage(),
+                                              "Error en la actualización", JOptionPane.ERROR_MESSAGE);
+            }
+        } else {
+            JOptionPane.showMessageDialog(null, "Los cambios no fueron guardados.");
+        }
     }//GEN-LAST:event_btnActualizarActionPerformed
+
+    private void cmbAtributosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmbAtributosActionPerformed
+        actualizarTabla();
+    }//GEN-LAST:event_cmbAtributosActionPerformed
+
+    private void tblEnvaseMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblEnvaseMouseClicked
+        if(!tblEnvase.isEnabled()){
+            // Si la tabla no está habilitada, no haces nada
+        } else {
+            // Obtienes la fila seleccionada
+            int filaSeleccionada = tblEnvase.getSelectedRow();
+
+            // Verificas si se ha seleccionado una fila
+            if(filaSeleccionada != -1) {
+                // Recuperas el valor en la columna 1 (índice 0)
+                Object valor = tblEnvase.getValueAt(filaSeleccionada, 0); 
+
+                selectedEnvaseId = (int) valor;
+                
+                envaseSeleccionado = (Envase)operacionesCRUD.opBuscarObjeto("Envase", selectedEnvaseId);
+                
+                txtTipoEnvase.setText(envaseSeleccionado.getTipo_envase());
+                spinnerCantidad.setValue(envaseSeleccionado.getEnvase_capacidad());
+                txtTipoEnvase.setEnabled(true);
+                spinnerCantidad.setEnabled(true);
+                btnActualizar.setEnabled(true);
+                btn_Eliminar.setEnabled(true);
+                
+            }
+        }
+    }//GEN-LAST:event_tblEnvaseMouseClicked
 
     /**
      * @param args the command line arguments

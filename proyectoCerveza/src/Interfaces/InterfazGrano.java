@@ -23,6 +23,9 @@ import java.util.List;
 public class InterfazGrano extends javax.swing.JFrame {
     
     private crudPREG operacionesCRUD = new crudPREG();
+    private int selectedGranoId = -1; // Se inicializa en -1, indicando que no hay selección inicial
+    private Grano granoSeleccionado;
+
     
     public InterfazGrano() throws Exception {
         initComponents();
@@ -158,11 +161,6 @@ public class InterfazGrano extends javax.swing.JFrame {
         txtProcedencia.setHorizontalAlignment(javax.swing.JTextField.CENTER);
         txtProcedencia.setText("Ingrese la procedencia del grano");
         txtProcedencia.setEnabled(false);
-        txtProcedencia.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtProcedenciaActionPerformed(evt);
-            }
-        });
 
         lblCapacidad.setText("Procedencia:");
         lblCapacidad.setEnabled(false);
@@ -243,6 +241,11 @@ public class InterfazGrano extends javax.swing.JFrame {
         lblAtributo.setText("Atributo:");
 
         cmbAtributos.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Grano", "Procedencia" }));
+        cmbAtributos.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cmbAtributosActionPerformed(evt);
+            }
+        });
 
         tblGrano.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -255,6 +258,11 @@ public class InterfazGrano extends javax.swing.JFrame {
                 "Title 1", "Title 2", "Title 3"
             }
         ));
+        tblGrano.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tblGranoMouseClicked(evt);
+            }
+        });
         jScrollPane1.setViewportView(tblGrano);
 
         javax.swing.GroupLayout pnlRegistrrosLayout = new javax.swing.GroupLayout(pnlRegistrros);
@@ -345,7 +353,7 @@ public class InterfazGrano extends javax.swing.JFrame {
 
     private void txtBusquedaGranoKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtBusquedaGranoKeyReleased
     
-        
+        actualizarTabla();
     }//GEN-LAST:event_txtBusquedaGranoKeyReleased
 
     private void btnInicioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnInicioActionPerformed
@@ -366,7 +374,28 @@ public class InterfazGrano extends javax.swing.JFrame {
     }//GEN-LAST:event_btnLimpiarActionPerformed
 
     private void btn_EliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_EliminarActionPerformed
+        // Confirmación de eliminación
+        if (JOptionPane.showConfirmDialog(null, "¿Está usted seguro que desea eliminar el registro de Grano?",
+                "Confirmación de eliminación", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
+            try {
+                // Se llama al método de CRUD para eliminar el grano usando el ID del campo de texto
+                operacionesCRUD.opDeleteObjeto("Grano", selectedGranoId);
 
+                // Mensaje de confirmación
+                JOptionPane.showMessageDialog(null, "Se ha eliminado el grano de manera satisfactoria");
+
+                // Actualiza la tabla y limpia los campos
+                actualizarTabla();
+                limpiarGrano();
+
+                // Cambia a la pestaña principal u otra vista
+
+            } catch (NumberFormatException err) {
+                // Manejo de error cuando el identificador no es un número válido
+                JOptionPane.showMessageDialog(null, "El tipo de dato del identificador no es un número",
+                        "Error de formato de número", JOptionPane.ERROR_MESSAGE);
+            }
+        }
     }//GEN-LAST:event_btn_EliminarActionPerformed
 
     private void btnRegistrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRegistrarActionPerformed
@@ -396,12 +425,80 @@ public class InterfazGrano extends javax.swing.JFrame {
     }//GEN-LAST:event_btnRegistrarActionPerformed
 
     private void btnActualizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnActualizarActionPerformed
+        System.out.println(selectedGranoId);
+
+        // Obtener los valores anteriores
+        String nombreAnterior = granoSeleccionado.getGra_nombre();
+        String procedenciaAnterior = granoSeleccionado.getGra_procedencia();
+
+        // Obtener los nuevos valores desde los campos de texto
+        String nombreNuevo = txtGrano.getText();
+        String procedenciaNueva = txtProcedencia.getText();
+
+        // Crear el mensaje de confirmación con los datos anteriores y nuevos
+        String mensajeConfirmacion = "¿Desea confirmar los cambios?\n\n" +
+                                     "Nombre anterior: " + nombreAnterior + "\n" +
+                                     "Procedencia anterior: " + procedenciaAnterior + "\n\n" +
+                                     "Nombre nuevo: " + nombreNuevo + "\n" +
+                                     "Procedencia nueva: " + procedenciaNueva;
+
+        // Mostrar el cuadro de diálogo de confirmación
+        int opcion = JOptionPane.showConfirmDialog(null, mensajeConfirmacion, "Confirmar cambios", JOptionPane.YES_NO_OPTION);
+
+        // Si el usuario confirma, procede con la actualización
+        if (opcion == JOptionPane.YES_OPTION) {
+            granoSeleccionado.setGra_nombre(nombreNuevo);
+            granoSeleccionado.setGra_procedencia(procedenciaNueva);
+
+            try {
+                // Llamar a operacionesCRUD para actualizar en la base de datos
+                operacionesCRUD.opUpdateObjeto("Grano", granoSeleccionado);
+
+                // Actualizar la tabla y limpiar los campos
+                actualizarTabla();
+                limpiarGrano();
+                JOptionPane.showMessageDialog(null, "Los cambios han sido confirmados y guardados.");
+            } catch (Exception e) {
+                JOptionPane.showMessageDialog(null, "Error al actualizar el grano: " + e.getMessage(),
+                                              "Error en la actualización", JOptionPane.ERROR_MESSAGE);
+            }
+        } else {
+            JOptionPane.showMessageDialog(null, "Los cambios no fueron guardados.");
+        }
+
 
     }//GEN-LAST:event_btnActualizarActionPerformed
 
-    private void txtProcedenciaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtProcedenciaActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txtProcedenciaActionPerformed
+    private void tblGranoMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblGranoMouseClicked
+        if(!tblGrano.isEnabled()){
+            // Si la tabla no está habilitada, no haces nada
+        } else {
+            // Obtienes la fila seleccionada
+            int filaSeleccionada = tblGrano.getSelectedRow();
+
+            // Verificas si se ha seleccionado una fila
+            if(filaSeleccionada != -1) {
+                // Recuperas el valor en la columna 1 (índice 0)
+                Object valor = tblGrano.getValueAt(filaSeleccionada, 0); 
+
+                selectedGranoId = (int) valor;
+                //System.out.println("El ID del objeto seleccionado es: " + selectedGranoId);
+                granoSeleccionado = (Grano)operacionesCRUD.opBuscarObjeto("Grano", selectedGranoId);
+                //System.out.println(grano.getGra_nombre());
+                txtGrano.setText(granoSeleccionado.getGra_nombre());
+                txtProcedencia.setText(granoSeleccionado.getGra_procedencia());
+                txtGrano.setEnabled(true);
+                txtProcedencia.setEnabled(true);
+                btnActualizar.setEnabled(true);
+                btn_Eliminar.setEnabled(true);
+                
+            }
+        }
+    }//GEN-LAST:event_tblGranoMouseClicked
+
+    private void cmbAtributosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmbAtributosActionPerformed
+        actualizarTabla();
+    }//GEN-LAST:event_cmbAtributosActionPerformed
 
     /**
      * @param args the command line arguments
