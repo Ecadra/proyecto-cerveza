@@ -3,13 +3,16 @@ package Interfaces;
 
 import CRUD.crudGeneralCEM;
 import CRUD.crudIPL;
+import Interfaces.InterfazVenta.DateCellRenderer;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableCellRenderer;
 import proyectoCerveza.Cerveza;
 import proyectoCerveza.Lote;
 
@@ -21,14 +24,38 @@ public class InterfazLote extends javax.swing.JFrame {
     public InterfazLote() {
         initComponents();
         actualizarTabla();
+        txtID.setEnabled(false);
+        txtIDAct.setEnabled(false);
+        dateProduccion.getDateEditor().setEnabled(false);
+        idMax();
         
         List<Cerveza>CervezaList=opCRUDCEM.opReadObjetos("Cerveza", "", "");
         for(Cerveza cer : CervezaList){
             cmbCervezas.addItem(cer.getCer_nombre());
+            cmbCervezasAct.addItem(cer.getCer_nombre());
         }    
     }
     public void actualizarTabla(){
         tblLote.setModel(opCRUD.opBuscar("Lote", "", ""));
+        
+        //Formatear a la fecha quitandole la hora
+        tblLote.getColumnModel().getColumn(2).setCellRenderer(new DateCellRenderer());
+        tblLote.getColumnModel().getColumn(3).setCellRenderer(new DateCellRenderer());
+    }
+    
+    class DateCellRenderer extends DefaultTableCellRenderer{
+         private SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
+        @Override
+        protected void setValue(Object value) {
+            if (value instanceof Date) {
+                value = formatter.format((Date) value); // Formatear la fecha
+            }
+            super.setValue(value); // Asignar el valor formateado a la celda
+        }
+    }
+    
+    private void idMax(){
+        txtID.setText((opCRUD.opIDMax("Lote")+1)+"");
     }
 
     /**
@@ -58,7 +85,22 @@ public class InterfazLote extends javax.swing.JFrame {
         btnAgregar = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
         jPanel2 = new javax.swing.JPanel();
+        txtIDAct = new javax.swing.JTextField();
+        txtCantidadAct = new javax.swing.JTextField();
+        dateProduccionAct = new com.toedter.calendar.JDateChooser();
+        dateCadAct = new com.toedter.calendar.JDateChooser();
+        cmbCervezasAct = new javax.swing.JComboBox<>();
+        btnActualizar = new javax.swing.JButton();
+        jButton3 = new javax.swing.JButton();
+        jLabel6 = new javax.swing.JLabel();
+        jLabel7 = new javax.swing.JLabel();
+        jLabel8 = new javax.swing.JLabel();
+        jLabel9 = new javax.swing.JLabel();
+        jLabel10 = new javax.swing.JLabel();
         jPanel3 = new javax.swing.JPanel();
+        jPanel5 = new javax.swing.JPanel();
+        jTextField1 = new javax.swing.JTextField();
+        jComboBox1 = new javax.swing.JComboBox<>();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -73,6 +115,11 @@ public class InterfazLote extends javax.swing.JFrame {
                 "Title 1", "Title 2", "Title 3", "Title 4"
             }
         ));
+        tblLote.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tblLoteMouseClicked(evt);
+            }
+        });
         jScrollPane1.setViewportView(tblLote);
 
         jTabbedPane1.setBorder(javax.swing.BorderFactory.createTitledBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED)));
@@ -94,7 +141,7 @@ public class InterfazLote extends javax.swing.JFrame {
             }
         });
 
-        jButton2.setText("Limpiar Campos");
+        jButton2.setText("Cancelar");
 
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
         jPanel4.setLayout(jPanel4Layout);
@@ -125,8 +172,8 @@ public class InterfazLote extends javax.swing.JFrame {
                                     .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addComponent(txtID)
-                                    .addComponent(txtCantidad, javax.swing.GroupLayout.DEFAULT_SIZE, 81, Short.MAX_VALUE))))
+                                    .addComponent(txtCantidad, javax.swing.GroupLayout.DEFAULT_SIZE, 81, Short.MAX_VALUE)
+                                    .addComponent(txtID))))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(jButton2)))
                 .addContainerGap())
@@ -152,12 +199,12 @@ public class InterfazLote extends javax.swing.JFrame {
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(jLabel4)
                     .addComponent(dateCad, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel5)
                     .addComponent(cmbCervezas, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnAgregar))
-                .addContainerGap(20, Short.MAX_VALUE))
+                    .addComponent(btnAgregar)
+                    .addComponent(jLabel5))
+                .addGap(23, 23, 23))
         );
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
@@ -173,15 +220,90 @@ public class InterfazLote extends javax.swing.JFrame {
 
         jTabbedPane1.addTab("Create", jPanel1);
 
+        btnActualizar.setText("Actualizar");
+        btnActualizar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnActualizarActionPerformed(evt);
+            }
+        });
+
+        jButton3.setText("Cancelar");
+
+        jLabel6.setText("Código del lote");
+
+        jLabel7.setText("Cantidad Producida");
+
+        jLabel8.setText("Fecha de producción");
+
+        jLabel9.setText("Fecha de caducidad");
+
+        jLabel10.setText("Cerveza");
+
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 384, Short.MAX_VALUE)
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                            .addComponent(jLabel8, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jLabel6, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel2Layout.createSequentialGroup()
+                                .addComponent(txtIDAct, javax.swing.GroupLayout.PREFERRED_SIZE, 81, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 85, Short.MAX_VALUE)
+                                .addComponent(jButton3))
+                            .addGroup(jPanel2Layout.createSequentialGroup()
+                                .addComponent(dateProduccionAct, javax.swing.GroupLayout.PREFERRED_SIZE, 137, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(0, 0, Short.MAX_VALUE))))
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addComponent(jLabel10)
+                        .addGap(18, 18, 18)
+                        .addComponent(cmbCervezasAct, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(btnActualizar))
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel2Layout.createSequentialGroup()
+                                .addComponent(jLabel7)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(txtCantidadAct, javax.swing.GroupLayout.PREFERRED_SIZE, 81, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(jPanel2Layout.createSequentialGroup()
+                                .addComponent(jLabel9, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(dateCadAct, javax.swing.GroupLayout.PREFERRED_SIZE, 135, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(0, 0, Short.MAX_VALUE)))
+                .addContainerGap())
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 210, Short.MAX_VALUE)
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel6)
+                    .addComponent(txtIDAct, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jButton3))
+                .addGap(8, 8, 8)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(txtCantidadAct, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel7))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(dateProduccionAct, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel8))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jLabel9)
+                    .addComponent(dateCadAct, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel10)
+                    .addComponent(cmbCervezasAct, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnActualizar))
+                .addContainerGap(28, Short.MAX_VALUE))
         );
 
         jTabbedPane1.addTab("Update", jPanel2);
@@ -194,33 +316,65 @@ public class InterfazLote extends javax.swing.JFrame {
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 210, Short.MAX_VALUE)
+            .addGap(0, 197, Short.MAX_VALUE)
         );
 
         jTabbedPane1.addTab("Delete", jPanel3);
+
+        jPanel5.setBorder(javax.swing.BorderFactory.createTitledBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED), "Buscar Lote"));
+
+        jTextField1.setText("jTextField1");
+
+        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+
+        javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
+        jPanel5.setLayout(jPanel5Layout);
+        jPanel5Layout.setHorizontalGroup(
+            jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel5Layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 61, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 102, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(128, 128, 128))
+        );
+        jPanel5Layout.setVerticalGroup(
+            jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel5Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(16, Short.MAX_VALUE))
+        );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+            .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 562, Short.MAX_VALUE)
+                        .addContainerGap())
                     .addGroup(layout.createSequentialGroup()
                         .addGap(84, 84, 84)
-                        .addComponent(jTabbedPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 395, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 83, Short.MAX_VALUE)))
-                .addContainerGap())
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(jTabbedPane1)
+                            .addComponent(jPanel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jTabbedPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 246, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jTabbedPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 233, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 323, Short.MAX_VALUE)
-                .addContainerGap())
+                .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 295, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         pack();
@@ -228,63 +382,119 @@ public class InterfazLote extends javax.swing.JFrame {
 
     private void btnAgregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarActionPerformed
         boolean bandera=false;
-        int nuevoID=0, cantidad=0;
+        int nuevoID=0, cantidad=0,idCerveza=0;
         String fechaP=null, fechaC=null, nomCerveza=null;
-        Date fechaPro, fechaCad;
-        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
-        Lote newLote=new Lote();
-        
-        try{
+        Date fechaPro=null, fechaCad=null;
+        SimpleDateFormat sdf= new SimpleDateFormat("yyyy-MM-dd");
+        Lote nuevoLote=new Lote();
+
           nuevoID= Integer.parseInt(txtID.getText());
-        }catch(NumberFormatException err){
-          JOptionPane.showMessageDialog(null,"El ID debe de ser un número","Error",JOptionPane.ERROR_MESSAGE);
-          bandera=true;
-        }
-        
+
         try{
           cantidad= Integer.parseInt(txtCantidad.getText());
         }catch(NumberFormatException err){
-          JOptionPane.showMessageDialog(null,"El ID debe de ser un número","Error",JOptionPane.ERROR_MESSAGE);
+          JOptionPane.showMessageDialog(null,"La cantidad  debe de ser un número","Error",JOptionPane.ERROR_MESSAGE);
           bandera=true;
         }
 
-        if(dateProduccion.getDate()==null){
+        if(dateProduccion.getDate()==null||dateCad.getDate()==null ){
             bandera=true;
-            JOptionPane.showMessageDialog(null,"Se tiene que seleccionar una fecha de producción","Error",JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(null,"Se tiene que seleccionar una fecha de producción o de caducidad","Error",JOptionPane.ERROR_MESSAGE);
             
         }else{
              fechaPro=dateProduccion.getDate();
-             fechaP=sdf.format(fechaPro);
-        }
-        if(dateCad.getDate()==null){
-            bandera=true;
-            JOptionPane.showMessageDialog(null,"Se tiene que seleccionar una fecha de caducidad","Error",JOptionPane.ERROR_MESSAGE);
-        }else{
-            fechaCad=dateCad.getDate();
-            fechaC=sdf.format(fechaCad);
+             fechaCad=dateCad.getDate();
+              if(fechaCad.before(fechaPro)){
+                   bandera=true;
+                  JOptionPane.showMessageDialog(null,"La fecha de caducidad no puede estar antes de la fecha de producción","Error",JOptionPane.ERROR_MESSAGE);
+              }else{
+                  fechaP=sdf.format(fechaPro);
+                  fechaC=sdf.format(fechaCad);
+              }
         }
         
         nomCerveza=(String) cmbCervezas.getSelectedItem();
-        
+
         if(bandera==false){
+            
             try {
-                newLote = new Lote(nuevoID,cantidad,sdf.parse(fechaP),sdf.parse(fechaC));
+                nuevoLote=new Lote(nuevoID,cantidad,sdf.parse(fechaP),sdf.parse(fechaC));
             } catch (ParseException ex) {
-                 JOptionPane.showMessageDialog(null,"Algo esta mal con las fechas\n"+ex,"Error",JOptionPane.ERROR_MESSAGE);
+                Logger.getLogger(InterfazLote.class.getName()).log(Level.SEVERE, null, ex);
             }
             
-            Cerveza newCerveza=(Cerveza)opCRUD.opBuscarObjeto("Cerveza", nomCerveza);
+            Cerveza newCerveza=(Cerveza)opCRUD.opBuscarObjeto("Cerveza",nomCerveza);
             System.out.print("\nSe ha encotrado dentro de la interfaz el ¿la cerveza\n"+newCerveza);
-            newLote.formLote_cer(newCerveza);
+            nuevoLote.formLote_cer(newCerveza);
             
-            opCRUD.opCreate("Lote", newLote);
-            
+            opCRUD.opCreate("Lote", nuevoLote);
             actualizarTabla();
-            
+            idMax();  
         }
         
         
     }//GEN-LAST:event_btnAgregarActionPerformed
+
+    private void tblLoteMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblLoteMouseClicked
+        txtIDAct.setText(tblLote.getValueAt(tblLote.getSelectedRow(),0).toString());
+        txtCantidadAct.setText(tblLote.getValueAt(tblLote.getSelectedRow(),1).toString());
+        dateProduccionAct.setDate((Date) tblLote.getValueAt(tblLote.getSelectedRow(),2));
+        dateCadAct.setDate((Date) tblLote.getValueAt(tblLote.getSelectedRow(),3));
+        cmbCervezasAct.setSelectedItem(tblLote.getValueAt(tblLote.getSelectedRow(),4).toString());
+    }//GEN-LAST:event_tblLoteMouseClicked
+
+    private void btnActualizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnActualizarActionPerformed
+        boolean bandera=false;
+        int nuevoID=0, cantidad=0,idCerveza=0;
+        String fechaP=null, fechaC=null, nomCerveza=null;
+        Date fechaPro=null, fechaCad=null;
+        SimpleDateFormat sdf= new SimpleDateFormat("yyyy-MM-dd");
+        Lote nuevoLote=new Lote();
+
+          nuevoID= Integer.parseInt(txtIDAct.getText());
+
+        try{
+          cantidad= Integer.parseInt(txtCantidadAct.getText());
+        }catch(NumberFormatException err){
+          JOptionPane.showMessageDialog(null,"La cantidad  debe de ser un número","Error",JOptionPane.ERROR_MESSAGE);
+          bandera=true;
+        }
+
+        if(dateProduccionAct.getDate()==null||dateCadAct.getDate()==null ){
+            bandera=true;
+            JOptionPane.showMessageDialog(null,"Se tiene que seleccionar una fecha de producción o de caducidad","Error",JOptionPane.ERROR_MESSAGE);
+            
+        }else{
+             fechaPro=dateProduccionAct.getDate();
+             fechaCad=dateCadAct.getDate();
+              if(fechaCad.before(fechaPro)){
+                   bandera=true;
+                  JOptionPane.showMessageDialog(null,"La fecha de caducidad no puede estar antes de la fecha de producción","Error",JOptionPane.ERROR_MESSAGE);
+              }else{
+                  fechaP=sdf.format(fechaPro);
+                  fechaC=sdf.format(fechaCad);
+              }
+        }
+        
+        nomCerveza=(String) cmbCervezasAct.getSelectedItem();
+
+        if(bandera==false){
+            
+            try {
+                nuevoLote=new Lote(nuevoID,cantidad,sdf.parse(fechaP),sdf.parse(fechaC));
+            } catch (ParseException ex) {
+                Logger.getLogger(InterfazLote.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            
+            Cerveza newCerveza=(Cerveza)opCRUD.opBuscarObjeto("Cerveza",nomCerveza);
+            System.out.print("\nSe ha encotrado dentro de la interfaz el ¿la cerveza\n"+newCerveza);
+            nuevoLote.formLote_cer(newCerveza);
+            
+            opCRUD.opUpdate("Lote", nuevoLote);
+            actualizarTabla();
+            idMax();  
+        }
+    }//GEN-LAST:event_btnActualizarActionPerformed
 
     /**
      * @param args the command line arguments
@@ -322,24 +532,39 @@ public class InterfazLote extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnActualizar;
     private javax.swing.JButton btnAgregar;
     private javax.swing.JComboBox<String> cmbCervezas;
+    private javax.swing.JComboBox<String> cmbCervezasAct;
     private com.toedter.calendar.JDateChooser dateCad;
+    private com.toedter.calendar.JDateChooser dateCadAct;
     private com.toedter.calendar.JDateChooser dateProduccion;
+    private com.toedter.calendar.JDateChooser dateProduccionAct;
     private javax.swing.JButton jButton2;
+    private javax.swing.JButton jButton3;
+    private javax.swing.JComboBox<String> jComboBox1;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel7;
+    private javax.swing.JLabel jLabel8;
+    private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
+    private javax.swing.JPanel jPanel5;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTabbedPane jTabbedPane1;
+    private javax.swing.JTextField jTextField1;
     private javax.swing.JTable tblLote;
     private javax.swing.JTextField txtCantidad;
+    private javax.swing.JTextField txtCantidadAct;
     private javax.swing.JTextField txtID;
+    private javax.swing.JTextField txtIDAct;
     // End of variables declaration//GEN-END:variables
 }

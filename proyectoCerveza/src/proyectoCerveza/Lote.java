@@ -42,9 +42,9 @@ public class Lote implements Serializable {
     {
         this.lote_cer=cer1;
     }
-    public void dropLote_cer(Cerveza cer1)
+    public void dropLote_cer()
     {
-        this.lote_cer=cer1;
+        this.lote_cer=null;
     }
 
     public void setLote_cod(int lote_cod) {

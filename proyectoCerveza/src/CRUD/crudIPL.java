@@ -446,7 +446,7 @@ public class crudIPL {
                
            case "Cerveza":
                
-               obj=em.find(Cerveza.class, Integer.parseInt(crit));
+               obj=em.find(Cerveza.class, nameToID("Cerveza",crit));
                em.close();
                emf.close();
                return obj;
@@ -597,6 +597,33 @@ public class crudIPL {
                 em.close();
                 emf.close(); 
             break;
+            
+            case "Lote":
+                Lote nuevoLote=(Lote)obj;
+                Lote viejoLote;
+                int auxLote=nuevoLote.getLote_cod();
+                
+                em.getTransaction().begin();
+                viejoLote=em.find(Lote.class, auxLote);
+                
+                if(viejoLote.getLote_cer().getId_cerveza()==nuevoLote.getLote_cer().getId_cerveza()){
+                    System.out.print("\nNo hay que cambiar la relación de lote con cerveza\n");
+                    viejoLote.setCantidad(nuevoLote.getCantidad());
+                    viejoLote.setLote_fechaCaducidad(nuevoLote.getLote_fechaCaducidad());
+                    viejoLote.setLote_fechaProduccion(nuevoLote.getLote_fechaProduccion());
+                }else{
+                    Cerveza cer=em.find(Cerveza.class, nuevoLote.getLote_cer().getId_cerveza());
+                    viejoLote.dropLote_cer();
+                    viejoLote.formLote_cer(cer);
+                    viejoLote.setCantidad(nuevoLote.getCantidad());
+                    viejoLote.setLote_fechaCaducidad(nuevoLote.getLote_fechaCaducidad());
+                    viejoLote.setLote_fechaProduccion(nuevoLote.getLote_fechaProduccion());
+                }
+                em.getTransaction().commit();
+                em.close();
+                emf.close(); 
+                
+            break;
                 
         }//Fin del switch update
        
@@ -629,6 +656,16 @@ public class crudIPL {
               em.close();
               emf.close();
               return resultsPres.get(0);
+          case "Lote":
+              TypedQuery<Integer>queryLote=null;
+              List<Integer>resultsLote=null;
+              
+              queryLote=em.createQuery("SELECT MAX(c.lote_cod)FROM Lote c", Integer.class);
+              resultsLote=queryLote.getResultList();
+              
+              em.close();
+              emf.close();
+              return resultsLote.get(0);
       }
         return -1;
    }
