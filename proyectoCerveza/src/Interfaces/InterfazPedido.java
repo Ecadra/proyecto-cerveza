@@ -470,7 +470,7 @@ public class InterfazPedido extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(pnlRegistros, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(pnlDatosPedido, javax.swing.GroupLayout.PREFERRED_SIZE, 969, Short.MAX_VALUE)
+                    .addComponent(pnlDatosPedido, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(btnInicio)
                         .addGap(0, 0, Short.MAX_VALUE)))
@@ -588,28 +588,38 @@ public class InterfazPedido extends javax.swing.JFrame {
 
                //Objeto presentacion
                Presentacion presentacion = new Presentacion();
-               presentacion.setPre_cod((int) operacionesCRUD.opBuscarObjeto("Presentacion", (int)cmb_Presentacion.getSelectedItem()));
-               
-               pedido.formPed_pre(presentacion);
+               String selectedItem = (String) cmb_Presentacion.getSelectedItem();
+            
+                try {
+                int expCod = Integer.parseInt(selectedItem);
+                presentacion.setPre_cod(expCod);
+                 } catch (NumberFormatException e) {
+                JOptionPane.showMessageDialog(null, "Error al convertir el código de inventario: " + e.getMessage(),
+                        "Error de formato", JOptionPane.ERROR_MESSAGE);
+                return;
+                    }
+                presentacion.setPre_cod(presentacion.getPre_cod());
+                pedido.dropPed_pre();              
+                pedido.formPed_pre(presentacion);
                
                //Objeto expendio
                Expendio expendio = new Expendio();
                expendio.setExp_nombre((String) cmb_Expendio.getSelectedItem());
                expendio.setId_expendio(operacionesCRUD.nameToID("Expendio", expendio.getExp_nombre()));
-                
+               pedido.dropPed_exp();
                pedido.formPed_exp(expendio);
 
                 operacionesCRUD.opUpdateObjeto("Pedido", pedido);
                 actualizarTabla();
                 limpiarPedido();
             }catch(NumberFormatException err){
-                JOptionPane.showMessageDialog(null, "Los datos introducidos no son validos",
+                JOptionPane.showMessageDialog(null, "Los datos introducidos no son validos" +err.getMessage(),
                         "Error en InterfazCerveza -> btnEditarActionPerformed",JOptionPane.ERROR_MESSAGE);
             }catch(ClassCastException err){
-                JOptionPane.showMessageDialog(null, "Existe un error en la logica de clases, revisar atentamente",
+                JOptionPane.showMessageDialog(null, "Existe un error en la logica de clases, revisar atentamente"+err.getMessage(),
                         "Error en InterfazCerveza -> btnEditarActionPerformed",JOptionPane.ERROR_MESSAGE);
             }catch(NullPointerException err){
-            JOptionPane.showMessageDialog(null, "El indice de la lista de marcas se ha salido de los limites\n"
+            JOptionPane.showMessageDialog(null, "El indice de la lista de marcas se ha salido de los limites\n"+ err.getMessage()
                     + "Probablemente la lista de marcas no esta cargando adecuadamente",
                         "Error en InterfazCerveza -> btnEditarActionPerformed",JOptionPane.ERROR_MESSAGE);
             }
