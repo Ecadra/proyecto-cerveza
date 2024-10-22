@@ -31,7 +31,7 @@ public class RelFabSede {
         EntityManager em = emf.createEntityManager();
         em.getTransaction().begin();
         
-        Fabricante fab1 = new Fabricante("Modelo", "5556789212");
+        Fabricante fab1 = new Fabricante(7, "Modelo", "5556789212");
         Sede se1=em.find(Sede.class, "Cerveceria Artesanal");  
         if (se1 != null) {
         System.out.println("Sede encontrada: " + se1.toString());
