@@ -150,7 +150,7 @@ public class crudIPL {
                if(crit.equals("")){
                    queryLote=em.createQuery("SELECT c FROM  Lote c", Lote.class);//(Query, objeto a buscar.clase
                }else{
-                   queryLote=em.createQuery("SELECT c FROM Lote WHERE c."+field+" LIKE "+crit+" % ", Lote.class);
+                   queryLote=em.createQuery("SELECT c FROM Lote  c WHERE c."+field+"="+crit+"  ", Lote.class);
                }
                resultLote=queryLote.getResultList();
                System.out.print("\nSe han recuperado "+resultLote.size()+ " Lotes");
@@ -329,7 +329,7 @@ public class crudIPL {
        if(ent.equals("Lote")){//Inicio de if lote
            List<Lote>results;
            switch(field){//Inicio del switch
-               case "Código de Lote":
+               case "Codigo de Lote":
                    results=opRead(ent,"lote_cod",crit);
                    tm=listToTM(results,ent);
                break;

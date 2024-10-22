@@ -27,16 +27,25 @@ public class InterfazLote extends javax.swing.JFrame {
         txtID.setEnabled(false);
         txtIDAct.setEnabled(false);
         dateProduccion.getDateEditor().setEnabled(false);
+        dateCad.getDateEditor().setEnabled(false);
+        dateProduccionAct.getDateEditor().setEnabled(false);
+        dateCadAct.getDateEditor().setEnabled(false);
+        txtIDDel.setEnabled(false);
+        txtCantidadDel.setEnabled(false);
+        dateProduccionDel.getDateEditor().setEnabled(false);;
+        dateCadDel.getDateEditor().setEnabled(false);
+        cmbCervezasDel.setEnabled(false);
         idMax();
         
         List<Cerveza>CervezaList=opCRUDCEM.opReadObjetos("Cerveza", "", "");
         for(Cerveza cer : CervezaList){
             cmbCervezas.addItem(cer.getCer_nombre());
             cmbCervezasAct.addItem(cer.getCer_nombre());
+            cmbCervezasDel.addItem(cer.getCer_nombre());
         }    
     }
     public void actualizarTabla(){
-        tblLote.setModel(opCRUD.opBuscar("Lote", "", ""));
+        tblLote.setModel(opCRUD.opBuscar("Lote", cmbBuscar.getSelectedItem().toString(), txtBuscarLote.getText()));
         
         //Formatear a la fecha quitandole la hora
         tblLote.getColumnModel().getColumn(2).setCellRenderer(new DateCellRenderer());
@@ -56,6 +65,22 @@ public class InterfazLote extends javax.swing.JFrame {
     
     private void idMax(){
         txtID.setText((opCRUD.opIDMax("Lote")+1)+"");
+    }
+    
+    private void cleanField(){
+        
+        txtCantidad.setText("");
+        dateProduccion.setDate(null);
+        dateCad.setDate(null);
+        txtIDAct.setText("");
+        txtCantidadAct.setText("");
+        dateProduccionAct.setDate(null);
+        dateCadAct.setDate(null);
+        txtIDDel.setText("");
+        txtCantidadDel.setText("");
+        dateProduccionDel.setDate(null);
+        dateCadDel.setDate(null);
+        tblLote.clearSelection();
     }
 
     /**
@@ -98,9 +123,22 @@ public class InterfazLote extends javax.swing.JFrame {
         jLabel9 = new javax.swing.JLabel();
         jLabel10 = new javax.swing.JLabel();
         jPanel3 = new javax.swing.JPanel();
+        txtIDDel = new javax.swing.JTextField();
+        txtCantidadDel = new javax.swing.JTextField();
+        dateProduccionDel = new com.toedter.calendar.JDateChooser();
+        dateCadDel = new com.toedter.calendar.JDateChooser();
+        cmbCervezasDel = new javax.swing.JComboBox<>();
+        btnEliminar = new javax.swing.JButton();
+        jButton4 = new javax.swing.JButton();
+        jLabel11 = new javax.swing.JLabel();
+        jLabel12 = new javax.swing.JLabel();
+        jLabel13 = new javax.swing.JLabel();
+        jLabel14 = new javax.swing.JLabel();
+        jLabel15 = new javax.swing.JLabel();
         jPanel5 = new javax.swing.JPanel();
-        jTextField1 = new javax.swing.JTextField();
-        jComboBox1 = new javax.swing.JComboBox<>();
+        txtBuscarLote = new javax.swing.JTextField();
+        cmbBuscar = new javax.swing.JComboBox<>();
+        jLabel16 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -123,6 +161,11 @@ public class InterfazLote extends javax.swing.JFrame {
         jScrollPane1.setViewportView(tblLote);
 
         jTabbedPane1.setBorder(javax.swing.BorderFactory.createTitledBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED)));
+        jTabbedPane1.addChangeListener(new javax.swing.event.ChangeListener() {
+            public void stateChanged(javax.swing.event.ChangeEvent evt) {
+                jTabbedPane1StateChanged(evt);
+            }
+        });
 
         jLabel1.setText("Código del lote");
 
@@ -254,7 +297,7 @@ public class InterfazLote extends javax.swing.JFrame {
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(jPanel2Layout.createSequentialGroup()
                                 .addComponent(txtIDAct, javax.swing.GroupLayout.PREFERRED_SIZE, 81, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 85, Short.MAX_VALUE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 94, Short.MAX_VALUE)
                                 .addComponent(jButton3))
                             .addGroup(jPanel2Layout.createSequentialGroup()
                                 .addComponent(dateProduccionAct, javax.swing.GroupLayout.PREFERRED_SIZE, 137, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -295,9 +338,9 @@ public class InterfazLote extends javax.swing.JFrame {
                     .addComponent(dateProduccionAct, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel8))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jLabel9)
-                    .addComponent(dateCadAct, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(dateCadAct, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel9))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel10)
@@ -308,24 +351,109 @@ public class InterfazLote extends javax.swing.JFrame {
 
         jTabbedPane1.addTab("Update", jPanel2);
 
+        btnEliminar.setText("Eliminar");
+        btnEliminar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnEliminarActionPerformed(evt);
+            }
+        });
+
+        jButton4.setText("Cancelar");
+
+        jLabel11.setText("Código del lote");
+
+        jLabel12.setText("Cantidad Producida");
+
+        jLabel13.setText("Fecha de producción");
+
+        jLabel14.setText("Fecha de caducidad");
+
+        jLabel15.setText("Cerveza");
+
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
         jPanel3Layout.setHorizontalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 384, Short.MAX_VALUE)
+            .addGroup(jPanel3Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel11)
+                    .addComponent(jLabel13, javax.swing.GroupLayout.PREFERRED_SIZE, 118, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel12)
+                    .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                        .addComponent(jLabel15, javax.swing.GroupLayout.PREFERRED_SIZE, 53, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jLabel14)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel3Layout.createSequentialGroup()
+                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel3Layout.createSequentialGroup()
+                                .addComponent(cmbCervezasDel, javax.swing.GroupLayout.PREFERRED_SIZE, 92, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 79, Short.MAX_VALUE)
+                                .addComponent(btnEliminar))
+                            .addGroup(jPanel3Layout.createSequentialGroup()
+                                .addComponent(txtIDDel, javax.swing.GroupLayout.PREFERRED_SIZE, 82, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(jButton4))
+                            .addGroup(jPanel3Layout.createSequentialGroup()
+                                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(dateCadDel, javax.swing.GroupLayout.PREFERRED_SIZE, 137, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(dateProduccionDel, javax.swing.GroupLayout.PREFERRED_SIZE, 137, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGap(0, 0, Short.MAX_VALUE)))
+                        .addContainerGap())
+                    .addGroup(jPanel3Layout.createSequentialGroup()
+                        .addComponent(txtCantidadDel, javax.swing.GroupLayout.PREFERRED_SIZE, 82, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 197, Short.MAX_VALUE)
+            .addGroup(jPanel3Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(txtIDDel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jButton4)
+                    .addComponent(jLabel11))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(txtCantidadDel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel12))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(dateProduccionDel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel13))
+                .addGap(12, 12, 12)
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(dateCadDel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel14))
+                .addGap(13, 13, 13)
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(cmbCervezasDel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel15))
+                .addContainerGap(18, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(btnEliminar)
+                .addContainerGap())
         );
 
         jTabbedPane1.addTab("Delete", jPanel3);
 
         jPanel5.setBorder(javax.swing.BorderFactory.createTitledBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED), "Buscar Lote"));
 
-        jTextField1.setText("jTextField1");
+        txtBuscarLote.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtBuscarLoteActionPerformed(evt);
+            }
+        });
+        txtBuscarLote.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                txtBuscarLoteKeyReleased(evt);
+            }
+        });
 
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        cmbBuscar.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Codigo de Lote", "Cantidad" }));
+
+        jLabel16.setText("Por:");
 
         javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
         jPanel5.setLayout(jPanel5Layout);
@@ -333,18 +461,21 @@ public class InterfazLote extends javax.swing.JFrame {
             jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel5Layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 61, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 102, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(128, 128, 128))
+                .addComponent(jLabel16)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(cmbBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(txtBuscarLote, javax.swing.GroupLayout.PREFERRED_SIZE, 102, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(98, 98, 98))
         );
         jPanel5Layout.setVerticalGroup(
             jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel5Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txtBuscarLote, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(cmbBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel16))
                 .addContainerGap(16, Short.MAX_VALUE))
         );
 
@@ -429,7 +560,8 @@ public class InterfazLote extends javax.swing.JFrame {
             
             opCRUD.opCreate("Lote", nuevoLote);
             actualizarTabla();
-            idMax();  
+            idMax();
+            cleanField();
         }
         
         
@@ -441,6 +573,12 @@ public class InterfazLote extends javax.swing.JFrame {
         dateProduccionAct.setDate((Date) tblLote.getValueAt(tblLote.getSelectedRow(),2));
         dateCadAct.setDate((Date) tblLote.getValueAt(tblLote.getSelectedRow(),3));
         cmbCervezasAct.setSelectedItem(tblLote.getValueAt(tblLote.getSelectedRow(),4).toString());
+        
+        txtIDDel.setText(tblLote.getValueAt(tblLote.getSelectedRow(),0).toString());
+        txtCantidadDel.setText(tblLote.getValueAt(tblLote.getSelectedRow(),1).toString());
+        dateProduccionDel.setDate((Date) tblLote.getValueAt(tblLote.getSelectedRow(),2));
+        dateCadDel.setDate((Date) tblLote.getValueAt(tblLote.getSelectedRow(),3));
+        cmbCervezasDel.setSelectedItem(tblLote.getValueAt(tblLote.getSelectedRow(),4).toString());
     }//GEN-LAST:event_tblLoteMouseClicked
 
     private void btnActualizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnActualizarActionPerformed
@@ -493,8 +631,37 @@ public class InterfazLote extends javax.swing.JFrame {
             opCRUD.opUpdate("Lote", nuevoLote);
             actualizarTabla();
             idMax();  
+            cleanField();
         }
     }//GEN-LAST:event_btnActualizarActionPerformed
+
+    private void jTabbedPane1StateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_jTabbedPane1StateChanged
+        cleanField();
+    }//GEN-LAST:event_jTabbedPane1StateChanged
+
+    private void btnEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarActionPerformed
+        if(txtIDDel.getText().equals("")){
+             JOptionPane.showMessageDialog(null,"Debe de seleccionar un registro para eliminarlo","Error",JOptionPane.ERROR_MESSAGE); 
+        }else{
+            Lote auxiliar=(Lote)opCRUD.opBuscarObjeto("Lote", txtIDDel.getText());
+            if(JOptionPane.showConfirmDialog(null,"Usted esta seguro de elminar el registro?\n"+ auxiliar,
+                    "Confirmar eliminación", JOptionPane.YES_NO_OPTION)==JOptionPane.YES_OPTION)
+            {
+                opCRUD.opDelte("Lote", txtIDDel.getText());
+                actualizarTabla();
+                idMax();
+                cleanField();
+            }
+        }
+    }//GEN-LAST:event_btnEliminarActionPerformed
+
+    private void txtBuscarLoteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtBuscarLoteActionPerformed
+        
+    }//GEN-LAST:event_txtBuscarLoteActionPerformed
+
+    private void txtBuscarLoteKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtBuscarLoteKeyReleased
+        actualizarTabla();
+    }//GEN-LAST:event_txtBuscarLoteKeyReleased
 
     /**
      * @param args the command line arguments
@@ -534,17 +701,28 @@ public class InterfazLote extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnActualizar;
     private javax.swing.JButton btnAgregar;
+    private javax.swing.JButton btnEliminar;
+    private javax.swing.JComboBox<String> cmbBuscar;
     private javax.swing.JComboBox<String> cmbCervezas;
     private javax.swing.JComboBox<String> cmbCervezasAct;
+    private javax.swing.JComboBox<String> cmbCervezasDel;
     private com.toedter.calendar.JDateChooser dateCad;
     private com.toedter.calendar.JDateChooser dateCadAct;
+    private com.toedter.calendar.JDateChooser dateCadDel;
     private com.toedter.calendar.JDateChooser dateProduccion;
     private com.toedter.calendar.JDateChooser dateProduccionAct;
+    private com.toedter.calendar.JDateChooser dateProduccionDel;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
-    private javax.swing.JComboBox<String> jComboBox1;
+    private javax.swing.JButton jButton4;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
+    private javax.swing.JLabel jLabel11;
+    private javax.swing.JLabel jLabel12;
+    private javax.swing.JLabel jLabel13;
+    private javax.swing.JLabel jLabel14;
+    private javax.swing.JLabel jLabel15;
+    private javax.swing.JLabel jLabel16;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
@@ -560,11 +738,13 @@ public class InterfazLote extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel5;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTabbedPane jTabbedPane1;
-    private javax.swing.JTextField jTextField1;
     private javax.swing.JTable tblLote;
+    private javax.swing.JTextField txtBuscarLote;
     private javax.swing.JTextField txtCantidad;
     private javax.swing.JTextField txtCantidadAct;
+    private javax.swing.JTextField txtCantidadDel;
     private javax.swing.JTextField txtID;
     private javax.swing.JTextField txtIDAct;
+    private javax.swing.JTextField txtIDDel;
     // End of variables declaration//GEN-END:variables
 }
