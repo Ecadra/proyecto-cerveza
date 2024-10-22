@@ -105,6 +105,7 @@ public class crudGeneralSI {
                 JOptionPane.showMessageDialog(null, "Fabricante registrado correctamente."+fabricanteNuevo);
                 break;
             
+                
         }
     }
     
@@ -112,14 +113,8 @@ public class crudGeneralSI {
     
     //ACTUALIZAR SEDE Y VENTA
     public void opUpdateObjeto(String entidad, Object objeto) {
-        //Cesar    
-        //EntityManagerFactory emf = Persistence.createEntityManagerFactory("D:\\Documentos HDD\\Proyecto Neatbeans\\Librerias\\objectdb-2.9.0\\db\\cervezadb.odb");
-        //Sebas   
-        //EntityManagerFactory emf = Persistence.createEntityManagerFactory("C:\\Users\\ulseg\\Downloads\\NetBeansProjects\\objectdb-2.9.0\\db\\cervezaodb.odb");
-        //Xim    
+        
         EntityManagerFactory emf= Persistence.createEntityManagerFactory("C:\\\\objectdb-2.9.0\\\\db\\\\cervezadb.odb");
-        //Edwin
-        //EntityManagerFactory emf = Persistence.createEntityManagerFactory("/home/edwin-993/cervezaodb/cervezadb.odb");
         EntityManager em = emf.createEntityManager();
         switch (entidad) {
             case "Sede":
@@ -157,23 +152,54 @@ public class crudGeneralSI {
                 }
                 em.getTransaction().commit();
                 System.out.println("Se ha actualizado la sede: " + sedActualizar.toString());
+                JOptionPane.showMessageDialog(null, "Sede registrada correctamente."+sedActualizar);
                 em.close();
                 emf.close();
                 break;
                 
             case "Venta":
-                Venta nuevosDatosVen = (Venta) objeto;
+                Venta nuevosDatosVenta = (Venta) objeto;
                 Venta venActualizar;
                 em.getTransaction().begin();
                 
-                venActualizar = em.find(Venta.class, nuevosDatosVen.getId_venta());
+                venActualizar = em.find(Venta.class, nuevosDatosVenta.getId_venta());
                 
-                System.out.println("Se ha encontrado la venta a actualizar. \n"
-                        + "Datos anteriores: \n" + nuevosDatosVen);
-                venActualizar.setVen_cantidad(nuevosDatosVen.getVen_cantidad());
-                venActualizar.setVen_fecha(nuevosDatosVen.getVen_fecha());
-                venActualizar.setVen_total(nuevosDatosVen.getVen_total());
+                System.out.println("\nSe ha encontrado la venta a actualizar. \n"
+                        + "Datos anteriores: \n" + nuevosDatosVenta);
+                
+                Expendio expViejo = em.find(Expendio.class, venActualizar.getVen_exp().getId_expendio());
+                System.out.println("\n\nExpendio anteriormente relacionado: " + expViejo.toString());
+                Expendio expNuevo = em.find(Expendio.class, nuevosDatosVenta.getVen_exp().getId_expendio());
+                System.out.println("\n\nExpendio seleccionado en la interfaz: " + expNuevo.toString());
+                Inventario invViejo = em.find(Inventario.class, venActualizar.getVen_inv().getInv_cod());
+                System.out.println("\n\nInventario anteriormente relacionado: " + invViejo.toString());
+                Inventario invNuevo = em.find(Inventario.class, nuevosDatosVenta.getVen_inv().getInv_cod());
+                System.out.println("\n\nInventario seleccionado en la interfaz: " + invNuevo.toString());
+                
+                
+                if(expViejo.getId_expendio() == expNuevo.getId_expendio()){
+                    System.out.println("\n\nNo se ha actualizado la relacion del objeto Expendio - Venta... Actualizando solo los datos del objeto");
+                    //Se actualiza el nombre
+                    venActualizar.setVen_cantidad(nuevosDatosVenta.getVen_cantidad());
+                    venActualizar.setVen_fecha(nuevosDatosVenta.getVen_fecha());
+                    venActualizar.setVen_total(nuevosDatosVenta.getVen_total());
+                }else{
+                    System.out.println("\n\nSe han detectado cambios en la relacion del objeto Sede - Fabricante... Actualizando relacion y datos del objeto");
+                    //Se actualiza el nombre
+                    venActualizar.setVen_cantidad(nuevosDatosVenta.getVen_cantidad());
+                    venActualizar.setVen_fecha(nuevosDatosVenta.getVen_fecha());
+                    venActualizar.setVen_total(nuevosDatosVenta.getVen_total());
+                    
+                    //Se elimina el anterior fabricante de manera bidireccional
+                    venActualizar.dropVe_exp(expViejo);
+                    expViejo.dropExp_ven(venActualizar);
+                    
+                    venActualizar.dropVe_inv(invViejo);
+                    invViejo.dropInv_ven(venActualizar);
+                    //Se hace una nueva relacion de manera bidireccional                    
+                }
                 em.getTransaction().commit();
+                System.out.println("Se ha actualizado la sede: " + venActualizar.toString());
                 em.close();
                 emf.close();
                 break;
@@ -225,40 +251,99 @@ public class crudGeneralSI {
                 emf.close();
                 return resultadosSede;//Se regresa la lista de resultados
             
-            case "Venta":
-            // Se recuperan los objetos Venta desde la base de datos
-            TypedQuery<Venta> consultaVenta = null; // Objeto para la consulta
-            List<Venta> resultadosVenta = new ArrayList<Venta>(); // Lista para los resultados
+            case "Venta": //Si es Cerveza
+                //Se recuperan los objetos Cerveza desde la base de datos
+                TypedQuery<Venta> consultaVenta = null;//Objeto para la consulta
+                List<Venta> resultadosVenta = new ArrayList<Venta>();//Lista para los resultados
+                consultaVenta = criterio.equals("")
+                        ? //Operador ternario, si no hay criterio, se seleccionan todos
+                        em.createQuery("SELECT v FROM Venta v", Venta.class)
+                        : //Operador ternario, si no hay criterio, se seleccionan todos
+                        em.createQuery("SELECT v FROM Venta v WHERE v." + field + " LIKE '" + criterio + "%'", Venta.class);//Operador ternario, si hay criterio, se busca en el campo
+                resultadosVenta = consultaVenta.getResultList();//Se guardan los resultados en la lista creada anteriormente
+                System.out.println("Se han recuperado satisfactoriamente " + resultadosVenta.size() + " venta(s)");//Se notifica mediante consola
+                em.close();
+                emf.close();
+                return resultadosVenta;
+            /*case "Venta":
+                // Se recuperan los objetos Venta desde la base de datos
+                TypedQuery<Venta> consultaVenta = null; // Objeto para la consulta
+                List<Venta> resultadosVenta = new ArrayList<Venta>(); // Lista para los resultados
 
-            // Si no hay criterio, seleccionamos todas las ventas
-            if (criterio.equals("")) {
+                // Si no hay criterio, seleccionamos todas las ventas
+                if (criterio.equals("")) {
                 consultaVenta = em.createQuery("SELECT v FROM Venta v", Venta.class);
-            } else {
-                // Si el campo es ven_fecha, tratamos de convertir el criterio a Date
-                if (field.equals("ven_fecha")) {
-                    try {
-                        // Convertir el criterio de búsqueda a formato de fecha
-                        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
-                        Date fechaBuscada = sdf.parse(criterio);
-
-                        // Hacer la consulta con la fecha formateada
-                        consultaVenta = em.createQuery("SELECT v FROM Venta v WHERE v.ven_fecha = :fecha", Venta.class);
-                        consultaVenta.setParameter("fecha", fechaBuscada);
-                    } catch (ParseException e) {
-                        e.printStackTrace();
-                    }
                 } else {
-                    // Para otros campos, utilizamos LIKE
-                    consultaVenta = em.createQuery("SELECT v FROM Venta v WHERE v." + field.toLowerCase() + " LIKE '%" + criterio + "%'", Venta.class);
+                 switch (field.toLowerCase()) {
+                     case "id_venta": // Caso para buscar por id_venta
+                try {
+                    // Convertir el criterio a un número entero
+                    int idBuscado = Integer.parseInt(criterio);
+                    consultaVenta = em.createQuery("SELECT v FROM Venta v WHERE v.id_venta = :id", Venta.class);
+                    consultaVenta.setParameter("id", idBuscado);
+                } catch (NumberFormatException e) {
+                    e.printStackTrace();
+                    System.out.println("Criterio de id_venta no es un número válido.");
                 }
-            }
+                break;
+                     
+                     
+                     case "ven_fecha":
+                try {
+                    // Convertir el criterio de búsqueda a formato de fecha
+                    SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+                    Date fechaBuscada = sdf.parse(criterio);
+                    // Hacer la consulta con la fecha formateada
+                    consultaVenta = em.createQuery("SELECT v FROM Venta v WHERE v.ven_fecha = :fecha", Venta.class);
+                    consultaVenta.setParameter("fecha", fechaBuscada);
+                    } catch (ParseException e) {
+                    e.printStackTrace();
+                    System.out.println("Formato de fecha incorrecto. Use dd/MM/yyyy.");
+                    }
+                   break;
+
+                    case "ven_cantidad":
+                // Si se busca por cantidad, convertir el criterio a número entero
+                    try {
+                    int cantidadBuscada = Integer.parseInt(criterio);
+                    consultaVenta = em.createQuery("SELECT v FROM Venta v WHERE v.ven_cantidad = :cantidad", Venta.class);
+                    consultaVenta.setParameter("cantidad", cantidadBuscada);
+                     } catch (NumberFormatException e) {
+                    e.printStackTrace();
+                    System.out.println("Criterio de cantidad no es un número válido.");
+                         }
+                    break;
+
+                    case "ven_total":
+                    // Si se busca por total de venta, convertir el criterio a número decimal
+                try {
+                    double totalBuscado = Double.parseDouble(criterio);
+                    consultaVenta = em.createQuery("SELECT v FROM Venta v WHERE v.ven_total = :total", Venta.class);
+                    consultaVenta.setParameter("total", totalBuscado);
+                } catch (NumberFormatException e) {
+                    e.printStackTrace();
+                    System.out.println("Criterio de total de venta no es un número válido.");
+                }
+                break;
+
+            default:
+                // Para otros campos, utilizamos LIKE para buscar coincidencias parciales
+                consultaVenta = em.createQuery("SELECT v FROM Venta v WHERE LOWER(v." + field + ") LIKE :criterio", Venta.class);
+                consultaVenta.setParameter("criterio", "%" + criterio.toLowerCase() + "%");
+                break;
+                }
+                }
 
             // Ejecutar la consulta y obtener los resultados
-            resultadosVenta = consultaVenta.getResultList();
+            if (consultaVenta != null) {
+                resultadosVenta = consultaVenta.getResultList();
             System.out.println("Se han recuperado satisfactoriamente " + resultadosVenta.size() + " ventas");
+            }
+
             em.close();
             emf.close();
-            return resultadosVenta;
+            return resultadosVenta;*/
+
                 
             case "Fabricante":
                 //Se recuperan los objetos Fabricante desde la base de datos
@@ -318,18 +403,21 @@ public class crudGeneralSI {
                 Sede Sede;
                 columnNames.addElement("Código");
                 columnNames.addElement("Nombre");
+                columnNames.addElement("Fabricante");
                 columnNames.addElement("Calle");
                 columnNames.addElement("Numero ext.");
                 columnNames.addElement("Numero int.");
                 columnNames.addElement("Col.");
                 columnNames.addElement("C.P");
                 columnNames.addElement("Estado");
+                
                 Iterator itExp = resultados.iterator();
                 while (itExp.hasNext()) {
                     Sede = (Sede) itExp.next();
                     Vector nuevaFila = new Vector();
                     nuevaFila.addElement(Sede.getId_sede());
                     nuevaFila.addElement(Sede.getSe_nombre());
+                    nuevaFila.addElement(Sede.getSe_fab().getFab_nombre());
                     Direccion direccion = Sede.getSe_direccion();
                     nuevaFila.addElement(direccion.getCalle());
                     nuevaFila.addElement(direccion.getNumeroExt());
@@ -341,23 +429,27 @@ public class crudGeneralSI {
                 }
                 break;
             case "Venta":
-                Venta venta;
-                columnNames.addElement("No de Venta");
-                columnNames.addElement("Cantidad vendida");
-                columnNames.addElement("Fecha");
-                columnNames.addElement("Total vendido");
-                Iterator it = resultados.iterator();
-                while (it.hasNext()) {
-                    venta = (Venta) it.next();
-                    Vector nuevaFila = new Vector();
-                    nuevaFila.addElement(venta.getId_venta());
-                    nuevaFila.addElement(venta.getVen_cantidad());
-                    nuevaFila.addElement(venta.getVen_fecha());
-                    nuevaFila.addElement(venta.getVen_total());
-                    rows.addElement(nuevaFila);
-                }
-                break;
-        }//Termina switch de entidad
+            Venta venta;
+            columnNames.addElement("No de Venta");  // Corregido: Se añade la columna "No de Venta"
+            columnNames.addElement("Cantidad vendida");
+            columnNames.addElement("Fecha");
+            columnNames.addElement("Total vendido");
+            columnNames.addElement("Expendio");
+            columnNames.addElement("Inventario");
+            Iterator itVenta = resultados.iterator();
+            while (itVenta.hasNext()) {
+                venta = (Venta) itVenta.next();
+                Vector nuevaFila = new Vector();
+                nuevaFila.addElement(venta.getId_venta());  
+                nuevaFila.addElement(venta.getVen_cantidad());  // Añadir "Cantidad vendida"
+                nuevaFila.addElement(venta.getVen_fecha());  // Añadir "Fecha"
+                nuevaFila.addElement(venta.getVen_total());  // Añadir "Total vendido"
+                nuevaFila.addElement(venta.getVen_exp().getExp_nombre());
+                nuevaFila.addElement(venta.getVen_inv().getInv_cod());
+                rows.addElement(nuevaFila);
+            }
+            break;
+    }
         return new DefaultTableModel(rows, columnNames);
     }
      
@@ -379,16 +471,22 @@ public class crudGeneralSI {
          if (ent.equals("Venta")) {
             List<Venta> resultadosVenta;
             switch(field){
-                case "Cantidad Venta":
-                 resultadosVenta = opReadObjetos(ent, "ve_cantidad", criterio);
+                
+                case "No de Venta":
+                 resultadosVenta = opReadObjetos(ent, "id_venta", criterio);
+                 tm = listToTM(resultadosVenta, ent);
+                 break;
+                case "Cantidad vendida":
+                 resultadosVenta = opReadObjetos(ent, "ven_cantidad", criterio);
                  tm = listToTM(resultadosVenta, ent);
                  break;
              case "Fecha":
                  resultadosVenta = opReadObjetos(ent, "ven_fecha", criterio);
                  tm = listToTM(resultadosVenta, ent);
                  break;
-             case "Total de venta":
+             case "Total vendido":
                  resultadosVenta = opReadObjetos(ent,"ven_total",criterio);
+                 tm = listToTM(resultadosVenta, ent);
              default:
                  resultadosVenta = opReadObjetos(ent, field, criterio);
                  tm = listToTM(resultadosVenta, ent);
@@ -413,7 +511,7 @@ public class crudGeneralSI {
                 return objeto;
             case "Expendio":
                 //objeto = em.find(Expendio.class,nameToID("Expendio", criterio));
-                objeto = em.find(Expendio.class, Integer.parseInt(criterio));
+                objeto = em.find(Expendio.class, nameToID("Expendio",criterio));
                 em.close();
                 emf.close();
                 return objeto;
@@ -446,28 +544,44 @@ public class crudGeneralSI {
 
     }
  
-   public void opDeleteObjeto(String entidad, String criterio) {//Funcion de CRUD para borrar una Cerveza
+        public void opDeleteObjeto(String entidad, int criterio) {
         Object objeto = null; 
-        EntityManagerFactory emf= Persistence.createEntityManagerFactory(ruta);
+        EntityManagerFactory emf = Persistence.createEntityManagerFactory(ruta);
         EntityManager em = emf.createEntityManager();
+
+    try {
         em.getTransaction().begin();
+        
         switch (entidad) {
             case "Sede":
                 objeto = em.find(Sede.class, criterio);
-                em.remove(objeto);
                 break;
             case "Venta":
-                objeto = em.find(Expendio.class, criterio);
-                em.remove(objeto);
+                objeto = em.find(Venta.class, criterio);
                 break;
-                
-        
             default:
                 JOptionPane.showMessageDialog(null, "El objeto que se desea eliminar no se encuentra registrado en este método",
                         "Error en crudCerveza -> opDelete", JOptionPane.ERROR_MESSAGE);
-                break;
+                return; 
         }
+        
+        if (objeto == null) {
+            JOptionPane.showMessageDialog(null, "El objeto con el criterio proporcionado no existe.",
+                    "Error en CRUD", JOptionPane.ERROR_MESSAGE);
+            em.getTransaction().rollback();
+            return;
+        }
+
+            em.remove(objeto);
+            em.getTransaction().commit();
+            } catch (Exception e) {
+            em.getTransaction().rollback(); // Revierte si ocurre un error
+                JOptionPane.showMessageDialog(null, "Error al eliminar: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+    }   finally {
+        em.close(); 
+        emf.close();
     }
+}
    
        public int opMaxID(String entidad) {
         //Cesar    

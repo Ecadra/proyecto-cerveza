@@ -350,25 +350,23 @@ public class InterfazSede extends javax.swing.JFrame {
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                    .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGroup(jPanel2Layout.createSequentialGroup()
-                            .addContainerGap()
-                            .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGroup(jPanel2Layout.createSequentialGroup()
-                                    .addGap(7, 7, 7)
-                                    .addComponent(jLabel21)
-                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                    .addComponent(cmbFabricante, javax.swing.GroupLayout.PREFERRED_SIZE, 127, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                        .addGroup(jPanel2Layout.createSequentialGroup()
-                            .addContainerGap()
-                            .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                .addComponent(jLabel22)
-                                .addComponent(jLabel4))
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                            .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                .addComponent(txtNombre, javax.swing.GroupLayout.DEFAULT_SIZE, 175, Short.MAX_VALUE)
-                                .addComponent(txtID))))
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(jPanel2Layout.createSequentialGroup()
+                                .addGap(7, 7, 7)
+                                .addComponent(jLabel21)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(cmbFabricante, javax.swing.GroupLayout.PREFERRED_SIZE, 127, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(jPanel2Layout.createSequentialGroup()
+                                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addComponent(jLabel22)
+                                    .addComponent(jLabel4))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(txtNombre, javax.swing.GroupLayout.DEFAULT_SIZE, 175, Short.MAX_VALUE)
+                                    .addComponent(txtID)))))
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addGap(33, 33, 33)
                         .addComponent(btnRegistrar)
@@ -648,8 +646,18 @@ public class InterfazSede extends javax.swing.JFrame {
         );
 
         btnEliminar.setText("Eliminar datos");
+        btnEliminar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnEliminarActionPerformed(evt);
+            }
+        });
 
         btnLimpiar2.setText("Limpiar Campos");
+        btnLimpiar2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnLimpiar2ActionPerformed(evt);
+            }
+        });
 
         jLabel25.setText("Código:");
 
@@ -712,12 +720,13 @@ public class InterfazSede extends javax.swing.JFrame {
 
         tblRegistros.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null},
-                {null, null, null},
-                {null, null, null}
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
             },
             new String [] {
-                "Código", "Nombre", "Dirección"
+                "Código", "Nombre", "Dirección", "Fabricante"
             }
         ));
         tblRegistros.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -737,6 +746,17 @@ public class InterfazSede extends javax.swing.JFrame {
         });
 
         jLabel17.setText("Criterio:");
+
+        txtCriterio.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtCriterioActionPerformed(evt);
+            }
+        });
+        txtCriterio.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                txtCriterioKeyReleased(evt);
+            }
+        });
 
         btnRegresar.setText("Regresar");
 
@@ -812,6 +832,7 @@ public class InterfazSede extends javax.swing.JFrame {
     
     // Actualizar la tabla y limpiar campos después de registrar
         actualizarTabla();
+        txtID.setText((operacionesCRUD.opMaxID("Sede")+1)+"");
      limpiarCampos();
     }//GEN-LAST:event_btnRegistrarActionPerformed
 
@@ -915,6 +936,7 @@ public class InterfazSede extends javax.swing.JFrame {
     private void tblRegistrosMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblRegistrosMouseClicked
 
         int fila = tblRegistros.getSelectedRow();
+        
         //SE RECUPERAN LOS DATOS EN EDITAR
        tbdSede.setSelectedIndex(1);
         txtID1.setText(tblRegistros.getValueAt(fila, 0).toString());
@@ -927,24 +949,56 @@ public class InterfazSede extends javax.swing.JFrame {
         
         Sede sede = (Sede)operacionesCRUD.opBuscarObjeto("Sede", txtID1.getText());
         Direccion direccionSede = sede.getSe_direccion();
+        int codigoPostal = direccionSede.getCodigoPostal();
         txtCalle1.setText(direccionSede.getCalle());
         spnNumeroExterior1.setValue(direccionSede.getNumeroExt());
         spnNumeroInterior1.setValue(direccionSede.getNumeroInt());
         txtColonia1.setText(direccionSede.getColonia());
-        txtCodigo.setText(direccionSede.getCodigoPostal()+"");
+        txtCodigo1.setText(String.valueOf(codigoPostal));
         txtEstado1.setText(direccionSede.getEstado());
         
         txtCalle2.setText(direccionSede.getCalle());
         spnNumeroExterior2.setValue(direccionSede.getNumeroExt());
         spnNumeroInterior2.setValue(direccionSede.getNumeroInt());
         txtColonia2.setText(direccionSede.getColonia());
-        txtCodigo2.setText(direccionSede.getCodigoPostal()+"");
+        txtCodigo2.setText(String.valueOf(codigoPostal));
         txtEstado2.setText(direccionSede.getEstado());
         editar(true);
         eliminar(true);
         insertar(false);
+        System.out.println("Código Postal: " + direccionSede.getCodigoPostal());
        
     }//GEN-LAST:event_tblRegistrosMouseClicked
+
+    private void btnLimpiar2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLimpiar2ActionPerformed
+    limpiarCampos();
+    }//GEN-LAST:event_btnLimpiar2ActionPerformed
+
+    private void btnEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarActionPerformed
+        
+        if(JOptionPane.showConfirmDialog(null, "¿Está usted seguro que desea eliminar el registro?",
+                "Confirmación de eliminacion",JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION){
+            try{
+                operacionesCRUD.opDeleteObjeto("Sede", Integer.parseInt(txtID2.getText()));
+                JOptionPane.showMessageDialog(null, "Se ha eliminado el objeto de manera satisfactoria");
+               
+                tbdSede.setSelectedIndex(0);
+            }catch(NumberFormatException err){
+                JOptionPane.showMessageDialog(null, "El tipo de dato del identificador no es un numero",
+                        "Error de formato de numero",JOptionPane.ERROR_MESSAGE);
+            }
+        }
+     actualizarTabla();
+     limpiarCampos();
+    }//GEN-LAST:event_btnEliminarActionPerformed
+
+    private void txtCriterioKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtCriterioKeyReleased
+    tblRegistros.setModel(operacionesCRUD.opBuscar("Sede", (String)cmbFiltrar.getSelectedItem(), txtCriterio.getText()));
+    }//GEN-LAST:event_txtCriterioKeyReleased
+
+    private void txtCriterioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtCriterioActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtCriterioActionPerformed
     
        
         public void insertar(boolean activacion) {

@@ -76,8 +76,8 @@ public class Expendio implements Serializable {
         this.exp_ven.add(ven);
     }
 
-    public void dropExp_ven() {
-        this.exp_ven = null;
+    public void dropExp_ven(Venta ven) {
+        this.exp_ven.remove(ven);
     }
 
     /*

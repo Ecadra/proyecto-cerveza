@@ -52,7 +52,7 @@ public class Sede implements Serializable {
 
     // Método para eliminar la relación con el fabricante
     public void dropSe_fab(Fabricante fab) {
-        this.se_fab = fab; // Eliminar la relación
+        this.se_fab = null; // Eliminar la relación
     }
     
     // Getters y Setters

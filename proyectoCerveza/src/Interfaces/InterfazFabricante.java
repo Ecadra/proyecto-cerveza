@@ -678,6 +678,7 @@ public class InterfazFabricante extends javax.swing.JFrame {
                 txtNomFabricante.setText("");
                 txtContacto.setText("");
                 actualizarTabla();
+                txtCodigo.setText((operacionesCRUD.opMaxID("Fabricante")+1)+"");
             } catch (Exception e) {
                 // Manejo de la excepción aquí
                 if (e.getMessage().contains("ya está registrado")) {
