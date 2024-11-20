@@ -482,6 +482,11 @@ public class InterfazInventario extends javax.swing.JFrame {
         });
 
         jButton4.setText("Cancel");
+        jButton4.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton4ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel7Layout = new javax.swing.GroupLayout(jPanel7);
         jPanel7.setLayout(jPanel7Layout);
@@ -773,7 +778,7 @@ public class InterfazInventario extends javax.swing.JFrame {
         String expendio = txtExp.getText();
         String presentacion=txtPres.getText();
         
-        
+         
       
         try{
             
@@ -1004,7 +1009,7 @@ public class InterfazInventario extends javax.swing.JFrame {
     }//GEN-LAST:event_txtCritPresActionPerformed
 
     private void btnEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarActionPerformed
-        if(txtIDDel.getText().equals("")){
+            if(txtIDDel.getText().equals("")){
             
             JOptionPane.showMessageDialog(null,"Debe de seleccionar un registro para eliminarlo","Error",JOptionPane.ERROR_MESSAGE);
         }else{
@@ -1060,6 +1065,10 @@ public class InterfazInventario extends javax.swing.JFrame {
     private void txtCritInvActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtCritInvActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_txtCritInvActionPerformed
+
+    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jButton4ActionPerformed
 
     /**
      * @param args the command line arguments
