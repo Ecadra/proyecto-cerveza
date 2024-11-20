@@ -32,7 +32,7 @@ public class InterfazLote extends javax.swing.JFrame {
         dateCadAct.getDateEditor().setEnabled(false);
         txtIDDel.setEnabled(false);
         txtCantidadDel.setEnabled(false);
-        dateProduccionDel.getDateEditor().setEnabled(false);;
+        dateProduccionDel.getDateEditor().setEnabled(false);
         dateCadDel.getDateEditor().setEnabled(false);
         cmbCervezasDel.setEnabled(false);
         idMax();
