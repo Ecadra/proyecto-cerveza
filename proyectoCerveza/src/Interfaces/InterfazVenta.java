@@ -668,13 +668,18 @@ public class InterfazVenta extends javax.swing.JFrame {
 
         jLabel20.setText("Criterio:");
 
-        cmbFiltro.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Fecha" }));
+        cmbFiltro.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Venta Total", " " }));
         cmbFiltro.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 cmbFiltroActionPerformed(evt);
             }
         });
 
+        txtCriterio.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtCriterioActionPerformed(evt);
+            }
+        });
         txtCriterio.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyReleased(java.awt.event.KeyEvent evt) {
                 txtCriterioKeyReleased(evt);
@@ -944,6 +949,10 @@ public class InterfazVenta extends javax.swing.JFrame {
     private void cmbFiltroActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmbFiltroActionPerformed
     tblRegistros.setModel(operacionesCRUD.opBuscar("Venta", (String)cmbFiltro.getSelectedItem(), txtCriterio.getText()));
     }//GEN-LAST:event_cmbFiltroActionPerformed
+
+    private void txtCriterioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtCriterioActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtCriterioActionPerformed
     
      public void insertar(boolean activacion) {
         txtId.setEnabled(activacion);
