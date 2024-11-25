@@ -251,20 +251,65 @@ public class crudGeneralSI {
                 emf.close();
                 return resultadosSede;//Se regresa la lista de resultados
             
-            case "Venta": //Si es Cerveza
-                //Se recuperan los objetos Cerveza desde la base de datos
-                TypedQuery<Venta> consultaVenta = null;//Objeto para la consulta
-                List<Venta> resultadosVenta = new ArrayList<Venta>();//Lista para los resultados
-                consultaVenta = criterio.equals("")
-                        ? //Operador ternario, si no hay criterio, se seleccionan todos
-                        em.createQuery("SELECT v FROM Venta v", Venta.class)
-                        : //Operador ternario, si no hay criterio, se seleccionan todos
-                        em.createQuery("SELECT v FROM Venta v WHERE v." + field + " LIKE '" + criterio + "%'", Venta.class);//Operador ternario, si hay criterio, se busca en el campo
-                resultadosVenta = consultaVenta.getResultList();//Se guardan los resultados en la lista creada anteriormente
-                System.out.println("Se han recuperado satisfactoriamente " + resultadosVenta.size() + " venta(s)");//Se notifica mediante consola
-                em.close();
-                emf.close();
-                return resultadosVenta;
+            case "Venta": // Si es Venta
+    // Se recuperan los objetos Venta desde la base de datos
+            TypedQuery<Venta> consultaVenta = null; // Objeto para la consulta
+            List<Venta> resultadosVenta = new ArrayList<>(); // Lista para los resultados
+
+            if (criterio.equals("")) {
+                // Si no hay criterio, selecciona todos
+                consultaVenta = em.createQuery("SELECT v FROM Venta v", Venta.class);
+            } else {
+                // Si hay criterio, valida el tipo del campo
+                switch (field) {
+                  case "Venta Total": // Campo numérico
+    try {
+        float valor = Float.parseFloat(criterio); // Convierte el criterio a float
+        consultaVenta = em.createQuery(
+            "SELECT v FROM Venta v WHERE v.ven_total = :valor", 
+            Venta.class
+        );
+        consultaVenta.setParameter("valor", valor); // Asigna el valor exacto
+    } catch (NumberFormatException e) {
+        System.out.println("El criterio debe ser un número válido para 'ven_total'.");
+        return resultadosVenta; // Devuelve una lista vacía si el criterio no es válido
+    }
+    break;
+
+                    case "Fecha": // Campo de tipo Date
+                    try {
+                        // Convierte el criterio a Date (ajusta el formato según sea necesario)
+                        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd"); // Formato de fecha
+                        Date fecha = sdf.parse(criterio); // Convierte el criterio a Date
+                        consultaVenta = em.createQuery(
+                            "SELECT v FROM Venta v WHERE v.ven_fecha = :fecha", 
+                            Venta.class
+                        );
+                        consultaVenta.setParameter("fecha", fecha); // Establece el parámetro de la fecha
+                    } catch (ParseException e) {
+                        System.out.println("El criterio debe estar en formato 'yyyy-MM-dd'.");
+                        return resultadosVenta; // Devuelve una lista vacía si el formato es incorrecto
+                }
+                    break;
+
+
+                    default: // Campo de tipo String
+                        consultaVenta = em.createQuery(
+                            "SELECT v FROM Venta v WHERE v." + field + " LIKE :criterio", 
+                            Venta.class
+                        );
+                        consultaVenta.setParameter("criterio", criterio + "%");
+                        break;
+                }
+            }
+
+            // Ejecuta la consulta y guarda los resultados en la lista
+            resultadosVenta = consultaVenta.getResultList();
+            System.out.println("Se han recuperado satisfactoriamente " + resultadosVenta.size() + " venta(s)"); // Notifica en consola
+            em.close();
+            emf.close();
+            return resultadosVenta;
+
             /*case "Venta":
                 // Se recuperan los objetos Venta desde la base de datos
                 TypedQuery<Venta> consultaVenta = null; // Objeto para la consulta
